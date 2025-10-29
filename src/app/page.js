@@ -1,6 +1,11 @@
 "use client";
 
 import Header from "./components/Header";
+import CustomCursor from "./components/CustomCursor";
+import ParticleBackground from "./components/ParticleBackground";
+import TypewriterEffect from "./components/TypewriterEffect";
+import MagneticButton from "./components/MagneticButton";
+import PageLoader from "./components/PageLoader";
 import { FaGithub, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCode, FaRocket, FaBolt, FaHeart, FaTrophy, FaAward } from "react-icons/fa";
 import { SiNextdotjs, SiReact, SiJavascript, SiTypescript, SiTailwindcss, SiNodedotjs, SiExpress, SiPostgresql, SiPython, SiCplusplus, SiFlask, SiPhp, SiMysql } from "react-icons/si";
 import { useState, useEffect } from "react";
@@ -18,6 +23,9 @@ export default function Home() {
 
   return (
     <>
+      <PageLoader />
+      <CustomCursor />
+      <ParticleBackground />
       <Header />
       <main className="pt-16">
         {/* Hero Section - Unique Design */}
@@ -87,33 +95,46 @@ export default function Home() {
               </div>
             </div>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed animate-slide-up stagger-3">
+            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed animate-slide-up stagger-3">
               From <span className="text-yellow-400 font-bold">winning hackathons</span> to building products for <span className="text-indigo-400 font-bold">5,000+ users</span>.
               Led teams of <span className="text-purple-400 font-bold">30 developers</span> and taught <span className="text-pink-400 font-bold">programming to 25+ students</span>.
-              I turn coffee into code that matters. ☕→💻
+            </p>
+
+            <p className="text-2xl md:text-3xl font-bold text-white mb-12 animate-slide-up stagger-3">
+              <TypewriterEffect
+                texts={[
+                  "I build scalable web apps 🚀",
+                  "I win hackathons 🏆",
+                  "I optimize performance ⚡",
+                  "I lead dev teams 👨‍💻",
+                  "I turn coffee into code ☕"
+                ]}
+                typingSpeed={80}
+                deletingSpeed={40}
+                delayBetween={2000}
+              />
             </p>
 
             <div className="flex gap-6 justify-center animate-slide-up stagger-4">
-              <a
-                href="https://github.com/Kostia06"
-                target="_blank"
-                rel="noopener noreferrer"
+              <MagneticButton
                 className="group relative px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl font-bold text-white overflow-hidden transition-all duration-300 hover:scale-105 animate-glow"
+                onClick={() => window.open("https://github.com/Kostia06", "_blank")}
               >
                 <span className="relative z-10 flex items-center gap-3">
                   <FaGithub className="text-2xl" />
                   View My Work
                 </span>
-              </a>
-              <a
-                href="#contact"
+              </MagneticButton>
+
+              <MagneticButton
                 className="group px-8 py-4 border-2 border-white/30 backdrop-blur-sm rounded-xl font-bold text-white hover:bg-white/10 transition-all duration-300 hover:scale-105"
+                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               >
                 <span className="flex items-center gap-3">
                   <FaEnvelope className="text-xl" />
                   Let&apos;s Connect
                 </span>
-              </a>
+              </MagneticButton>
             </div>
 
             {/* Scroll Indicator */}
