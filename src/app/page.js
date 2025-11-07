@@ -1,7 +1,6 @@
 "use client";
 
 import Header from "./components/Header";
-import CustomCursor from "./components/CustomCursor";
 import ParticleBackground from "./components/ParticleBackground";
 import TypewriterEffect from "./components/TypewriterEffect";
 import MagneticButton from "./components/MagneticButton";
@@ -24,7 +23,6 @@ export default function Home() {
   return (
     <>
       <PageLoader />
-      <CustomCursor />
       <ParticleBackground />
       <Header />
       <main className="pt-16">
@@ -160,7 +158,7 @@ export default function Home() {
 
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="relative">
-                <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-1 rounded-2xl animate-gradient hover-lift">
+                <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-1 rounded-2xl animate-gradient hover-lift tilt-card">
                   <div className="bg-white p-8 rounded-2xl">
                     <div className="text-6xl mb-4">🌍</div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-900">My Journey</h3>
@@ -172,7 +170,7 @@ export default function Home() {
               </div>
 
               <div className="relative">
-                <div className="bg-gradient-to-br from-yellow-500 via-orange-500 to-red-500 p-1 rounded-2xl animate-gradient hover-lift">
+                <div className="bg-gradient-to-br from-yellow-500 via-orange-500 to-red-500 p-1 rounded-2xl animate-gradient hover-lift tilt-card">
                   <div className="bg-white p-8 rounded-2xl">
                     <div className="text-6xl mb-4">🏆</div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-900">Competition Ready</h3>
@@ -184,7 +182,7 @@ export default function Home() {
               </div>
 
               <div className="relative">
-                <div className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 p-1 rounded-2xl animate-gradient hover-lift">
+                <div className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 p-1 rounded-2xl animate-gradient hover-lift tilt-card">
                   <div className="bg-white p-8 rounded-2xl">
                     <div className="text-6xl mb-4">👨‍💻</div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-900">Real Impact</h3>
@@ -196,7 +194,7 @@ export default function Home() {
               </div>
 
               <div className="relative">
-                <div className="bg-gradient-to-br from-blue-600 via-cyan-600 to-sky-600 p-1 rounded-2xl animate-gradient hover-lift">
+                <div className="bg-gradient-to-br from-blue-600 via-cyan-600 to-sky-600 p-1 rounded-2xl animate-gradient hover-lift tilt-card">
                   <div className="bg-white p-8 rounded-2xl">
                     <div className="text-6xl mb-4">🧑‍🏫</div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-900">Teaching & Leading</h3>

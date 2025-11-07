@@ -31,7 +31,6 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
-  cursor: none; /* Hide default cursor for custom cursor */
 }
 
 /* Custom Scrollbar */

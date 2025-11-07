@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +27,18 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const navItems = [
     { id: "about", label: "About" },
@@ -80,20 +93,73 @@ export default function Header() {
         </a>
 
         {/* Mobile Menu Button */}
-        <button className="md:hidden text-white p-2">
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
+        <button
+          className="md:hidden text-white z-50 p-2 relative"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <div className="w-6 h-6 flex flex-col justify-center items-center">
+            <span
+              className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
+                mobileMenuOpen ? "rotate-45 translate-y-1" : "-translate-y-0.5"
+              }`}
+            ></span>
+            <span
+              className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
+                mobileMenuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            ></span>
+            <span
+              className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
+                mobileMenuOpen ? "-rotate-45 -translate-y-1" : "translate-y-0.5"
+              }`}
+            ></span>
+          </div>
         </button>
       </nav>
+
+      {/* Mobile Menu */}
+      <div
+        className={`md:hidden fixed inset-0 bg-slate-900/98 backdrop-blur-lg z-40 transition-all duration-300 ${
+          mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+      >
+        <div className="flex flex-col items-center justify-center h-full gap-8 px-6">
+          {navItems.map((item, index) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`text-2xl font-bold transition-all duration-300 ${
+                activeSection === item.id
+                  ? "text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 scale-110"
+                  : "text-gray-300 hover:text-white hover:scale-110"
+              }`}
+              style={{
+                transitionDelay: mobileMenuOpen ? `${index * 50}ms` : "0ms",
+                transform: mobileMenuOpen ? "translateY(0)" : "translateY(-20px)",
+                opacity: mobileMenuOpen ? 1 : 0,
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href="https://github.com/Kostia06"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
+            className="mt-4 px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-full hover:scale-105 transition-all shadow-lg"
+            style={{
+              transitionDelay: mobileMenuOpen ? `${navItems.length * 50}ms` : "0ms",
+              transform: mobileMenuOpen ? "translateY(0)" : "translateY(-20px)",
+              opacity: mobileMenuOpen ? 1 : 0,
+            }}
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
     </header>
   );
 }
