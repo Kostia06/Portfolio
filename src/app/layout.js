@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Kostiantyn Ilnytskyi - Full Stack Developer",
   description: "Computer Science student at the University of Calgary specializing in full-stack development, API design, and problem-solving.",
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({ children }) {
