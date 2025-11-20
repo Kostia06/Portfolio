@@ -2,36 +2,53 @@
 
 import Header from "./components/Header";
 import ParticleBackground from "./components/ParticleBackground";
+import CanvasTrail from "./components/CanvasTrail";
 import TypewriterEffect from "./components/TypewriterEffect";
 import MagneticButton from "./components/MagneticButton";
 import PageLoader from "./components/PageLoader";
+import { Timeline } from "./components/Timeline";
+import { experienceData } from "./data/experienceData";
 import { FaGithub, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCode, FaRocket, FaBolt, FaHeart, FaTrophy, FaAward } from "react-icons/fa";
 import { SiNextdotjs, SiReact, SiJavascript, SiTypescript, SiTailwindcss, SiNodedotjs, SiExpress, SiPostgresql, SiPython, SiCplusplus, SiFlask, SiPhp, SiMysql } from "react-icons/si";
 import { useState, useEffect } from "react";
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Detect if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   return (
     <>
       <PageLoader />
-      <ParticleBackground />
+      {!isMobile && <ParticleBackground />}
+      {!isMobile && <CanvasTrail />}
       <Header />
-      <main className="pt-16">
+      <main className="pt-12">
         {/* Hero Section - Unique Design */}
-        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 z-0">
           {/* Animated Background Elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div
-              className="absolute w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"
+              className="absolute w-[32rem] h-[32rem] bg-indigo-500 rounded-full mix-blend-screen vibrant-blur animate-float"
               style={{
                 top: '10%',
                 left: '10%',
@@ -39,7 +56,7 @@ export default function Home() {
               }}
             />
             <div
-              className="absolute w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"
+              className="absolute w-[32rem] h-[32rem] bg-purple-500 rounded-full mix-blend-screen vibrant-blur animate-float"
               style={{
                 top: '60%',
                 right: '10%',
@@ -47,25 +64,43 @@ export default function Home() {
               }}
             />
             <div
-              className="absolute w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"
+              className="absolute w-[32rem] h-[32rem] bg-pink-500 rounded-full mix-blend-screen vibrant-blur animate-float"
               style={{
                 bottom: '10%',
                 left: '50%',
                 animationDelay: '4s'
               }}
             />
+            <div
+              className="absolute w-[28rem] h-[28rem] bg-cyan-400 rounded-full mix-blend-screen vibrant-blur animate-float"
+              style={{
+                top: '40%',
+                left: '30%',
+                animationDelay: '3s'
+              }}
+            />
+            <div
+              className="absolute w-[30rem] h-[30rem] bg-yellow-400 rounded-full mix-blend-screen vibrant-blur animate-float"
+              style={{
+                bottom: '30%',
+                right: '25%',
+                animationDelay: '5s'
+              }}
+            />
           </div>
 
           {/* Cursor Follow Effect */}
-          <div
-            className="absolute w-64 h-64 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-10 pointer-events-none transition-all duration-300"
-            style={{
-              left: mousePosition.x - 128,
-              top: mousePosition.y - 128,
-            }}
-          />
+          {!isMobile && (
+            <div
+              className="absolute w-96 h-96 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 pointer-events-none transition-all duration-500"
+              style={{
+                left: mousePosition.x - 192,
+                top: mousePosition.y - 192,
+              }}
+            />
+          )}
 
-          <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+          <div className="relative z-20 max-w-6xl mx-auto px-6 text-center">
             <div className="mb-8">
               <span className="inline-block px-6 py-2 bg-indigo-500/20 backdrop-blur-sm border border-indigo-500/30 rounded-full text-indigo-300 font-semibold mb-6 animate-slide-up">
                 🏆 Hackathon Winner • Open Source Contributor
@@ -115,7 +150,7 @@ export default function Home() {
 
             <div className="flex gap-6 justify-center animate-slide-up stagger-4">
               <MagneticButton
-                className="group relative px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl font-bold text-white overflow-hidden transition-all duration-300 hover:scale-105 animate-glow"
+                className="group relative px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-xl font-bold text-white overflow-hidden transition-all duration-300 hover:scale-110 animate-glow shadow-2xl hover:shadow-purple-500/50"
                 onClick={() => window.open("https://github.com/Kostia06", "_blank")}
               >
                 <span className="relative z-10 flex items-center gap-3">
@@ -125,7 +160,7 @@ export default function Home() {
               </MagneticButton>
 
               <MagneticButton
-                className="group px-8 py-4 border-2 border-white/30 backdrop-blur-sm rounded-xl font-bold text-white hover:bg-white/10 transition-all duration-300 hover:scale-105"
+                className="group px-8 py-4 border-2 border-white/50 backdrop-blur-sm rounded-xl font-bold text-white hover:bg-gradient-to-r hover:from-cyan-500/20 hover:to-purple-500/20 transition-all duration-300 hover:scale-110 hover:border-cyan-400 shadow-xl"
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               >
                 <span className="flex items-center gap-3">
@@ -135,17 +170,11 @@ export default function Home() {
               </MagneticButton>
             </div>
 
-            {/* Scroll Indicator */}
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-              <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
-                <div className="w-1 h-3 bg-white rounded-full animate-pulse"></div>
-              </div>
-            </div>
           </div>
         </section>
 
         {/* About Section */}
-        <section id="about" className="py-32 bg-white relative overflow-hidden">
+        <section id="about" className="py-32 bg-white relative overflow-hidden z-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-100 rounded-full filter blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2"></div>
 
           <div className="max-w-6xl mx-auto px-6 relative z-10">
@@ -209,7 +238,7 @@ export default function Home() {
         </section>
 
         {/* Achievements Section */}
-        <section id="achievements" className="py-32 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
+        <section id="achievements" className="py-32 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden z-0">
           <div className="absolute inset-0">
             <div className="absolute w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 top-0 left-1/4 animate-float"></div>
             <div className="absolute w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 bottom-0 right-1/4 animate-float" style={{animationDelay: '3s'}}></div>
@@ -358,148 +387,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Experience Section - Timeline Style */}
-        <section id="experience" className="py-32 bg-gradient-to-br from-slate-50 to-indigo-50 relative">
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="text-center mb-20">
-              <h2 className="text-5xl md:text-6xl font-black mb-4">
-                <span className="gradient-text">Experience</span>
-              </h2>
-              <p className="text-xl text-gray-600">Where I&apos;ve made an impact</p>
-            </div>
-
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 hidden md:block"></div>
-
-              {/* Experience 1: CS Tutor (Current) */}
-              <div className="relative mb-16">
-                <div className="md:grid md:grid-cols-2 md:gap-8 items-center">
-                  <div className="md:text-right mb-8 md:mb-0">
-                    <div className="inline-block bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-full font-bold mb-4">
-                      Sept 2024 - Present
-                    </div>
-                    <h3 className="text-3xl font-black mb-2 text-gray-900">Computer Science Tutor</h3>
-                    <p className="text-xl font-semibold text-emerald-600 mb-4">University of Calgary</p>
-                  </div>
-                  <div className="bg-white p-8 rounded-2xl shadow-xl border-2 border-emerald-100 hover-lift">
-                    <ul className="space-y-3 text-gray-700">
-                      <li className="flex items-start gap-3">
-                        <span className="text-emerald-600 font-bold">→</span>
-                        <span>Tutored <strong>10+ students</strong> in Python and Java, covering data structures and algorithms</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-green-600 font-bold">→</span>
-                        <span>Created <strong>custom study materials</strong> targeting each student&apos;s weak areas</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-teal-600 font-bold">→</span>
-                        <span>Improved test scores through <strong>personalized learning approach</strong></span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-emerald-600 border-4 border-white rounded-full hidden md:block shadow-lg"></div>
-              </div>
-
-              {/* Experience 2: Lemmer (Microplacement) */}
-              <div className="relative mb-16">
-                <div className="md:grid md:grid-cols-2 md:gap-8 items-center">
-                  <div className="md:col-start-2">
-                    <div className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full font-bold mb-4">
-                      May 2024 - June 2024
-                    </div>
-                    <h3 className="text-3xl font-black mb-2 text-gray-900">Full Stack Developer</h3>
-                    <p className="text-xl font-semibold text-indigo-600 mb-2">Lemmer Ltd. (Microplacement)</p>
-                    <p className="text-sm text-gray-600 italic">Calgary, AB</p>
-                  </div>
-                  <div className="md:row-start-1 md:col-start-1 bg-white p-8 rounded-2xl shadow-xl border-2 border-indigo-100 hover-lift">
-                    <ul className="space-y-3 text-gray-700">
-                      <li className="flex items-start gap-3">
-                        <span className="text-indigo-600 font-bold">→</span>
-                        <span>Built <strong>Rustsol.com</strong> from scratch using Next.js, Express.js, and Supabase</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-purple-600 font-bold">→</span>
-                        <span>Developed <strong>secure authentication and payment systems</strong> with encryption</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-pink-600 font-bold">→</span>
-                        <span>Delivered in <strong>6 weeks</strong>, improved efficiency by <strong>30%</strong> through automation & CI/CD</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-indigo-600 border-4 border-white rounded-full hidden md:block shadow-lg"></div>
-              </div>
-
-              {/* Experience 3: CommerceMate */}
-              <div className="relative mb-16">
-                <div className="md:grid md:grid-cols-2 md:gap-8 items-center">
-                  <div className="md:text-right mb-8 md:mb-0">
-                    <div className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full font-bold mb-4">
-                      April 2022 - Aug 2023
-                    </div>
-                    <h3 className="text-3xl font-black mb-2 text-gray-900">Software Developer Intern</h3>
-                    <p className="text-xl font-semibold text-purple-600 mb-2">CommerceMate.co</p>
-                    <p className="text-sm text-gray-600 italic">Remote (Los Angeles, USA)</p>
-                  </div>
-                  <div className="bg-white p-8 rounded-2xl shadow-xl border-2 border-purple-100 hover-lift">
-                    <ul className="space-y-3 text-gray-700">
-                      <li className="flex items-start gap-3">
-                        <span className="text-purple-600 font-bold">→</span>
-                        <span>Improved performance for <strong>5,000+ active users</strong> by reducing load times <strong>40%</strong></span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-pink-600 font-bold">→</span>
-                        <span>Integrated <strong>Stripe and PayPal APIs</strong>, increasing transactions by <strong>25%</strong></span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-fuchsia-600 font-bold">→</span>
-                        <span>Worked with <strong>team of 8 developers</strong> using Agile sprints and code reviews</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-purple-600 border-4 border-white rounded-full hidden md:block shadow-lg"></div>
-              </div>
-
-              {/* Experience 4: Programming Instructor */}
-              <div className="relative">
-                <div className="md:grid md:grid-cols-2 md:gap-8 items-center">
-                  <div className="md:col-start-2">
-                    <div className="inline-block bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-full font-bold mb-4">
-                      Jan 2021 - March 2021
-                    </div>
-                    <h3 className="text-3xl font-black mb-2 text-gray-900">Programming Instructor</h3>
-                    <p className="text-xl font-semibold text-cyan-600 mb-2">Ukrainian Educational Center</p>
-                    <p className="text-sm text-gray-600 italic">Calgary, AB</p>
-                  </div>
-                  <div className="md:row-start-1 md:col-start-1 bg-white p-8 rounded-2xl shadow-xl border-2 border-cyan-100 hover-lift">
-                    <ul className="space-y-3 text-gray-700">
-                      <li className="flex items-start gap-3">
-                        <span className="text-cyan-600 font-bold">→</span>
-                        <span>Taught <strong>Python programming</strong> to <strong>25+ middle school students</strong></span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-blue-600 font-bold">→</span>
-                        <span>Covered basic concepts and problem-solving through hands-on projects</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-sky-600 font-bold">→</span>
-                        <span><strong>90%</strong> of students showed interest in continuing with computer science</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-cyan-600 border-4 border-white rounded-full hidden md:block shadow-lg"></div>
-              </div>
-            </div>
-          </div>
+        {/* Experience Section - Timeline with Framer Motion */}
+        <section id="experience">
+          <Timeline data={experienceData} />
         </section>
 
         {/* Projects Section - Bento Grid */}
-        <section id="projects" className="py-32 bg-slate-900 relative overflow-hidden">
+        <section id="projects" className="py-32 bg-slate-900 relative overflow-hidden z-10">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
           <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -663,7 +557,7 @@ export default function Home() {
         </section>
 
         {/* Skills Section - Icon Grid */}
-        <section id="skills" className="py-32 bg-white relative overflow-hidden">
+        <section id="skills" className="py-32 bg-white relative overflow-hidden z-0">
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-100 rounded-full filter blur-3xl opacity-30 translate-y-1/2 -translate-x-1/2"></div>
 
           <div className="max-w-6xl mx-auto px-6 relative z-10">
@@ -736,7 +630,7 @@ export default function Home() {
         </section>
 
         {/* Education Section */}
-        <section id="education" className="py-32 bg-gradient-to-br from-slate-50 to-purple-50 relative overflow-hidden">
+        <section id="education" className="py-32 bg-gradient-to-br from-slate-50 to-purple-50 relative overflow-hidden z-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-100 rounded-full filter blur-3xl opacity-40 translate-x-1/2"></div>
 
           <div className="max-w-6xl mx-auto px-6 relative z-10">
@@ -848,7 +742,7 @@ export default function Home() {
         </section>
 
         {/* Contact Section - Modern Card */}
-        <section id="contact" className="py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+        <section id="contact" className="py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden z-0">
           {/* Background decoration */}
           <div className="absolute inset-0">
             <div className="absolute w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 top-0 right-0 animate-float"></div>
@@ -957,7 +851,7 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-slate-950 text-gray-400 py-12 border-t border-white/10">
+        <footer className="bg-slate-950 text-gray-400 py-12 border-t border-white/10 relative z-10">
           <div className="max-w-6xl mx-auto px-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-6">
               <p>&copy; 2025 Kostiantyn Ilnytskyi. Crafted with <FaHeart className="inline text-red-500" /> and Next.js</p>
