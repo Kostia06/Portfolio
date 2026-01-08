@@ -136,18 +136,23 @@
 					<!-- Key strengths -->
 					<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
 						{#each strengths as item, i}
-							<div class="glass rounded-xl p-4" in:fly={{ y: 20, duration: 500, delay: 400 + i * 100 }}>
-								<h4 class="font-bold text-[var(--accent)] mb-1">{item.title}</h4>
-								<p class="text-sm text-[var(--muted-foreground)]">{item.desc}</p>
+							<div
+								class="group glass rounded-xl p-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] relative overflow-hidden"
+								in:fly={{ y: 20, duration: 500, delay: 400 + i * 100 }}
+							>
+								<div class="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+								<h4 class="font-bold text-[var(--accent)] mb-1 relative z-10">{item.title}</h4>
+								<p class="text-sm text-[var(--muted-foreground)] relative z-10">{item.desc}</p>
 							</div>
 						{/each}
 					</div>
 
 					<!-- Education -->
 					<div
-						class="glass rounded-xl md:rounded-2xl p-4 md:p-6"
+						class="group glass rounded-xl md:rounded-2xl p-4 md:p-6 transition-all duration-300 hover:shadow-[0_0_40px_rgba(99,102,241,0.15)] relative overflow-hidden"
 						in:fly={{ y: 30, duration: 600, delay: 700 }}
 					>
+						<div class="absolute inset-0 bg-gradient-to-r from-[var(--accent)]/5 via-transparent to-[var(--accent-secondary)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 						<div class="flex items-start gap-3 md:gap-4">
 							<div
 								class="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-[var(--accent)]/20 flex items-center justify-center text-xl md:text-2xl shrink-0"

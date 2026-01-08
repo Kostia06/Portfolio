@@ -6,6 +6,9 @@
 	import PageLoader from '$ui/PageLoader.svelte';
 	import CustomCursor from '$ui/CustomCursor.svelte';
 	import EasterEggs from '$ui/EasterEggs.svelte';
+	import Aurora from '$ui/Aurora.svelte';
+	import NavDots from '$ui/NavDots.svelte';
+	import GrainOverlay from '$ui/GrainOverlay.svelte';
 	import { isMobile, isLoading } from '$stores/app';
 
 	let { children } = $props();
@@ -79,8 +82,17 @@
 <!-- Page Loader -->
 <PageLoader />
 
+<!-- Aurora Background -->
+<Aurora />
+
+<!-- Grain Overlay -->
+<GrainOverlay />
+
 <!-- Custom Cursor (desktop only) -->
 <CustomCursor />
+
+<!-- Navigation Dots -->
+<NavDots />
 
 <!-- Easter Eggs -->
 <EasterEggs />
