@@ -8,7 +8,6 @@
 	import EasterEggs from '$ui/EasterEggs.svelte';
 	import Aurora from '$ui/Aurora.svelte';
 	import NavDots from '$ui/NavDots.svelte';
-	import GrainOverlay from '$ui/GrainOverlay.svelte';
 	import { isMobile, isLoading } from '$stores/app';
 
 	let { children } = $props();
@@ -84,9 +83,6 @@
 
 <!-- Aurora Background -->
 <Aurora />
-
-<!-- Grain Overlay -->
-<GrainOverlay />
 
 <!-- Custom Cursor (desktop only) -->
 <CustomCursor />
