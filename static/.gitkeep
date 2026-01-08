@@ -1,0 +1,4 @@
+# Static assets directory
+# Copy files from public/ to here:
+# - favicon.png, favicon-*.png, apple-touch-icon.png
+# - screenshots/ directory

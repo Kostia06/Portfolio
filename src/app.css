@@ -1,0 +1,405 @@
+@import "tailwindcss";
+
+:root {
+  /* Colors */
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --accent: #6366f1;
+  --accent-secondary: #818cf8;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --card: #18181b;
+  --card-foreground: #fafafa;
+  --border: #27272a;
+
+  /* Section colors for subtle transitions */
+  --section-hero: #0a0a0a;
+  --section-about: #0c0c0f;
+  --section-experience: #0a0a0a;
+  --section-projects: #0c0c0f;
+  --section-skills: #0a0a0a;
+  --section-contact: #0c0c0f;
+
+  /* Fluid Typography Scale - Perfect fourth (1.333) */
+  --step--2: clamp(0.70rem, 0.65rem + 0.25vw, 0.83rem);
+  --step--1: clamp(0.83rem, 0.76rem + 0.35vw, 1.00rem);
+  --step-0: clamp(1.00rem, 0.90rem + 0.50vw, 1.25rem);
+  --step-1: clamp(1.13rem, 0.98rem + 0.75vw, 1.56rem);
+  --step-2: clamp(1.27rem, 1.05rem + 1.10vw, 1.95rem);
+  --step-3: clamp(1.42rem, 1.10rem + 1.60vw, 2.44rem);
+  --step-4: clamp(1.60rem, 1.15rem + 2.25vw, 3.05rem);
+  --step-5: clamp(1.80rem, 1.15rem + 3.25vw, 3.81rem);
+  --step-6: clamp(2.03rem, 1.10rem + 4.65vw, 4.77rem);
+
+  /* Fluid Spacing Scale */
+  --space-xs: clamp(0.75rem, 0.70rem + 0.25vw, 1rem);
+  --space-sm: clamp(1rem, 0.90rem + 0.50vw, 1.5rem);
+  --space-md: clamp(1.5rem, 1.30rem + 1.00vw, 2.5rem);
+  --space-lg: clamp(2rem, 1.60rem + 2.00vw, 4rem);
+  --space-xl: clamp(3rem, 2.20rem + 4.00vw, 6rem);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+/* Hide cursor only on desktop for custom cursor */
+@media (min-width: 768px) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.6;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fluid typography utility classes */
+.text-fluid-xs { font-size: var(--step--2); }
+.text-fluid-sm { font-size: var(--step--1); }
+.text-fluid-base { font-size: var(--step-0); }
+.text-fluid-lg { font-size: var(--step-1); }
+.text-fluid-xl { font-size: var(--step-2); }
+.text-fluid-2xl { font-size: var(--step-3); }
+.text-fluid-3xl { font-size: var(--step-4); }
+.text-fluid-4xl { font-size: var(--step-5); }
+.text-fluid-5xl { font-size: var(--step-6); }
+
+/* Fluid spacing utilities */
+.gap-fluid-xs { gap: var(--space-xs); }
+.gap-fluid-sm { gap: var(--space-sm); }
+.gap-fluid-md { gap: var(--space-md); }
+.gap-fluid-lg { gap: var(--space-lg); }
+.p-fluid-sm { padding: var(--space-sm); }
+.p-fluid-md { padding: var(--space-md); }
+.py-fluid-lg { padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
+.py-fluid-xl { padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+/* Smooth scroll container */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated gradient text with shimmer */
+.gradient-text-animated {
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    var(--accent-secondary) 25%,
+    #c084fc 50%,
+    var(--accent-secondary) 75%,
+    var(--accent) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Glow effects */
+.glow {
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+}
+
+.glow-text {
+  text-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(24, 24, 27, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Section clip path animations */
+.section-reveal {
+  clip-path: inset(0 0 100% 0);
+}
+
+.section-revealed {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Timeline drawing effect */
+.timeline-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+/* Orbit animation */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
+  }
+}
+
+.orbit-item {
+  animation: orbit var(--orbit-duration, 20s) linear infinite;
+}
+
+/* Particle animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* iMessage bubble styles */
+.imessage-bubble {
+  position: relative;
+  background: var(--accent);
+  border-radius: 18px;
+  padding: 12px 16px;
+}
+
+.imessage-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  background: var(--accent);
+  border-bottom-left-radius: 16px;
+  clip-path: polygon(0 0, 0% 100%, 100% 100%);
+}
+
+/* Bento grid hover effects */
+.bento-item {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
+}
+
+.bento-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Page loader animation */
+@keyframes loader-progress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes loader-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Typing cursor animation */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.typing-cursor::after {
+  content: '|';
+  animation: blink 1s infinite;
+  color: var(--accent);
+}
+
+/* Mobile touch-friendly styles */
+@media (max-width: 768px) {
+  /* Disable expensive effects */
+  .glass {
+    backdrop-filter: blur(8px);
+  }
+
+  /* Active states for touch feedback */
+  a:active,
+  button:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
+  }
+
+  /* Ensure minimum tap target size */
+  a,
+  button,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Touch-action for scrollable areas */
+  .overflow-y-auto,
+  .overflow-x-auto {
+    touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Disable hover animations on touch devices */
+  .hover\:scale-105:active {
+    transform: scale(0.98);
+  }
+
+  /* GPU acceleration hints for animated elements */
+  .glass,
+  [class*="animate"],
+  .gradient-text {
+    will-change: auto;
+    transform: translateZ(0);
+  }
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Hide decorative animations completely */
+  .bg-glow-container,
+  [class*="animate"],
+  .orbit-item {
+    display: none !important;
+  }
+}
+
+/* Content visibility optimization for off-screen sections */
+.section-lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100vh;
+}
+
+/* GPU acceleration for animated elements */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* Ultra-wide display optimization */
+@media (min-width: 1920px) {
+  .max-w-7xl {
+    max-width: 1400px;
+  }
+}
+
+@media (min-width: 2560px) {
+  :root {
+    --step-0: 1.125rem;
+    --step-1: 1.5rem;
+    --step-2: 2rem;
+    --step-3: 2.5rem;
+    --step-4: 3.25rem;
+    --step-5: 4rem;
+  }
+}
