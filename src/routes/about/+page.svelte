@@ -216,7 +216,7 @@
 	<!-- Back Button -->
 	<a
 		bind:this={backBtnEl}
-		href="/"
+		href="/#experience"
 		class="fixed top-6 left-6 md:top-8 md:left-8 z-50 group flex items-center gap-3 text-sm text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors"
 		data-cursor="pointer"
 	>
