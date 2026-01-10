@@ -17,9 +17,9 @@
 	let backBtnEl: HTMLElement;
 
 	const stats = [
-		{ value: 5, suffix: '+', label: 'Production Apps', icon: '01' },
-		{ value: 35, suffix: '+', label: 'Students Mentored', icon: '02' },
-		{ value: 1, suffix: 'st', label: 'Hackathon Wins', icon: '03' }
+		{ value: 5, suffix: '+', label: 'Production Apps' },
+		{ value: 35, suffix: '+', label: 'Students Mentored' },
+		{ value: 1, suffix: 'st', label: 'Hackathon Win' }
 	];
 
 	let animatedStats = $state(stats.map(() => 0));
@@ -323,19 +323,15 @@
 
 				<!-- Stats Grid -->
 				<div class="lg:col-span-6">
-					<div bind:this={statsEl} class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+					<div bind:this={statsEl} class="grid grid-cols-3 gap-4 md:gap-6">
 						{#each stats as stat, i}
-							<div class="stat-item relative p-6 md:p-8 border border-[var(--color-border)] rounded-xl bg-[var(--color-bg)] group hover:border-[var(--color-accent)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/10">
-								<span class="absolute top-3 right-3 text-xs text-[var(--color-muted)] font-mono">
-									{stat.icon}
-								</span>
-								<div class="font-display text-4xl md:text-5xl font-bold text-[var(--color-text)] mb-2 group-hover:text-[var(--color-accent)] transition-colors tabular-nums">
+							<div class="stat-item relative p-4 md:p-6 border border-[var(--color-border)] rounded-xl bg-[var(--color-bg)] group hover:border-[var(--color-accent)] transition-all duration-300 text-center">
+								<div class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-accent)] mb-1 tabular-nums">
 									{animatedStats[i]}{stat.suffix}
 								</div>
-								<div class="text-xs md:text-sm text-[var(--color-muted)] uppercase tracking-wider">
+								<div class="text-[10px] md:text-xs text-[var(--color-muted)] uppercase tracking-wider leading-tight">
 									{stat.label}
 								</div>
-								<div class="absolute inset-0 rounded-xl bg-gradient-to-br from-[var(--color-accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 							</div>
 						{/each}
 					</div>
