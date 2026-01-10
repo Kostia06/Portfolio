@@ -6,6 +6,7 @@
 	import '../app.css';
 	import PageLoader from '$ui/PageLoader.svelte';
 	import CustomCursor from '$ui/CustomCursor.svelte';
+	import PageTransition from '$ui/PageTransition.svelte';
 	import { isMobile, isLoading } from '$stores/app';
 
 	let { children } = $props();
@@ -80,6 +81,9 @@
 
 <!-- Custom Cursor (desktop only) -->
 <CustomCursor />
+
+<!-- Page Transition -->
+<PageTransition />
 
 <!-- Noise overlay for texture -->
 <div class="noise-overlay"></div>

@@ -12,6 +12,21 @@ export interface Experience {
 
 export const experiences: Experience[] = [
 	{
+		year: '2026',
+		title: 'Full Stack Developer (MVP)',
+		company: 'Mr Blu',
+		location: 'Calgary, AB',
+		period: 'Jan 2026 – Present',
+		description: [
+			'Built voice-to-document SaaS converting contractor voice memos into professional invoices',
+			'Engineered rule-based command parser extracting data from voice input',
+			'Developed mobile-first PWA with Svelte 5 and real-time transcription'
+		],
+		technologies: ['Svelte 5', 'TypeScript', 'Speech Recognition', 'NLP'],
+		icon: '🎙️',
+		color: '#ff4d00'
+	},
+	{
 		year: '2025',
 		title: 'Full Stack Developer Intern',
 		company: 'Respect The Technique',
@@ -27,6 +42,21 @@ export const experiences: Experience[] = [
 		color: '#ef4444'
 	},
 	{
+		year: '2025',
+		title: 'Full Stack Developer',
+		company: 'Lemmer Ltd.',
+		location: 'Calgary, AB',
+		period: 'May – Jun 2025',
+		description: [
+			'Architected complete e-commerce platform (Rustsol.com) from ground up',
+			'Engineered secure authentication and payment systems',
+			'Delivered production-ready product in 6 weeks, boosting efficiency by 30%'
+		],
+		technologies: ['Next.js', 'Express.js', 'Supabase'],
+		icon: '💼',
+		color: '#10b981'
+	},
+	{
 		year: '2024',
 		title: 'CS Tutor',
 		company: 'University of Calgary',
@@ -34,25 +64,12 @@ export const experiences: Experience[] = [
 		period: 'Sep 2024 – Present',
 		description: [
 			'Mentored 10+ students in Python and Java',
-			'Taught data structures, algorithms, and core principles'
+			'Taught data structures, algorithms, and core principles',
+			'Crafted personalized study materials driving grade improvements'
 		],
 		technologies: ['Python', 'Java', 'DSA'],
 		icon: '🎓',
 		color: '#6366f1'
-	},
-	{
-		year: '2024',
-		title: 'Full Stack Developer',
-		company: 'Lemmer Ltd.',
-		location: 'Calgary, AB',
-		period: 'May – Jun 2024',
-		description: [
-			'Built complete e-commerce platform from ground up',
-			'Delivered in 6 weeks, boosted efficiency by 30%'
-		],
-		technologies: ['Next.js', 'Express.js', 'Supabase'],
-		icon: '💼',
-		color: '#10b981'
 	},
 	{
 		year: '2022',
@@ -62,24 +79,11 @@ export const experiences: Experience[] = [
 		period: 'Apr 2022 – Aug 2023',
 		description: [
 			'Accelerated performance for 5,000+ users, 40% faster loads',
-			'Integrated Stripe & PayPal, boosted transactions 25%'
+			'Integrated Stripe & PayPal, boosted transactions 25%',
+			'Collaborated with cross-functional team of 8 developers'
 		],
-		technologies: ['React', 'Node.js', 'Stripe'],
+		technologies: ['React', 'Node.js', 'Stripe', 'PayPal'],
 		icon: '⚡',
 		color: '#f59e0b'
-	},
-	{
-		year: '2021',
-		title: 'Programming Instructor',
-		company: 'Ukrainian Educational Center',
-		location: 'Kyiv, Ukraine',
-		period: 'Jan – Mar 2021',
-		description: [
-			'Taught 25+ students Python fundamentals',
-			'90% continued pursuing CS education'
-		],
-		technologies: ['Python', 'Education'],
-		icon: '👨‍🏫',
-		color: '#8b5cf6'
 	}
 ];

@@ -1,253 +1,227 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fly } from 'svelte/transition';
-	import { experiences } from '$data/experiences';
+	import { browser } from '$app/environment';
+	import gsap from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	import { isMobile } from '$stores/app';
+	import { experiences } from '$data/experiences';
 
 	let sectionEl: HTMLElement;
-	let trackEl: HTMLDivElement;
-	let activeIndex = $state(0);
-	let isVisible = $state(false);
-	let scrollProgress = $state(0);
-	let translateX = $state(0);
+	let titleEl: HTMLElement;
+	let timelineEl: HTMLElement;
+	let aboutCircleEl: HTMLElement;
 
 	onMount(() => {
-		const handleScroll = () => {
-			if (!sectionEl) return;
+		if (!browser) return;
 
-			const rect = sectionEl.getBoundingClientRect();
-			const sectionHeight = sectionEl.offsetHeight;
-			const viewportHeight = window.innerHeight;
+		gsap.registerPlugin(ScrollTrigger);
 
-			// Calculate progress from 0 to 1 based on scroll position
-			const scrollStart = rect.top;
-			const totalScroll = sectionHeight - viewportHeight;
+		// Title animation
+		if (titleEl && !$isMobile) {
+			gsap.from(titleEl.querySelectorAll('.title-line'), {
+				y: 80,
+				opacity: 0,
+				duration: 1,
+				ease: 'power4.out',
+				stagger: 0.1,
+				scrollTrigger: {
+					trigger: titleEl,
+					start: 'top 85%',
+					toggleActions: 'play none none reverse'
+				}
+			});
+		}
 
-			if (totalScroll > 0) {
-				scrollProgress = Math.max(0, Math.min(1, -scrollStart / totalScroll));
-			}
+		// Timeline items animation
+		if (timelineEl && !$isMobile) {
+			const items = timelineEl.querySelectorAll('.exp-card');
 
-			// Show content when scrolled into section
-			isVisible = scrollProgress > 0.02 && scrollProgress < 0.98;
+			items.forEach((item, i) => {
+				gsap.from(item, {
+					y: 60,
+					opacity: 0,
+					duration: 0.8,
+					ease: 'power3.out',
+					scrollTrigger: {
+						trigger: item,
+						start: 'top 85%',
+						toggleActions: 'play none none reverse'
+					}
+				});
+			});
+		}
 
-			// Calculate horizontal translation (only if trackEl exists)
-			if (trackEl) {
-				const trackWidth = trackEl.scrollWidth;
-				const containerWidth = window.innerWidth;
-				const maxTranslate = trackWidth - containerWidth + 100; // extra padding
-				translateX = scrollProgress * maxTranslate;
-			}
+		// About circle animation
+		if (aboutCircleEl) {
+			// Floating animation
+			gsap.to(aboutCircleEl, {
+				y: -15,
+				duration: 2.5,
+				ease: 'sine.inOut',
+				repeat: -1,
+				yoyo: true
+			});
 
-			// Calculate active card based on position
-			if (scrollProgress > 0) {
-				activeIndex = Math.min(
-					Math.floor(scrollProgress * experiences.length),
-					experiences.length - 1
-				);
-			}
+			// Rotate on scroll
+			gsap.to(aboutCircleEl.querySelector('.circle-ring'), {
+				rotation: 360,
+				duration: 20,
+				repeat: -1,
+				ease: 'none'
+			});
+		}
+
+		return () => {
+			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 		};
-
-		window.addEventListener('scroll', handleScroll, { passive: true });
-		handleScroll();
-
-		return () => window.removeEventListener('scroll', handleScroll);
 	});
 </script>
 
 <section
 	bind:this={sectionEl}
 	id="experience"
-	class="relative"
-	style="background: var(--section-experience); height: {experiences.length * 100 + 100}vh;"
+	class="py-20 md:py-32 relative overflow-hidden"
+	style="background: var(--color-bg);"
 >
-	<!-- Sticky container -->
-	<div class="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-		<!-- Section Header -->
-		{#if isVisible}
-			<div
-				class="text-center mb-8 md:mb-12 px-4"
-				in:fly={{ y: $isMobile ? 20 : 30, duration: $isMobile ? 400 : 600 }}
+	<!-- Background decoration -->
+	<div class="absolute inset-0 pointer-events-none">
+		<div class="absolute top-1/2 right-0 -translate-y-1/2 opacity-[0.02]">
+			<span class="font-display text-[25vw] font-bold leading-none text-[var(--color-text)] whitespace-nowrap">
+				EXP
+			</span>
+		</div>
+	</div>
+
+	<div class="container relative z-10">
+		<!-- Section Header with floating About circle -->
+		<div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12 md:mb-20">
+			<div bind:this={titleEl}>
+				<div class="overflow-hidden">
+					<span class="title-line block text-xs md:text-sm uppercase tracking-[0.2em] text-[var(--color-accent)] mb-4">
+						/ Experience
+					</span>
+				</div>
+				<div class="overflow-hidden">
+					<h2 class="title-line font-display text-[10vw] md:text-[6vw] lg:text-[4vw] font-bold leading-[0.9] tracking-tighter">
+						Where I've
+					</h2>
+				</div>
+				<div class="overflow-hidden">
+					<h2 class="title-line font-display text-[10vw] md:text-[6vw] lg:text-[4vw] font-bold leading-[0.9] tracking-tighter">
+						<span class="text-[var(--color-accent)]">Made Impact</span>
+					</h2>
+				</div>
+			</div>
+
+			<!-- Floating About Circle -->
+			<a
+				bind:this={aboutCircleEl}
+				href="/about"
+				class="about-circle group relative w-32 h-32 md:w-40 md:h-40 self-center lg:self-auto"
+				data-cursor="pointer"
+				data-cursor-text="More"
 			>
-				<span class="text-[var(--accent)] font-mono text-sm mb-4 block"> Career Journey </span>
-				<h2 class="text-4xl md:text-6xl lg:text-7xl font-bold">
-					Professional <span class="gradient-text">Experience</span>
-				</h2>
-			</div>
-		{/if}
+				<!-- Outer rotating ring with dashed border -->
+				<div class="circle-ring absolute inset-0 rounded-full border-2 border-dashed border-[var(--color-accent)]/60"></div>
 
-		<!-- Progress bar -->
-		{#if isVisible}
-			<div class="w-full max-w-4xl mx-auto mb-8 px-4" in:fly={{ y: 10, duration: 400, delay: 100 }}>
-				<div class="h-1 bg-[var(--muted)] rounded-full overflow-hidden">
-					<div
-						class="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-secondary)] transition-all duration-200"
-						style="width: {scrollProgress * 100}%"
-					></div>
+				<!-- Middle pulsing ring -->
+				<div class="absolute inset-2 rounded-full border border-[var(--color-accent)]/30 group-hover:border-[var(--color-accent)] transition-colors duration-500"></div>
+
+				<!-- Inner solid circle -->
+				<div class="absolute inset-4 rounded-full bg-[var(--color-accent)] flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-[var(--color-accent)]/30">
+					<div class="text-center">
+						<span class="block text-[var(--color-bg)] font-display text-sm md:text-base font-bold uppercase tracking-wider">Learn</span>
+						<span class="block text-[var(--color-bg)] font-display text-sm md:text-base font-bold uppercase tracking-wider">More</span>
+					</div>
 				</div>
-				<div class="flex justify-between mt-2 text-xs text-[var(--muted-foreground)]">
-					<span>{experiences[0]?.year}</span>
-					<span>{experiences[experiences.length - 1]?.year}</span>
+
+				<!-- Orbiting dot -->
+				<div class="absolute inset-0 animate-orbit">
+					<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[var(--color-accent)]"></div>
 				</div>
-			</div>
-		{/if}
-
-		<!-- Horizontal scroll track -->
-		<div class="relative w-full overflow-hidden">
-			{#if isVisible}
-				<div
-					bind:this={trackEl}
-					class="flex gap-6 md:gap-8 px-6 md:px-12 transition-transform duration-100 ease-out"
-					style="transform: translateX(-{translateX}px)"
-					in:fly={{ x: 100, duration: 600, delay: 200 }}
-				>
-					{#each experiences as exp, index}
-						{@const isActive = activeIndex === index}
-						<div
-							class="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[500px] lg:w-[600px] transition-all duration-300"
-							style="opacity: {isActive ? 1 : 0.5}; transform: scale({isActive ? 1 : 0.95});"
-						>
-							<div
-								class="h-full glass rounded-2xl md:rounded-3xl p-5 sm:p-6 md:p-8 relative overflow-hidden transition-all duration-300"
-								style="border: 2px solid {isActive ? exp.color + '50' : 'transparent'}; box-shadow: {isActive ? `0 0 40px ${exp.color}20` : 'none'};"
-							>
-								<!-- Background gradient -->
-								<div
-									class="absolute inset-0 opacity-10"
-									style="background: radial-gradient(circle at top right, {exp.color}, transparent 70%);"
-								></div>
-
-								<div class="relative z-10">
-									<!-- Header -->
-									<div class="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
-										<div
-											class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center text-2xl md:text-3xl shrink-0"
-											style="background: linear-gradient(135deg, {exp.color}40, {exp.color}20);"
-										>
-											{exp.icon}
-										</div>
-										<div class="min-w-0 flex-1">
-											<div class="flex items-center gap-2 flex-wrap mb-1">
-												<span
-													class="px-2 py-0.5 rounded-full text-[10px] md:text-xs font-bold"
-													style="background: {exp.color}20; color: {exp.color};"
-												>
-													{exp.year}
-												</span>
-												<span class="text-[10px] md:text-xs text-[var(--muted-foreground)]"
-													>{exp.period}</span
-												>
-											</div>
-											<h3 class="text-lg sm:text-xl md:text-2xl font-bold leading-tight">
-												{exp.title}
-											</h3>
-											<p class="text-sm md:text-base" style="color: {exp.color};">
-												{exp.company}
-											</p>
-											<p class="text-xs md:text-sm text-[var(--muted-foreground)]">
-												{exp.location}
-											</p>
-										</div>
-									</div>
-
-									<!-- Achievements -->
-									<div class="space-y-2 md:space-y-3 mb-4 md:mb-6">
-										{#each exp.description as item, i}
-											<div
-												class="flex items-start gap-2 md:gap-3 p-2 md:p-3 rounded-lg md:rounded-xl"
-												style="background: {exp.color}08;"
-											>
-												<span
-													class="w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-[10px] md:text-xs font-bold shrink-0"
-													style="background: {exp.color}20; color: {exp.color};"
-												>
-													{i + 1}
-												</span>
-												<span class="text-xs md:text-sm text-[var(--muted-foreground)]">{item}</span>
-											</div>
-										{/each}
-									</div>
-
-									<!-- Tech Stack -->
-									<div class="flex flex-wrap gap-1.5 md:gap-2">
-										{#each exp.technologies as tech}
-											<span
-												class="px-2 py-1 md:px-3 md:py-1.5 rounded-full text-[10px] md:text-xs font-medium"
-												style="background: {exp.color}15; color: {exp.color}; border: 1px solid {exp.color}30;"
-											>
-												{tech}
-											</span>
-										{/each}
-									</div>
-								</div>
-
-								<!-- Decorative element -->
-								<div
-									class="absolute -bottom-20 -right-20 w-40 h-40 rounded-full blur-3xl"
-									style="background: {exp.color}; opacity: 0.1;"
-								></div>
-							</div>
-						</div>
-					{/each}
-				</div>
-			{/if}
+			</a>
 		</div>
 
-		<!-- Navigation dots -->
-		{#if isVisible}
-			<div class="flex justify-center gap-2 mt-8" in:fly={{ y: 10, duration: 400, delay: 300 }}>
-				{#each experiences as exp, i}
-					<button
-						onclick={() => {
-							// Scroll to position that corresponds to this card
-							if (sectionEl) {
-								const targetProgress = i / experiences.length;
-								const sectionRect = sectionEl.getBoundingClientRect();
-								const sectionTop = window.scrollY + sectionRect.top;
-								const sectionHeight = sectionEl.offsetHeight;
-								const viewportHeight = window.innerHeight;
-								const targetScroll = sectionTop + targetProgress * (sectionHeight - viewportHeight);
-								window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-							}
-						}}
-						class="group relative p-1"
-						aria-label="Go to {exp.company}"
-					>
-						<div
-							class="w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300"
-							style="background: {activeIndex === i ? exp.color : 'var(--muted)'}; transform: scale({activeIndex === i ? 1.3 : 1}); box-shadow: {activeIndex === i ? `0 0 12px ${exp.color}` : 'none'};"
-						></div>
-						<!-- Tooltip -->
-						<div
-							class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[var(--card)] border border-[var(--border)] rounded text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-						>
-							{exp.company}
-						</div>
-					</button>
-				{/each}
-			</div>
-		{/if}
+		<!-- Experience Cards -->
+		<div bind:this={timelineEl} class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+			{#each experiences.slice(0, 4) as exp, i}
+				<div
+					class="exp-card group relative p-6 md:p-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-alt)] hover:border-[var(--color-accent)]/50 transition-all duration-500"
+				>
+					<!-- Year badge -->
+					<div class="absolute -top-3 right-6 px-4 py-1 rounded-full text-xs font-mono bg-[var(--color-accent)] text-[var(--color-bg)]">
+						{exp.year}
+					</div>
 
-		<!-- Scroll hint -->
-		{#if isVisible && scrollProgress < 0.1}
-			<div
-				class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-xs text-[var(--muted-foreground)] animate-pulse"
-				in:fly={{ y: 10, duration: 400, delay: 400 }}
+					<!-- Icon -->
+					<div class="w-12 h-12 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] flex items-center justify-center text-2xl mb-4 group-hover:border-[var(--color-accent)] transition-colors">
+						{exp.icon}
+					</div>
+
+					<!-- Content -->
+					<h3 class="font-display text-xl md:text-2xl font-bold text-[var(--color-text)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
+						{exp.title}
+					</h3>
+					<p class="text-sm text-[var(--color-muted)] mb-4">
+						{exp.company} <span class="text-[var(--color-border)]">|</span> {exp.period}
+					</p>
+
+					<!-- Description -->
+					<ul class="space-y-2 mb-6">
+						{#each exp.description.slice(0, 2) as desc}
+							<li class="text-sm text-[var(--color-text-secondary)] flex items-start gap-2">
+								<span class="text-[var(--color-accent)] mt-1">+</span>
+								<span>{desc}</span>
+							</li>
+						{/each}
+					</ul>
+
+					<!-- Technologies -->
+					<div class="flex flex-wrap gap-2">
+						{#each exp.technologies as tech}
+							<span class="px-3 py-1 text-xs rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-muted)] group-hover:border-[var(--color-accent)]/30 group-hover:text-[var(--color-accent)] transition-all">
+								{tech}
+							</span>
+						{/each}
+					</div>
+
+					<!-- Hover glow -->
+					<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+				</div>
+			{/each}
+		</div>
+
+		<!-- View All Link -->
+		<div class="mt-12 text-center">
+			<a
+				href="/about"
+				class="inline-flex items-center gap-3 text-sm text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors group"
+				data-cursor="pointer"
 			>
-				<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+				<span class="uppercase tracking-[0.15em]">View Full Experience</span>
+				<svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
 				</svg>
-				<span>Scroll to explore</span>
-			</div>
-		{/if}
-	</div>
-
-	<!-- Background elements -->
-	<div class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index: -1;">
-		<div
-			class="absolute top-1/4 left-0 w-96 h-96 bg-[var(--accent)] opacity-5 rounded-full blur-[150px]"
-		></div>
-		<div
-			class="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-purple-500 opacity-5 rounded-full blur-[180px]"
-		></div>
+			</a>
+		</div>
 	</div>
 </section>
+
+<style>
+	@keyframes orbit {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.animate-orbit {
+		animation: orbit 8s linear infinite;
+	}
+
+	.exp-card {
+		will-change: transform;
+	}
+</style>
