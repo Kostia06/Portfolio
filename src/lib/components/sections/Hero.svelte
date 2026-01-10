@@ -43,7 +43,7 @@
 	});
 
 	function animateEntrance() {
-		if (!browser || $isMobile) {
+		if (!browser) {
 			if (contentEl) gsap.set(contentEl, { opacity: 1 });
 			if (scrollIndicatorEl) gsap.set(scrollIndicatorEl, { opacity: 1, y: 0 });
 			if (floatingShapesEl) gsap.set(floatingShapesEl, { opacity: 1 });
@@ -51,6 +51,43 @@
 			return;
 		}
 
+		// Simpler, lighter animation for mobile
+		if ($isMobile) {
+			const tl = gsap.timeline({
+				onComplete: () => {
+					animationComplete.set(true);
+				}
+			});
+
+			// Fade in and slide up content
+			tl.fromTo(contentEl,
+				{ opacity: 0, y: 40 },
+				{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+			);
+
+			// Fade in floating shapes
+			if (floatingShapesEl) {
+				tl.to(floatingShapesEl, {
+					opacity: 1,
+					duration: 0.6,
+					ease: 'power2.out'
+				}, '-=0.5');
+			}
+
+			// Fade in scroll indicator
+			if (scrollIndicatorEl) {
+				tl.to(scrollIndicatorEl, {
+					y: 0,
+					opacity: 1,
+					duration: 0.5,
+					ease: 'power2.out'
+				}, '-=0.3');
+			}
+
+			return;
+		}
+
+		// Full animation for desktop
 		const tl = gsap.timeline({
 			onComplete: () => {
 				animationComplete.set(true);
