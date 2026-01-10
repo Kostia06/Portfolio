@@ -72,21 +72,7 @@
 			});
 		}
 
-		// Social links - simple fade in without reverse
-		if (linksEl && !$isMobile) {
-			gsap.from(linksEl.querySelectorAll('.social-link'), {
-				y: 20,
-				opacity: 0,
-				duration: 0.5,
-				ease: 'power2.out',
-				stagger: 0.1,
-				scrollTrigger: {
-					trigger: linksEl,
-					start: 'top 90%',
-					toggleActions: 'play none none none'
-				}
-			});
-		}
+		// Social links - no entrance animation, just CSS hover
 
 		// Orbiting elements animation
 		if (orbitsEl && !$isMobile) {
