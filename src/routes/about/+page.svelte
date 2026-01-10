@@ -22,7 +22,7 @@
 		{ value: 1, suffix: 'st', label: 'Hackathon Win' }
 	];
 
-	let animatedStats = $state(stats.map(() => 0));
+	let animatedStats = $state(stats.map((s) => s.value));
 
 	const skills = [
 		{ name: 'JavaScript', level: 95 },
@@ -95,34 +95,21 @@
 			}, 0.8);
 		}
 
-		// Stats with counter animation on scroll
+		// Stats animation on scroll
 		if (statsEl) {
 			const statItems = statsEl.querySelectorAll('.stat-item');
 
 			gsap.from(statItems, {
-				y: 60,
+				y: 40,
 				opacity: 0,
-				scale: 0.9,
-				duration: 0.8,
-				ease: 'back.out(1.7)',
-				stagger: 0.15,
+				scale: 0.95,
+				duration: 0.6,
+				ease: 'power3.out',
+				stagger: 0.1,
 				scrollTrigger: {
 					trigger: statsEl,
-					start: 'top 80%',
-					toggleActions: 'play none none reverse',
-					onEnter: () => {
-						stats.forEach((stat, i) => {
-							gsap.to({ val: 0 }, {
-								val: stat.value,
-								duration: 1.5,
-								delay: i * 0.2,
-								ease: 'power2.out',
-								onUpdate: function() {
-									animatedStats[i] = Math.floor(this.targets()[0].val);
-								}
-							});
-						});
-					}
+					start: 'top 85%',
+					toggleActions: 'play none none none'
 				}
 			});
 		}

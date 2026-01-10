@@ -246,7 +246,7 @@
 						data-cursor="pointer"
 					>
 						<!-- Hover background -->
-						<div class="absolute inset-0 bg-[var(--color-accent)] translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+						<div class="absolute inset-0 bg-[var(--color-accent)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none"></div>
 
 						<span class="relative text-xs font-mono text-[var(--color-accent)] group-hover:text-[var(--color-bg)] transition-colors">{link.icon}</span>
 						<span class="relative text-sm md:text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-bg)] transition-colors">
