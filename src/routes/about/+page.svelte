@@ -18,7 +18,7 @@
 
 	const stats = [
 		{ value: 5, suffix: '+', label: 'Production Apps' },
-		{ value: 35, suffix: '+', label: 'Students Mentored' },
+		{ value: 10, suffix: '+', label: 'Students Mentored' },
 		{ value: 1, suffix: 'st', label: 'Hackathon Win' }
 	];
 
