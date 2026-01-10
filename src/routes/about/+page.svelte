@@ -297,13 +297,13 @@
 
 				<!-- Stats Grid -->
 				<div class="lg:col-span-6">
-					<div bind:this={statsEl} class="grid grid-cols-3 gap-3 md:gap-4">
+					<div bind:this={statsEl} class="grid grid-cols-3 gap-4 md:gap-6">
 						{#each stats as stat, i}
-							<div class="stat-item relative p-3 md:p-4 border border-[var(--color-border)] rounded-lg bg-[var(--color-bg)] group hover:border-[var(--color-accent)] transition-all duration-300 text-center">
-								<div class="font-display text-2xl md:text-3xl font-bold text-[var(--color-accent)] mb-0.5 tabular-nums">
+							<div class="stat-item relative aspect-square border border-[var(--color-border)] rounded-xl bg-[var(--color-bg)] group hover:border-[var(--color-accent)] transition-all duration-300 flex flex-col items-center justify-center p-4">
+								<div class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--color-accent)] tabular-nums leading-none">
 									{animatedStats[i]}{stat.suffix}
 								</div>
-								<div class="text-[9px] md:text-[10px] text-[var(--color-muted)] uppercase tracking-wider leading-tight">
+								<div class="text-[10px] md:text-xs text-[var(--color-muted)] uppercase tracking-wider mt-2 text-center leading-tight">
 									{stat.label}
 								</div>
 							</div>
