@@ -1,388 +1,298 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fly, fade, scale } from 'svelte/transition';
+	import { browser } from '$app/environment';
+	import gsap from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import { isMobile } from '$stores/app';
+	import MagneticButton from '$ui/MagneticButton.svelte';
 
-	interface Message {
-		id: number;
-		type: 'received' | 'sent';
-		text: string;
-		time: string;
-	}
+	let sectionEl: HTMLElement;
+	let titleEl: HTMLElement;
+	let emailEl: HTMLElement;
+	let linksEl: HTMLElement;
+	let orbitsEl: HTMLElement;
 
-	const MAX_MESSAGES = 8;
+	const email = 'Ilnkostia@gmail.com';
 
-	const initialMessages: Message[] = [
-		{
-			id: 1,
-			type: 'received',
-			text: "Hey! What's your name?",
-			time: 'Now'
-		}
+	const socialLinks = [
+		{ href: 'https://github.com/Kostia06', label: 'GitHub', icon: 'GH' },
+		{ href: 'https://linkedin.com/in/kostiantyn-ilnytskyi', label: 'LinkedIn', icon: 'LI' }
 	];
 
-	let sectionEl: HTMLElement | undefined = $state();
-	let messagesEndEl: HTMLDivElement | undefined = $state();
-	let messages = $state<Message[]>(initialMessages);
-	let inputValue = $state('');
-	let isSending = $state(false);
-	let userName = $state('');
-	let step = $state<'name' | 'chat' | 'done'>('name');
-	let messageCount = $state(0);
-	let isInView = $state(false);
+	let copiedEmail = $state(false);
+	let mousePos = $state({ x: 0, y: 0 });
 
-	let copiedIndex = $state<number | null>(null);
-
-	const contacts = [
-		{ href: 'mailto:Ilnkostia@gmail.com', icon: '✉️', label: 'Email', value: 'Ilnkostia@gmail.com', copyable: true },
-		{ href: 'tel:+13683990601', icon: '📱', label: 'Phone', value: '+1 (368) 399-0601', copyable: true },
-		{
-			href: 'https://github.com/Kostia06',
-			icon: '🐙',
-			label: 'GitHub',
-			value: '@Kostia06',
-			external: true
-		},
-		{
-			href: 'https://linkedin.com/in/kostiantyn-ilnytskyi',
-			icon: '💼',
-			label: 'LinkedIn',
-			value: 'Kostiantyn Ilnytskyi',
-			external: true
-		}
-	];
-
-	async function handleCopy(text: string, index: number) {
+	async function copyEmail() {
 		try {
-			await navigator.clipboard.writeText(text);
-			copiedIndex = index;
-			setTimeout(() => {
-				copiedIndex = null;
-			}, 2000);
+			await navigator.clipboard.writeText(email);
+			copiedEmail = true;
+			setTimeout(() => (copiedEmail = false), 2000);
 		} catch (err) {
 			console.error('Failed to copy:', err);
 		}
 	}
 
 	onMount(() => {
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					isInView = entry.isIntersecting;
-				});
-			},
-			{ rootMargin: '-20%' }
-		);
+		if (!browser) return;
 
-		if (sectionEl) observer.observe(sectionEl);
+		gsap.registerPlugin(ScrollTrigger);
 
-		return () => observer.disconnect();
-	});
+		// Title animation with character stagger
+		if (titleEl && !$isMobile) {
+			const lines = titleEl.querySelectorAll('.title-line');
 
-	function scrollToBottom() {
-		messagesEndEl?.scrollIntoView({ behavior: 'smooth' });
-	}
-
-	$effect(() => {
-		if (messages.length) scrollToBottom();
-	});
-
-	function getCurrentTime() {
-		return new Date().toLocaleTimeString('en-US', {
-			hour: 'numeric',
-			minute: '2-digit'
-		});
-	}
-
-	function addMessage(text: string, type: 'sent' | 'received') {
-		const newMessage: Message = {
-			id: Date.now(),
-			type,
-			text,
-			time: getCurrentTime()
-		};
-		messages = [...messages, newMessage];
-	}
-
-	async function handleSubmit(e: SubmitEvent) {
-		e.preventDefault();
-		if (!inputValue.trim() || step === 'done' || isSending) return;
-
-		const userInput = inputValue.trim();
-		inputValue = '';
-		addMessage(userInput, 'sent');
-		isSending = true;
-
-		const newCount = messageCount + 1;
-		messageCount = newCount;
-
-		try {
-			const conversationHistory = messages
-				.filter((m) => m.id !== 1)
-				.map((m) => ({ role: m.type, text: m.text }));
-
-			// For first message, tell AI this is their name
-			const messageToSend = step === 'name' ? `My name is ${userInput}` : userInput;
-
-			const response = await fetch('/api/chat', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ message: messageToSend, conversationHistory })
+			gsap.from(lines, {
+				y: 100,
+				opacity: 0,
+				rotateX: -40,
+				duration: 1,
+				ease: 'power4.out',
+				stagger: 0.15,
+				scrollTrigger: {
+					trigger: titleEl,
+					start: 'top 80%',
+					toggleActions: 'play none none reverse'
+				}
 			});
-
-			const data = await response.json();
-			addMessage(data.reply, 'received');
-
-			if (step === 'name') {
-				userName = userInput;
-				step = 'chat';
-			}
-
-			// Check if limit reached
-			if (newCount >= MAX_MESSAGES) {
-				await new Promise((resolve) => setTimeout(resolve, 800));
-				addMessage("That's all for now! For longer chats, email me:", 'received');
-				step = 'done';
-			}
-		} catch {
-			addMessage('Oops! Email me instead: Ilnkostia@gmail.com', 'received');
 		}
 
-		isSending = false;
-	}
+		// Email reveal with scale
+		if (emailEl && !$isMobile) {
+			gsap.from(emailEl, {
+				y: 80,
+				opacity: 0,
+				scale: 0.95,
+				duration: 1,
+				ease: 'power3.out',
+				scrollTrigger: {
+					trigger: emailEl,
+					start: 'top 80%',
+					toggleActions: 'play none none reverse'
+				}
+			});
+		}
 
-	function getPlaceholder() {
-		if (step === 'name') return 'Enter your name...';
-		if (step === 'done') return 'Chat limit reached';
-		return `Message (${MAX_MESSAGES - messageCount} left)...`;
-	}
+		// Social links with bounce
+		if (linksEl && !$isMobile) {
+			gsap.from(linksEl.querySelectorAll('.social-link'), {
+				y: 40,
+				opacity: 0,
+				scale: 0.9,
+				duration: 0.6,
+				ease: 'back.out(1.7)',
+				stagger: 0.15,
+				scrollTrigger: {
+					trigger: linksEl,
+					start: 'top 85%',
+					toggleActions: 'play none none reverse'
+				}
+			});
+		}
+
+		// Orbiting elements animation
+		if (orbitsEl && !$isMobile) {
+			const orbits = orbitsEl.querySelectorAll('.orbit');
+			orbits.forEach((orbit, i) => {
+				gsap.to(orbit, {
+					rotation: 360,
+					duration: 20 + i * 10,
+					ease: 'none',
+					repeat: -1,
+					transformOrigin: 'center center'
+				});
+			});
+		}
+
+		// Parallax mouse movement for decorations
+		const handleMouseMove = (e: MouseEvent) => {
+			if ($isMobile) return;
+			mousePos = {
+				x: (e.clientX / window.innerWidth - 0.5) * 30,
+				y: (e.clientY / window.innerHeight - 0.5) * 30
+			};
+		};
+
+		window.addEventListener('mousemove', handleMouseMove);
+
+		return () => {
+			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			window.removeEventListener('mousemove', handleMouseMove);
+		};
+	});
 </script>
 
 <section
 	bind:this={sectionEl}
 	id="contact"
-	class="relative min-h-screen py-24 md:py-32 px-4 md:px-6 overflow-hidden"
-	style="background: var(--section-contact);"
+	class="section-lg relative overflow-hidden"
+	style="background: var(--color-bg);"
 >
-	<div class="max-w-5xl mx-auto">
-		<!-- Section Header -->
-		{#if isInView}
-			<div
-				class="text-center mb-12 md:mb-16"
-				in:fly={{ y: 30, duration: 600, easing: (t) => t * (2 - t) }}
-			>
-				<span class="text-[var(--accent)] font-mono text-sm mb-4 block"> Get In Touch </span>
-				<h2 class="text-4xl md:text-6xl lg:text-7xl font-bold">
-					Let's <span class="gradient-text">Connect</span>
-				</h2>
-				<p class="mt-4 text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto">
-					Chat with me or reach out directly.
-				</p>
+	<!-- Animated background -->
+	<div class="absolute inset-0 pointer-events-none">
+		<!-- Large background text -->
+		<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.02]">
+			<span class="font-display text-[50vw] font-bold leading-none text-[var(--color-text)]">
+				HI
+			</span>
+		</div>
+
+		<!-- Orbiting rings -->
+		<div bind:this={orbitsEl} class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+			<div class="orbit absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] -translate-x-1/2 -translate-y-1/2 border border-[var(--color-border)] rounded-full opacity-20">
+				<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[var(--color-accent)]"></div>
 			</div>
-		{/if}
-
-		<!-- iMessage Container -->
-		{#if isInView}
-			<div
-				class="glass rounded-3xl overflow-hidden max-w-3xl mx-auto"
-				in:fly={{ y: 50, duration: 600, delay: 150, easing: (t) => t * (2 - t) }}
-			>
-				<!-- iMessage Header -->
-				<div
-					class="bg-[var(--muted)] px-6 py-4 flex items-center gap-4 border-b border-[var(--border)]"
-				>
-					<div
-						class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent-secondary)] flex items-center justify-center text-xl font-bold"
-					>
-						K
-					</div>
-					<div class="flex-1">
-						<h3 class="font-semibold text-lg">Kos</h3>
-						<p class="text-xs text-[var(--muted-foreground)]">
-							{step === 'chat' ? 'AI-powered replies' : step === 'done' ? 'Chat ended' : 'Available'}
-						</p>
-					</div>
-					<div class="flex items-center gap-2">
-						<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-						<span class="text-xs text-green-500">Online</span>
-					</div>
-				</div>
-
-				<!-- Messages Container -->
-				<div class="h-[320px] overflow-y-auto p-6 space-y-4">
-					{#each messages as message (message.id)}
-						<div
-							class="flex {message.type === 'sent' ? 'justify-end' : 'justify-start'}"
-							in:fly={{ y: 20, duration: 300 }}
-						>
-							<div
-								class="max-w-[85%] {message.type === 'sent'
-									? 'bg-[var(--accent)] rounded-2xl rounded-br-md'
-									: 'bg-[var(--muted)] rounded-2xl rounded-bl-md'} px-5 py-3"
-							>
-								<p class="text-sm md:text-base leading-relaxed">{message.text}</p>
-								<p
-									class="text-[10px] mt-1.5 {message.type === 'sent'
-										? 'text-white/60'
-										: 'text-[var(--muted-foreground)]'}"
-								>
-									{message.time}
-								</p>
-							</div>
-						</div>
-					{/each}
-
-					<!-- Email link button -->
-					{#if step === 'done'}
-						<div class="flex justify-start" in:fly={{ y: 10, duration: 300 }}>
-							<a
-								href="mailto:Ilnkostia@gmail.com"
-								class="inline-flex items-center gap-2 bg-[var(--accent)] hover:bg-[var(--accent-secondary)] text-white rounded-full px-5 py-3 text-sm font-medium transition-all"
-							>
-								<svg
-									class="w-4 h-4"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-									stroke-width="2"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-									/>
-								</svg>
-								Ilnkostia@gmail.com
-							</a>
-						</div>
-					{/if}
-
-					<!-- Typing indicator -->
-					{#if isSending}
-						<div class="flex justify-start" in:fly={{ y: 10, duration: 200 }}>
-							<div class="bg-[var(--muted)] rounded-2xl rounded-bl-md px-5 py-3">
-								<div class="flex gap-1.5">
-									<div class="w-2 h-2 rounded-full bg-[var(--muted-foreground)] animate-bounce"></div>
-									<div
-										class="w-2 h-2 rounded-full bg-[var(--muted-foreground)] animate-bounce"
-										style="animation-delay: 0.2s;"
-									></div>
-									<div
-										class="w-2 h-2 rounded-full bg-[var(--muted-foreground)] animate-bounce"
-										style="animation-delay: 0.4s;"
-									></div>
-								</div>
-							</div>
-						</div>
-					{/if}
-					<div bind:this={messagesEndEl}></div>
-				</div>
-
-				<!-- Input Area -->
-				<form
-					onsubmit={handleSubmit}
-					class="p-4 md:p-5 border-t border-[var(--border)] flex gap-3 items-center"
-				>
-					<input
-						type="text"
-						bind:value={inputValue}
-						placeholder={getPlaceholder()}
-						disabled={step === 'done'}
-						class="flex-1 bg-[var(--muted)] rounded-full px-6 py-3.5 text-base outline-none focus:ring-2 focus:ring-[var(--accent)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-						data-cursor="pointer"
-					/>
-					<button
-						type="submit"
-						disabled={step === 'done' || !inputValue.trim() || isSending}
-						class="w-12 h-12 rounded-full bg-[var(--accent)] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:bg-[var(--accent-secondary)] active:scale-95"
-						data-cursor="pointer"
-						aria-label="Send message"
-					>
-						<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-							/>
-						</svg>
-					</button>
-				</form>
+			<div class="orbit absolute w-[450px] h-[450px] md:w-[700px] md:h-[700px] -translate-x-1/2 -translate-y-1/2 border border-[var(--color-border)] rounded-full opacity-10">
+				<div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 rounded-full bg-[var(--color-accent)] opacity-50"></div>
 			</div>
-		{/if}
+		</div>
 
-		<!-- Direct Contact Options -->
-		{#if isInView}
-			<div
-				class="mt-10 md:mt-16 text-center px-4"
-				in:fly={{ y: 30, duration: 600, delay: 300, easing: (t) => t * (2 - t) }}
-			>
-				<p class="text-[var(--muted-foreground)] mb-6 md:mb-8 text-base md:text-lg">
-					Or reach out directly:
-				</p>
-				<div class="flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-6">
-					{#each contacts as contact, i}
-						<div
-							class="relative flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 glass rounded-xl md:rounded-2xl hover:border-[var(--accent)] transition-all duration-300 group"
-							in:fly={{ y: 20, duration: 500, delay: 400 + i * 80 }}
-						>
-							<a
-								href={contact.href}
-								target={contact.external ? '_blank' : undefined}
-								rel={contact.external ? 'noopener noreferrer' : undefined}
-								class="flex items-center gap-3"
-								data-cursor="pointer"
-							>
-								<span class="text-xl md:text-2xl">{contact.icon}</span>
-								<div class="text-left">
-									<div class="text-[10px] md:text-xs text-[var(--muted-foreground)]">
-										{contact.label}
-									</div>
-									<div
-										class="text-sm md:text-base font-medium group-hover:text-[var(--accent)] transition-colors"
-									>
-										{contact.value}
-									</div>
-								</div>
-							</a>
-							{#if contact.copyable}
-								<button
-									onclick={(e) => { e.stopPropagation(); handleCopy(contact.value, i); }}
-									class="ml-2 p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
-									aria-label="Copy {contact.label}"
-									data-cursor="pointer"
-								>
-									{#if copiedIndex === i}
-										<svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-											<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-										</svg>
-									{:else}
-										<svg class="w-4 h-4 text-[var(--muted-foreground)] group-hover:text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-											<path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-										</svg>
-									{/if}
-								</button>
-							{/if}
-							<!-- Copied tooltip -->
-							{#if copiedIndex === i}
-								<div
-									class="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 bg-green-500 text-white text-xs rounded-full"
-									in:fly={{ y: 5, duration: 200 }}
-									out:fade={{ duration: 150 }}
-								>
-									Copied!
-								</div>
-							{/if}
-						</div>
-					{/each}
-				</div>
-			</div>
-		{/if}
-	</div>
-
-	<!-- Background decoration -->
-	<div class="absolute inset-0 pointer-events-none overflow-hidden">
+		<!-- Floating shapes with parallax -->
 		<div
-			class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[var(--accent)] opacity-5 rounded-full blur-[200px]"
+			class="absolute top-[15%] left-[10%] w-24 h-24 border border-[var(--color-accent)] opacity-20 rotate-12 transition-transform duration-300"
+			style="transform: translate({mousePos.x * 0.3}px, {mousePos.y * 0.3}px) rotate(12deg);"
+		></div>
+		<div
+			class="absolute bottom-[20%] right-[15%] w-16 h-16 rounded-full border-2 border-[var(--color-border)] opacity-30 transition-transform duration-300"
+			style="transform: translate({mousePos.x * -0.2}px, {mousePos.y * -0.2}px);"
+		></div>
+		<div
+			class="absolute top-[40%] right-[8%] w-4 h-4 rounded-full bg-[var(--color-accent)] opacity-60 transition-transform duration-300"
+			style="transform: translate({mousePos.x * 0.5}px, {mousePos.y * 0.5}px);"
 		></div>
 	</div>
+
+	<div class="container relative z-10">
+		<div class="max-w-4xl mx-auto">
+			<!-- Section Header -->
+			<div bind:this={titleEl} class="mb-12 md:mb-16 text-center perspective-1000">
+				<div class="overflow-hidden">
+					<span class="title-line block text-xs md:text-sm uppercase tracking-[0.2em] text-[var(--color-accent)] mb-6">
+						/ Get in Touch
+					</span>
+				</div>
+				<div class="overflow-hidden">
+					<h2 class="title-line font-display text-[14vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.9] tracking-tighter">
+						Let's Work
+					</h2>
+				</div>
+				<div class="overflow-hidden">
+					<h2 class="title-line font-display text-[14vw] md:text-[10vw] lg:text-[8vw] font-bold leading-[0.9] tracking-tighter text-[var(--color-muted)]">
+						Together
+					</h2>
+				</div>
+			</div>
+
+			<!-- Email Link -->
+			<div bind:this={emailEl} class="mb-12 md:mb-16 text-center">
+				<p class="text-[var(--color-muted)] mb-6 md:mb-8 text-base md:text-lg max-w-md mx-auto">
+					Have a project in mind? Let's create something amazing together.
+				</p>
+
+				<MagneticButton strength={0.2}>
+					<a
+						href="mailto:{email}"
+						class="group inline-flex items-center gap-3 md:gap-4 text-xl md:text-3xl lg:text-4xl font-display font-bold text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors relative"
+						data-cursor="pointer"
+						data-cursor-text="Email"
+					>
+						<span class="relative overflow-hidden">
+							<span class="inline-block transition-transform duration-300 group-hover:-translate-y-full">
+								{email}
+							</span>
+							<span class="absolute top-full left-0 inline-block transition-transform duration-300 group-hover:-translate-y-full text-[var(--color-accent)]">
+								{email}
+							</span>
+						</span>
+						<svg
+							class="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:translate-x-2 group-hover:-translate-y-2"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="1.5"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+						</svg>
+					</a>
+				</MagneticButton>
+
+				<!-- Copy button -->
+				<button
+					onclick={copyEmail}
+					class="mt-4 md:mt-6 inline-flex items-center gap-2 text-xs md:text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-all px-4 py-2 border border-[var(--color-border)] rounded-full hover:border-[var(--color-accent)] hover:scale-105"
+					data-cursor="pointer"
+				>
+					{#if copiedEmail}
+						<svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+						</svg>
+						<span class="text-green-500">Copied!</span>
+					{:else}
+						<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+						</svg>
+						<span>Copy email</span>
+					{/if}
+				</button>
+			</div>
+
+			<!-- Social Links -->
+			<div bind:this={linksEl} class="flex justify-center gap-4 md:gap-6 mb-12 md:mb-16">
+				{#each socialLinks as link}
+					<a
+						href={link.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="social-link group relative flex items-center gap-3 px-6 py-4 border border-[var(--color-border)] rounded-xl hover:border-[var(--color-accent)] transition-all overflow-hidden"
+						data-cursor="pointer"
+					>
+						<!-- Hover background -->
+						<div class="absolute inset-0 bg-[var(--color-accent)] translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+
+						<span class="relative text-xs font-mono text-[var(--color-accent)] group-hover:text-[var(--color-bg)] transition-colors">{link.icon}</span>
+						<span class="relative text-sm md:text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-bg)] transition-colors">
+							{link.label}
+						</span>
+						<svg
+							class="relative w-4 h-4 text-[var(--color-muted)] group-hover:text-[var(--color-bg)] transition-all group-hover:translate-x-1"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+						</svg>
+					</a>
+				{/each}
+			</div>
+
+			<!-- Availability Status -->
+			<div class="text-center">
+				<div class="inline-flex items-center gap-3 px-6 py-3 bg-[var(--color-bg-alt)] rounded-full border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-colors">
+					<span class="relative flex h-3 w-3">
+						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+						<span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+					</span>
+					<span class="text-xs md:text-sm uppercase tracking-[0.15em] text-[var(--color-text)]">
+						Available for freelance projects
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Grid lines decoration -->
+	<div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent"></div>
+	<div class="hidden md:block absolute bottom-0 left-1/4 w-px h-24 bg-gradient-to-t from-[var(--color-border)] to-transparent"></div>
+	<div class="hidden md:block absolute bottom-0 left-1/2 w-px h-32 bg-gradient-to-t from-[var(--color-accent)] to-transparent opacity-50"></div>
+	<div class="hidden md:block absolute bottom-0 left-3/4 w-px h-24 bg-gradient-to-t from-[var(--color-border)] to-transparent"></div>
 </section>
+
+<style>
+	.perspective-1000 {
+		perspective: 1000px;
+	}
+
+	.orbit {
+		will-change: transform;
+	}
+</style>

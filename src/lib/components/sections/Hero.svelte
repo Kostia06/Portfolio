@@ -1,311 +1,341 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fly } from 'svelte/transition';
-	import { signaturePath } from '$data/signature';
-	import { isMobile, animationComplete } from '$stores/app';
+	import { browser } from '$app/environment';
+	import gsap from 'gsap';
+	import { isMobile, animationComplete, isLoading } from '$stores/app';
 
 	let sectionEl: HTMLElement;
-	let heroContentEl: HTMLElement;
+	let headingLines: HTMLElement[] = [];
+	let subtitleEl: HTMLElement;
+	let scrollIndicatorEl: HTMLElement;
+	let floatingShapesEl: HTMLElement;
+	let contentEl: HTMLElement;
+	let hasAnimated = false;
 
-	let scrollProgress = $state(0);
-	let showScrollIndicator = $state(false);
-	let contentVisible = $state(true);
-
-	// Computed scroll-based values
-	let logoScale = $derived(1 + scrollProgress * ($isMobile ? 2 : 3));
-	let logoBlur = $derived(scrollProgress * 20);
-	let logoOpacity = $derived(scrollProgress < 0.3 ? 1 : scrollProgress < 0.5 ? 0.5 : 0);
-	let contentOpacity = $derived(1 - scrollProgress * 4);
+	const headingText = ['Creative', 'Developer'];
+	const subtitle = 'Based in Calgary, AB';
 
 	onMount(() => {
-		const mobile = $isMobile;
+		if (!browser) return;
 
-		// Disable scrolling on mount
-		document.body.style.overflow = 'hidden';
+		// Hide content initially
+		if (contentEl) {
+			gsap.set(contentEl, { opacity: 0 });
+		}
+		if (scrollIndicatorEl) {
+			gsap.set(scrollIndicatorEl, { opacity: 0, y: 20 });
+		}
+		if (floatingShapesEl) {
+			gsap.set(floatingShapesEl, { opacity: 0 });
+		}
 
-		// Re-enable scrolling after page loader finishes (2.4s + fade)
-		const timer = setTimeout(() => {
-			document.body.style.overflow = '';
-			animationComplete.set(true);
-			showScrollIndicator = true;
-		}, 3100);
-
-		// Scroll handler for parallax
-		const handleScroll = () => {
-			if (!sectionEl) return;
-			const rect = sectionEl.getBoundingClientRect();
-			const progress = Math.max(0, Math.min(1, -rect.top / (sectionEl.offsetHeight - window.innerHeight)));
-			scrollProgress = progress;
-		};
-
-		window.addEventListener('scroll', handleScroll, { passive: true });
+		const unsubscribe = isLoading.subscribe((loading) => {
+			if (!loading && !hasAnimated) {
+				hasAnimated = true;
+				// Small delay to ensure loader is fully gone
+				setTimeout(animateEntrance, 100);
+			}
+		});
 
 		return () => {
-			clearTimeout(timer);
-			document.body.style.overflow = '';
-			window.removeEventListener('scroll', handleScroll);
+			unsubscribe();
 		};
 	});
+
+	function animateEntrance() {
+		if (!browser || $isMobile) {
+			if (contentEl) gsap.set(contentEl, { opacity: 1 });
+			if (scrollIndicatorEl) gsap.set(scrollIndicatorEl, { opacity: 1, y: 0 });
+			if (floatingShapesEl) gsap.set(floatingShapesEl, { opacity: 1 });
+			animationComplete.set(true);
+			return;
+		}
+
+		const tl = gsap.timeline({
+			onComplete: () => {
+				animationComplete.set(true);
+			}
+		});
+
+		// Fade in content container first
+		tl.to(contentEl, {
+			opacity: 1,
+			duration: 0.3,
+			ease: 'power2.out'
+		});
+
+		// Animate each heading line
+		headingLines.forEach((line, i) => {
+			if (!line) return;
+			const chars = line.querySelectorAll('.char');
+			tl.from(
+				chars,
+				{
+					y: 120,
+					opacity: 0,
+					duration: 1,
+					ease: 'power4.out',
+					stagger: 0.03
+				},
+				i * 0.2 + 0.2
+			);
+		});
+
+		// Animate subtitle
+		if (subtitleEl) {
+			tl.from(
+				subtitleEl,
+				{
+					y: 30,
+					opacity: 0,
+					duration: 0.8,
+					ease: 'power3.out'
+				},
+				'-=0.6'
+			);
+		}
+
+		// Animate floating shapes
+		if (floatingShapesEl) {
+			// First fade in the container
+			tl.to(floatingShapesEl, {
+				opacity: 1,
+				duration: 0.5,
+				ease: 'power2.out'
+			}, '-=0.6');
+
+			// Then animate individual shapes
+			const shapes = floatingShapesEl.querySelectorAll('.floating-shape');
+			tl.from(
+				shapes,
+				{
+					scale: 0,
+					duration: 1,
+					stagger: 0.1,
+					ease: 'elastic.out(1, 0.5)'
+				},
+				'-=0.3'
+			);
+		}
+
+		// Animate scroll indicator
+		if (scrollIndicatorEl) {
+			tl.to(
+				scrollIndicatorEl,
+				{
+					y: 0,
+					opacity: 1,
+					duration: 0.6,
+					ease: 'power2.out'
+				},
+				'-=0.3'
+			);
+		}
+	}
+
+	function splitChars(text: string) {
+		return text.split('').map((char) => (char === ' ' ? '\u00A0' : char));
+	}
 </script>
 
 <section
 	bind:this={sectionEl}
 	id="hero"
-	class="relative h-[150vh] overflow-hidden"
-	style="background: var(--section-hero);"
+	class="relative min-h-screen flex flex-col justify-center overflow-hidden px-4 md:px-0"
+	style="background: var(--color-bg);"
 >
-	<!-- 3D Canvas Background - loaded on all devices -->
-	{#await import('./HeroCanvas.svelte') then { default: HeroCanvas }}
-		<div class="absolute inset-0 z-0">
-			<HeroCanvas />
+	<!-- Floating Shapes -->
+	<div bind:this={floatingShapesEl} class="absolute inset-0 pointer-events-none overflow-hidden">
+		<!-- Large accent circle -->
+		<div class="floating-shape absolute top-[10%] right-[5%] md:right-[10%] w-24 h-24 md:w-40 md:h-40 rounded-full border-2 border-[var(--color-accent)] opacity-60"></div>
+
+		<!-- Filled circle -->
+		<div class="floating-shape absolute bottom-[20%] left-[5%] md:left-[8%] w-4 h-4 md:w-6 md:h-6 rounded-full bg-[var(--color-accent)]"></div>
+
+		<!-- Grid pattern -->
+		<div class="floating-shape absolute top-[30%] left-[10%] md:left-[15%] grid grid-cols-3 gap-2 opacity-30">
+			{#each Array(9) as _}
+				<div class="w-2 h-2 rounded-full bg-[var(--color-text)]"></div>
+			{/each}
 		</div>
-	{/await}
 
-	<!-- Gradient Overlays -->
-	<div
-		class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--background)] z-10 pointer-events-none"
-	></div>
-
-	<!-- Sticky Content Container -->
-	<div class="sticky top-0 h-screen overflow-visible">
-		<!-- Logo - centered in the middle of the screen -->
-		<div
-			class="absolute inset-0 flex items-center justify-center pointer-events-none"
-		>
-			<div
-				style="transform: scale({logoScale}); filter: blur({$isMobile ? logoBlur * 0.5 : logoBlur}px); opacity: {logoOpacity};"
-				class="flex items-center justify-center overflow-visible transition-opacity duration-100"
-			>
-				<!-- Signature SVG Container -->
-				<div
-					class="relative"
-					style="width: {$isMobile ? 'min(280px, 70vw)' : 'min(500px, 65vw)'}; height: {$isMobile
-						? 'min(210px, 52vw)'
-						: 'min(375px, 50vw)'};"
-				>
-					<!-- Static Logo (always visible, acts as background) -->
-					<svg
-						viewBox="-20 -20 200 160"
-						class="w-full h-full absolute inset-0 static-logo"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-						style="overflow: visible;"
-					>
-						<!-- Outer glow layer -->
-						<path
-							d={signaturePath}
-							stroke="url(#staticSignatureGradient)"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							fill="none"
-							class="static-glow-outer"
-						/>
-
-						<!-- Inner glow effect -->
-						<path
-							d={signaturePath}
-							stroke="url(#staticSignatureGradient)"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							fill="none"
-							class="static-glow-inner"
-						/>
-
-						<!-- Main signature stroke -->
-						<path
-							d={signaturePath}
-							stroke="url(#staticSignatureGradient)"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							fill="none"
-							class="static-main-stroke"
-						/>
-
-						<defs>
-							<linearGradient id="staticSignatureGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-								<stop offset="0%" stop-color="#6366f1" />
-								<stop offset="50%" stop-color="#818cf8" />
-								<stop offset="100%" stop-color="#c084fc" />
-							</linearGradient>
-						</defs>
-					</svg>
-
-					</div>
+		<!-- Cross shape -->
+		<div class="floating-shape absolute bottom-[35%] right-[8%] md:right-[20%] opacity-40">
+			<div class="relative w-8 h-8 md:w-12 md:h-12">
+				<div class="absolute top-1/2 left-0 w-full h-[2px] bg-[var(--color-text)] -translate-y-1/2"></div>
+				<div class="absolute left-1/2 top-0 w-[2px] h-full bg-[var(--color-text)] -translate-x-1/2"></div>
 			</div>
 		</div>
 
-		<!-- Content below logo -->
-		<div
-			bind:this={heroContentEl}
-			class="hero-content absolute inset-0 flex flex-col items-center justify-end z-20 pb-[80px] md:pb-[140px] pointer-events-auto"
-			style="opacity: {contentOpacity};"
-		>
-			<div class="text-xs md:text-base text-[var(--muted-foreground)] text-center px-4">
-				<span class="inline-flex items-center gap-2">
-					<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-					Calgary, AB
+		<!-- Rotating square -->
+		<div class="floating-shape absolute top-[60%] right-[15%] w-16 h-16 md:w-24 md:h-24 border border-[var(--color-border)] rotate-45 opacity-40"></div>
+
+		<!-- Arc -->
+		<div class="floating-shape absolute top-[15%] left-[30%] w-32 h-32 md:w-48 md:h-48 border-t-2 border-r-2 border-[var(--color-border)] rounded-tr-full opacity-30"></div>
+	</div>
+
+	<!-- Main Content -->
+	<div bind:this={contentEl} class="container relative z-10">
+		<div class="max-w-6xl">
+			<!-- Small intro -->
+			<div class="mb-6 md:mb-8 flex items-center gap-3">
+				<span class="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse"></span>
+				<span class="text-xs md:text-sm uppercase tracking-[0.2em] text-[var(--color-muted)]">
+					Available for work
 				</span>
-				<span class="mx-2 opacity-50 hidden sm:inline">•</span>
-				<br class="sm:hidden" />
-				<span>University of Calgary</span>
-				<span class="mx-2 opacity-50 hidden sm:inline">•</span>
-				<br class="sm:hidden" />
-				<span>Computer Science</span>
 			</div>
 
-			<div class="mt-6 md:mt-8 flex flex-row gap-2 md:gap-4 justify-center px-4">
+			<!-- Heading with staggered character animation -->
+			<h1 class="mb-6 md:mb-8">
+				{#each headingText as line, lineIndex}
+					<div
+						bind:this={headingLines[lineIndex]}
+						class="overflow-hidden"
+					>
+						<span class="inline-block font-display text-[15vw] md:text-[12vw] lg:text-[10vw] font-bold leading-[0.9] tracking-tighter">
+							{#each splitChars(line) as char, i}
+								<span
+									class="char inline-block hover:text-[var(--color-accent)] transition-colors duration-200"
+									style={lineIndex === 1 && i === 0 ? 'color: var(--color-accent);' : ''}
+								>{char}</span>
+							{/each}
+						</span>
+					</div>
+				{/each}
+			</h1>
+
+			<!-- Subtitle with line -->
+			<div
+				bind:this={subtitleEl}
+				class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8"
+			>
+				<div class="flex items-center gap-4">
+					<span class="w-8 md:w-16 h-[1px] bg-[var(--color-accent)]"></span>
+					<p class="text-sm md:text-base uppercase tracking-[0.15em] text-[var(--color-text)]">
+						{subtitle}
+					</p>
+				</div>
+				<p class="text-sm md:text-base text-[var(--color-muted)] max-w-md">
+					I craft performant web experiences with modern technologies. Let's build something great together.
+				</p>
+			</div>
+
+			<!-- CTA Buttons -->
+			<div class="flex flex-col sm:flex-row gap-4 mt-10 md:mt-14">
 				<a
-					href="#projects"
-					class="group px-4 py-2.5 md:px-10 md:py-5 bg-[var(--accent)] hover:bg-[var(--accent-secondary)] text-white rounded-full font-medium text-sm md:text-lg transition-all duration-300 hover:scale-105 glow text-center btn-shine relative overflow-hidden"
+					href="#work"
+					class="btn-primary"
 					data-cursor="pointer"
 					data-cursor-text="View"
 				>
-					<span class="relative z-10">View Work</span>
+					<span>View Work</span>
+					<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+					</svg>
 				</a>
 				<a
 					href="#contact"
-					class="group px-4 py-2.5 md:px-10 md:py-5 border border-[var(--border)] hover:border-[var(--accent)] rounded-full font-medium text-sm md:text-lg transition-all duration-300 hover:scale-105 glass text-center relative overflow-hidden hover:shadow-[0_0_30px_rgba(99,102,241,0.3)]"
+					class="btn-outline"
 					data-cursor="pointer"
 					data-cursor-text="Contact"
 				>
-					<span class="relative z-10">Contact</span>
+					Get in Touch
 				</a>
 			</div>
 
-			<!-- Social Links -->
-			<div class="mt-8 md:mt-12 flex items-center justify-center gap-4 md:gap-6">
-				<a
-					href="https://github.com/Kostia06"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="group p-2 md:p-3 rounded-full glass hover:bg-[var(--accent)]/20 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]"
-					data-cursor="pointer"
-					aria-label="GitHub"
-				>
-					<svg class="w-5 h-5 md:w-6 md:h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
-						<path
-							d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-						/>
-					</svg>
-				</a>
-				<a
-					href="https://linkedin.com/in/kostiantyn-ilnytskyi"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="group p-2 md:p-3 rounded-full glass hover:bg-[var(--accent)]/20 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]"
-					data-cursor="pointer"
-					aria-label="LinkedIn"
-				>
-					<svg class="w-5 h-5 md:w-6 md:h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
-						<path
-							d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-						/>
-					</svg>
-				</a>
-				<a
-					href="mailto:Ilnkostia@gmail.com"
-					class="group p-2 md:p-3 rounded-full glass hover:bg-[var(--accent)]/20 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]"
-					data-cursor="pointer"
-					aria-label="Email"
-				>
-					<svg
-						class="w-5 h-5 md:w-6 md:h-6 transition-transform group-hover:rotate-12"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						stroke-width="2"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-						/>
-					</svg>
-				</a>
-			</div>
-		</div>
-
-		<!-- Scroll Indicator -->
-		{#if showScrollIndicator}
-			<div
-				class="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2"
-				style="opacity: {contentOpacity};"
-				in:fly={{ y: -10, duration: 500 }}
-			>
-				<span class="text-[10px] md:text-xs text-[var(--muted-foreground)] uppercase tracking-widest">
-					Scroll
-				</span>
-				<div
-					class="w-5 h-8 md:w-6 md:h-10 rounded-full border-2 border-[var(--muted-foreground)] flex items-start justify-center p-1"
-				>
-					<div class="w-1 h-2 md:w-1.5 md:h-2.5 rounded-full bg-[var(--accent)] animate-bounce"></div>
+			<!-- Quick stats -->
+			<div class="flex flex-wrap gap-8 md:gap-12 mt-14 md:mt-20 pt-8 border-t border-[var(--color-border)]">
+				<div>
+					<span class="block font-display text-3xl md:text-4xl font-bold text-[var(--color-text)]">5+</span>
+					<span class="text-xs uppercase tracking-wider text-[var(--color-muted)]">Projects</span>
+				</div>
+				<div>
+					<span class="block font-display text-3xl md:text-4xl font-bold text-[var(--color-text)]">35+</span>
+					<span class="text-xs uppercase tracking-wider text-[var(--color-muted)]">Students Mentored</span>
+				</div>
+				<div>
+					<span class="block font-display text-3xl md:text-4xl font-bold text-[var(--color-accent)]">1st</span>
+					<span class="text-xs uppercase tracking-wider text-[var(--color-muted)]">Hackathon Wins</span>
 				</div>
 			</div>
-		{/if}
+		</div>
 	</div>
 
-	<!-- Background Particles (CSS fallback) -->
-	<div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-		{#each Array($isMobile ? 10 : 15) as _, i}
-			<div
-				class="absolute w-1 h-1 rounded-full bg-[var(--accent)] opacity-20"
-				style="left: {Math.random() * 100}%; top: {Math.random() * 100}%; animation: float {10 +
-					Math.random() * 20}s linear infinite; animation-delay: {Math.random() * 10}s;"
-			></div>
-		{/each}
+	<!-- Scroll Indicator -->
+	<div
+		bind:this={scrollIndicatorEl}
+		class="absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+	>
+		<span class="text-[10px] md:text-xs uppercase tracking-[0.2em] text-[var(--color-muted)]">
+			Scroll
+		</span>
+		<div class="w-[1px] h-10 md:h-12 bg-[var(--color-border)] relative overflow-hidden">
+			<div class="absolute top-0 left-0 w-full h-full bg-[var(--color-accent)] scroll-indicator origin-top"></div>
+		</div>
 	</div>
+
+	<!-- Corner frame -->
+	<div class="hidden md:block absolute top-8 right-8 w-20 h-20 border-t-2 border-r-2 border-[var(--color-border)] opacity-50"></div>
+	<div class="hidden md:block absolute bottom-8 left-8 w-20 h-20 border-b-2 border-l-2 border-[var(--color-border)] opacity-50"></div>
+
+	<!-- Bottom line -->
+	<div class="absolute bottom-0 left-0 right-0 h-[1px] bg-[var(--color-border)]"></div>
 </section>
 
 <style>
-	/* Static logo - always visible, uses CSS for responsive sizing */
-	.static-glow-outer {
-		stroke-width: 24px;
-		opacity: 0.15;
-		filter: blur(20px);
-	}
-
-	.static-glow-inner {
-		stroke-width: 14px;
-		opacity: 0.4;
-		filter: blur(10px);
-	}
-
-	.static-main-stroke {
-		stroke-width: 4px;
-	}
-
-	/* Mobile styles for static logo */
-	@media (max-width: 768px) {
-		.static-glow-outer {
-			stroke-width: 16px;
-			opacity: 0.12;
-			filter: blur(12px);
-		}
-
-		.static-glow-inner {
-			stroke-width: 10px;
-			opacity: 0.3;
-			filter: blur(6px);
-		}
-
-		.static-main-stroke {
-			stroke-width: 3px;
-		}
-	}
-
-	/* Floating particle animation */
-	@keyframes float {
-		0%, 100% {
-			transform: translateY(0) translateX(0);
-		}
-		25% {
-			transform: translateY(-20px) translateX(10px);
+	@keyframes scroll-line {
+		0% {
+			transform: scaleY(0);
+			transform-origin: top;
 		}
 		50% {
-			transform: translateY(-10px) translateX(-10px);
+			transform: scaleY(1);
+			transform-origin: top;
 		}
-		75% {
-			transform: translateY(-30px) translateX(5px);
+		50.1% {
+			transform: scaleY(1);
+			transform-origin: bottom;
 		}
+		100% {
+			transform: scaleY(0);
+			transform-origin: bottom;
+		}
+	}
+
+	.scroll-indicator {
+		animation: scroll-line 2s ease-in-out infinite;
+	}
+
+	@keyframes float {
+		0%, 100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+
+	.floating-shape {
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.floating-shape:nth-child(2) {
+		animation-delay: -1s;
+	}
+
+	.floating-shape:nth-child(3) {
+		animation-delay: -2s;
+	}
+
+	.floating-shape:nth-child(4) {
+		animation-delay: -3s;
+	}
+
+	.floating-shape:nth-child(5) {
+		animation-delay: -4s;
+	}
+
+	.floating-shape:nth-child(6) {
+		animation-delay: -5s;
 	}
 </style>

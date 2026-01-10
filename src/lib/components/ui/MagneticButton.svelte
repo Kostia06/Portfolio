@@ -7,9 +7,10 @@
 		class?: string;
 		children: Snippet;
 		strength?: number;
+		as?: 'button' | 'a' | 'div';
 	}
 
-	let { href, class: className = '', children, strength = 0.3 }: Props = $props();
+	let { href, class: className = '', children, strength = 0.3, as = 'div' }: Props = $props();
 
 	let buttonEl: HTMLElement;
 	let x = $state(0);
@@ -56,7 +57,7 @@
 			{@render children()}
 		</span>
 	</a>
-{:else}
+{:else if as === 'button'}
 	<button
 		bind:this={buttonEl}
 		class="magnetic-button {className}"
@@ -68,6 +69,19 @@
 			{@render children()}
 		</span>
 	</button>
+{:else}
+	<div
+		bind:this={buttonEl}
+		class="magnetic-button {className}"
+		style="transform: translate({x}px, {y}px)"
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		role="presentation"
+	>
+		<span class="magnetic-content" style="transform: translate({x * 0.2}px, {y * 0.2}px)">
+			{@render children()}
+		</span>
+	</div>
 {/if}
 
 <style>

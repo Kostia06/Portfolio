@@ -2,12 +2,10 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import Lenis from 'lenis';
+	import gsap from 'gsap';
 	import '../app.css';
 	import PageLoader from '$ui/PageLoader.svelte';
 	import CustomCursor from '$ui/CustomCursor.svelte';
-	import EasterEggs from '$ui/EasterEggs.svelte';
-	import Aurora from '$ui/Aurora.svelte';
-	import NavDots from '$ui/NavDots.svelte';
 	import { isMobile, isLoading } from '$stores/app';
 
 	let { children } = $props();
@@ -16,27 +14,34 @@
 	onMount(() => {
 		if (browser && !$isMobile) {
 			lenis = new Lenis({
-				duration: 1.2,
+				duration: 1.0,
 				easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 				orientation: 'vertical',
 				gestureOrientation: 'vertical',
-				smoothWheel: true
+				smoothWheel: true,
+				wheelMultiplier: 1,
+				touchMultiplier: 2,
+				infinite: false
 			});
 
 			lenis.scrollTo(0, { immediate: true });
 
-			function raf(time: number) {
-				lenis?.raf(time);
-				requestAnimationFrame(raf);
-			}
+			// Use GSAP ticker for smoother animation
+			gsap.ticker.add((time) => {
+				lenis?.raf(time * 1000);
+			});
 
-			requestAnimationFrame(raf);
+			gsap.ticker.lagSmoothing(0);
+
 			document.documentElement.classList.add('lenis', 'lenis-smooth');
 		}
 	});
 
 	onDestroy(() => {
-		lenis?.destroy();
+		if (lenis) {
+			gsap.ticker.remove(lenis.raf);
+			lenis.destroy();
+		}
 	});
 </script>
 
@@ -48,10 +53,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
 
 	<!-- Theme and appearance -->
-	<meta name="theme-color" content="#0a0a0a" />
+	<meta name="theme-color" content="#000000" />
 	<meta name="color-scheme" content="dark" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
 	<!-- SEO -->
 	<meta name="author" content="Kostiantyn Ilnytskyi" />
@@ -68,30 +73,16 @@
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Kos | Full Stack Developer" />
 	<meta name="twitter:description" content="Full Stack Developer based in Calgary, AB." />
-
-	<!-- Font preloading for performance -->
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-	<!-- Preload critical resources -->
-	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 </svelte:head>
 
 <!-- Page Loader -->
 <PageLoader />
 
-<!-- Aurora Background -->
-<Aurora />
-
 <!-- Custom Cursor (desktop only) -->
 <CustomCursor />
 
-<!-- Navigation Dots -->
-<NavDots />
-
-<!-- Easter Eggs -->
-<EasterEggs />
+<!-- Noise overlay for texture -->
+<div class="noise-overlay"></div>
 
 <!-- Main Content -->
 {@render children()}

@@ -124,7 +124,7 @@ export const projects: Project[] = [
 	},
 	{
 		id: 10,
-		title: 'HelpUkraineForms',
+		title: 'Help Ukraine Forms',
 		subtitle: 'Advocacy Platform',
 		description:
 			'Platform enabling Canadians to contact Members of Parliament about permanent residence pathways for Ukrainian CUAET arrivals. Privacy-first architecture with zero tracking or database. Automated MP lookup by postal code with pre-filled letter templates. Supporting United Ukrainians of Canada Foundation.',

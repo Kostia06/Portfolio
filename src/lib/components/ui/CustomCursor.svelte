@@ -9,8 +9,8 @@
 	let mounted = $state(false);
 
 	// Spring-based cursor position
-	const cursorX = spring(-100, { stiffness: 0.2, damping: 0.8 });
-	const cursorY = spring(-100, { stiffness: 0.2, damping: 0.8 });
+	const cursorX = spring(-100, { stiffness: 0.15, damping: 0.85 });
+	const cursorY = spring(-100, { stiffness: 0.15, damping: 0.85 });
 
 	// Raw position for trail dot
 	let rawX = $state(-100);
@@ -78,15 +78,15 @@
 		style="transform: translate({$cursorX}px, {$cursorY}px) translate(-50%, -50%);"
 	>
 		<div
-			class="relative flex items-center justify-center transition-all duration-150 ease-out"
+			class="relative flex items-center justify-center transition-all duration-200 ease-out"
 			style="width: {size}px; height: {size}px; border-radius: {borderRadius};"
 		>
 			<div
-				class="absolute inset-0 bg-white transition-all duration-150 ease-out"
+				class="absolute inset-0 bg-[var(--color-text)] transition-all duration-200 ease-out"
 				style="border-radius: {borderRadius}; transform: scale({isClicking ? 0.5 : 1});"
 			></div>
 			{#if cursorText && isHovering}
-				<span class="text-black text-xs font-medium z-10 whitespace-nowrap">
+				<span class="text-[var(--color-bg)] text-xs font-medium z-10 whitespace-nowrap uppercase tracking-wider">
 					{cursorText}
 				</span>
 			{/if}
@@ -95,7 +95,7 @@
 
 	<!-- Cursor trail dot -->
 	<div
-		class="fixed top-0 left-0 w-1 h-1 rounded-full bg-[var(--accent)] pointer-events-none z-[9998]"
+		class="fixed top-0 left-0 w-1 h-1 rounded-full bg-[var(--color-accent)] pointer-events-none z-[9998]"
 		style="transform: translate({rawX}px, {rawY}px) translate(-50%, -50%);"
 	></div>
 {/if}
