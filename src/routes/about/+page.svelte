@@ -268,14 +268,14 @@
 				</div>
 
 				<!-- Image with reveal -->
-				<div bind:this={imageEl} class="relative aspect-[4/5] md:aspect-[3/4] max-w-sm md:max-w-md lg:max-w-lg mx-auto lg:mx-0">
+				<div bind:this={imageEl} class="relative aspect-square max-w-xs md:max-w-sm lg:max-w-md mx-auto lg:mx-0">
 					<div class="absolute inset-0 bg-gradient-to-br from-[var(--color-accent)]/20 to-transparent rounded-2xl"></div>
 					<div class="absolute inset-4 border-2 border-[var(--color-accent)]/30 rounded-xl"></div>
-					<div class="absolute inset-0 flex items-center justify-center">
-						<div class="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-[var(--color-accent)] flex items-center justify-center">
-							<span class="font-display text-3xl md:text-4xl font-bold text-[var(--color-accent)]">K</span>
-						</div>
-					</div>
+					<img
+						src="/profile.jpg"
+						alt="Kostiantyn Ilnytskyi"
+						class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+					/>
 					<!-- Floating elements -->
 					<div class="absolute -top-4 -right-4 w-8 h-8 bg-[var(--color-accent)] rounded-full animate-pulse"></div>
 					<div class="absolute -bottom-2 -left-2 w-12 h-12 border-2 border-[var(--color-border)] rounded-lg rotate-12"></div>
