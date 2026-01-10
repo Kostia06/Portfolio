@@ -72,19 +72,18 @@
 			});
 		}
 
-		// Social links with bounce
+		// Social links - simple fade in without reverse
 		if (linksEl && !$isMobile) {
 			gsap.from(linksEl.querySelectorAll('.social-link'), {
-				y: 40,
+				y: 20,
 				opacity: 0,
-				scale: 0.9,
-				duration: 0.6,
-				ease: 'back.out(1.7)',
-				stagger: 0.15,
+				duration: 0.5,
+				ease: 'power2.out',
+				stagger: 0.1,
 				scrollTrigger: {
 					trigger: linksEl,
-					start: 'top 85%',
-					toggleActions: 'play none none reverse'
+					start: 'top 90%',
+					toggleActions: 'play none none none'
 				}
 			});
 		}

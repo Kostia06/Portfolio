@@ -40,6 +40,9 @@
 	onMount(() => {
 		if (!browser) return;
 
+		// Scroll to top on page load
+		window.scrollTo(0, 0);
+
 		gsap.registerPlugin(ScrollTrigger);
 
 		// Initial page entrance animation
@@ -95,24 +98,8 @@
 			}, 0.8);
 		}
 
-		// Stats animation on scroll
-		if (statsEl) {
-			const statItems = statsEl.querySelectorAll('.stat-item');
-
-			gsap.from(statItems, {
-				y: 40,
-				opacity: 0,
-				scale: 0.95,
-				duration: 0.6,
-				ease: 'power3.out',
-				stagger: 0.1,
-				scrollTrigger: {
-					trigger: statsEl,
-					start: 'top 85%',
-					toggleActions: 'play none none none'
-				}
-			});
-		}
+		// Stats - no animation, just show them
+		// (animations were causing visibility issues)
 
 		// Skills with progressive reveal
 		if (skillsEl) {
