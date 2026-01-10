@@ -10,7 +10,7 @@
 	let greetingEl: HTMLElement;
 	let iconsEl: HTMLElement;
 
-	const greetings = ['Hello', 'Привіт', 'Hola', 'Bonjour', 'Ciao', 'こんにちは', 'Merhaba', 'Olá'];
+	const greetings = ['Hello', 'Привіт', 'Hola', 'Bonjour', 'Ciao'];
 
 	onMount(() => {
 		const centerX = window.innerWidth / 2;
@@ -169,7 +169,7 @@
 				}, 0.2);
 			}
 
-		}, 3900);
+		}, 2800);
 
 		return () => {
 			clearTimeout(exitTimer);
