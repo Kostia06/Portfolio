@@ -15,24 +15,20 @@
 	onMount(() => {
 		if (browser && !$isMobile) {
 			lenis = new Lenis({
-				duration: 1.0,
-				easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-				orientation: 'vertical',
-				gestureOrientation: 'vertical',
-				smoothWheel: true,
-				wheelMultiplier: 1,
-				touchMultiplier: 2,
+				lerp: 0.1,
+				wheelMultiplier: 0.8,
+				touchMultiplier: 1.5,
 				infinite: false
 			});
 
 			lenis.scrollTo(0, { immediate: true });
 
-			// Use GSAP ticker for smoother animation
-			gsap.ticker.add((time) => {
-				lenis?.raf(time * 1000);
-			});
-
-			gsap.ticker.lagSmoothing(0);
+			// Use requestAnimationFrame for smooth scrolling
+			function raf(time: number) {
+				lenis?.raf(time);
+				requestAnimationFrame(raf);
+			}
+			requestAnimationFrame(raf);
 
 			document.documentElement.classList.add('lenis', 'lenis-smooth');
 		}
@@ -40,7 +36,6 @@
 
 	onDestroy(() => {
 		if (lenis) {
-			gsap.ticker.remove(lenis.raf);
 			lenis.destroy();
 		}
 	});
