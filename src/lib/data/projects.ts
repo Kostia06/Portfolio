@@ -21,7 +21,7 @@ export const projects: Project[] = [
 			'Production e-commerce platform with integrated employee operations system. Built complete inventory management, order processing, and staff scheduling. Architected scalable backend serving 1,200+ monthly visitors and 5,000+ page views. Implemented Stripe payments and real-time notifications.',
 		color: '#ef4444',
 		tags: ['Next.js', 'Supabase', 'Stripe'],
-		liveUrl: 'https://rtt-lime.vercel.app/',
+		liveUrl: 'https://respect-the-technique.ilnkostia-dev.workers.dev/',
 		screenshot: '/screenshots/rtt.png',
 		size: 'large',
 		achievement: '1,200+ Visitors/mo'
