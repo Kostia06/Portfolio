@@ -61,8 +61,11 @@
 						bind:this={imageEl}
 						src={project.screenshot}
 						alt={project.title}
-						class="w-full h-full object-cover"
+						width="800"
+						height="500"
 						loading="lazy"
+						decoding="async"
+						class="w-full h-full object-cover"
 					/>
 				</div>
 			{/if}
@@ -112,8 +115,11 @@
 						bind:this={imageEl}
 						src={project.screenshot}
 						alt={project.title}
-						class="w-full h-full object-cover"
+						width="800"
+						height="500"
 						loading="lazy"
+						decoding="async"
+						class="w-full h-full object-cover"
 					/>
 				</div>
 			{/if}

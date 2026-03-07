@@ -7,7 +7,6 @@
 	import { isMobile } from '$stores/app';
 
 	let sectionEl: HTMLElement;
-	let titleEl: HTMLElement;
 	let projectEls: HTMLElement[] = [];
 	let activeIndex = $state(-1);
 	let prevIndex = $state(-1);
@@ -16,27 +15,14 @@
 	let mouseY = $state(0);
 	let slideDirection = $state<'up' | 'down'>('up');
 
-	const featuredProjects = projects.filter((p) => p.screenshot).slice(0, 6);
+	const featuredProjects = projects.filter((p) => p.screenshot);
 
 	onMount(() => {
 		if (!browser) return;
 
 		gsap.registerPlugin(ScrollTrigger);
 
-		if (titleEl && !$isMobile) {
-			gsap.from(titleEl.querySelectorAll('.title-line'), {
-				y: 100,
-				opacity: 0,
-				duration: 1,
-				ease: 'power4.out',
-				stagger: 0.1,
-				scrollTrigger: {
-					trigger: titleEl,
-					start: 'top 80%',
-					toggleActions: 'play none none reverse'
-				}
-			});
-		}
+		let currentFocused = -1;
 
 		projectEls.forEach((el) => {
 			if (!el) return;
@@ -54,16 +40,82 @@
 			});
 		});
 
+		// Single scroll observer — find the item closest to viewport center
+		ScrollTrigger.create({
+			trigger: sectionEl,
+			start: 'top bottom',
+			end: 'bottom top',
+			onUpdate: () => {
+				const viewportCenter = window.innerHeight / 2;
+				let closestIndex = -1;
+				let closestDist = Infinity;
+
+				projectEls.forEach((el, i) => {
+					if (!el) return;
+					const rect = el.getBoundingClientRect();
+					const elCenter = rect.top + rect.height / 2;
+					const dist = Math.abs(elCenter - viewportCenter);
+
+					if (dist < closestDist && rect.top < window.innerHeight && rect.bottom > 0) {
+						closestDist = dist;
+						closestIndex = i;
+					}
+				});
+
+				if (closestIndex === currentFocused) return;
+				currentFocused = closestIndex;
+
+				projectEls.forEach((el, i) => {
+					if (!el) return;
+					if (i === closestIndex) {
+						gsap.to(el, { scale: 1.08, opacity: 1, duration: 0.5, ease: 'power2.out', force3D: true });
+					} else {
+						gsap.to(el, { scale: 0.9, opacity: 0.3, duration: 0.5, ease: 'power2.out', force3D: true });
+					}
+				});
+			},
+			onLeave: () => {
+				currentFocused = -1;
+				projectEls.forEach((el) => {
+					if (el) gsap.to(el, { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out', force3D: true });
+				});
+			},
+			onLeaveBack: () => {
+				currentFocused = -1;
+				projectEls.forEach((el) => {
+					if (el) gsap.to(el, { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out', force3D: true });
+				});
+			}
+		});
+
 		const handleMouseMove = (e: MouseEvent) => {
 			mouseX = e.clientX;
 			mouseY = e.clientY;
 		};
 
+		const updateHoverOnScroll = () => {
+			if ($isMobile || !isHovering) return;
+			// Find which project the cursor is over after scroll
+			const el = document.elementFromPoint(mouseX, mouseY);
+			if (!el) return;
+			const projectItem = el.closest('.project-item');
+			if (projectItem) {
+				const index = projectEls.indexOf(projectItem as HTMLElement);
+				if (index !== -1 && index !== activeIndex) {
+					slideDirection = index > activeIndex ? 'up' : 'down';
+					prevIndex = activeIndex;
+					activeIndex = index;
+				}
+			}
+		};
+
 		window.addEventListener('mousemove', handleMouseMove);
+		window.addEventListener('scroll', updateHoverOnScroll, { passive: true });
 
 		return () => {
 			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 			window.removeEventListener('mousemove', handleMouseMove);
+			window.removeEventListener('scroll', updateHoverOnScroll);
 		};
 	});
 
@@ -90,22 +142,24 @@
 	class="section-lg relative overflow-hidden"
 	style="background: var(--color-bg);"
 	onmouseleave={handleSectionLeave}
+	role="region"
+	aria-label="Projects"
 >
 	<!-- Floating preview image -->
 	<div
 		class="preview-container fixed pointer-events-none z-50 w-[350px] md:w-[400px] h-[220px] md:h-[250px] rounded-xl overflow-hidden"
 		class:active={isHovering && activeIndex >= 0}
-		style="
-			left: {mouseX}px;
-			top: {mouseY}px;
-			transform: translate(-50%, -50%);
-		"
+		style="left: {mouseX}px; top: {mouseY}px;"
 	>
 		{#each featuredProjects as project, i}
 			{#if project.screenshot}
 				<img
 					src={project.screenshot}
 					alt={project.title}
+					width="800"
+					height="500"
+					loading="lazy"
+					decoding="async"
 					class="preview-image absolute inset-0 w-full h-full object-cover"
 					class:active={activeIndex === i}
 					class:prev={prevIndex === i && activeIndex !== i}
@@ -126,37 +180,13 @@
 	</div>
 
 	<div class="container relative z-10">
-		<!-- Section Header -->
-		<div bind:this={titleEl} class="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-			<div>
-				<div class="overflow-hidden">
-					<span class="title-line block text-xs md:text-sm uppercase tracking-[0.2em] text-[var(--color-accent)] mb-4">
-						/ Selected Work
-					</span>
-				</div>
-				<div class="overflow-hidden">
-					<h2 class="title-line font-display text-[12vw] md:text-[8vw] lg:text-[6vw] font-bold leading-[0.9] tracking-tighter">
-						Featured
-					</h2>
-				</div>
-				<div class="overflow-hidden">
-					<h2 class="title-line font-display text-[12vw] md:text-[8vw] lg:text-[6vw] font-bold leading-[0.9] tracking-tighter text-[var(--color-muted)]">
-						Projects
-					</h2>
-				</div>
-			</div>
-			<p class="title-line text-sm md:text-base text-[var(--color-muted)] max-w-sm md:text-right">
-				Hover to preview. A selection of projects I've worked on.
-			</p>
-		</div>
-
-		<!-- Projects List -->
 		<div class="space-y-0">
 			{#each featuredProjects as project, index}
 				<div
 					bind:this={projectEls[index]}
 					class="project-item group"
 					onmouseenter={() => handleProjectEnter(index)}
+					role="listitem"
 				>
 					{#if project.liveUrl}
 						<a
@@ -237,7 +267,6 @@
 			<div class="border-t border-[var(--color-border)]"></div>
 		</div>
 
-		<!-- View All Link -->
 		<div class="mt-12 md:mt-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 			<p class="text-[var(--color-muted)] text-sm">
 				Want to see more? Check out my GitHub.
@@ -267,15 +296,12 @@
 </section>
 
 <style>
-	.project-item {
-		position: relative;
-	}
-
 	.preview-container {
 		opacity: 0;
 		transform: translate(-50%, -50%) scale(0.9);
 		transition: opacity 0.4s ease, transform 0.4s ease;
 		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+		will-change: transform, opacity;
 	}
 
 	.preview-container.active {
@@ -287,9 +313,9 @@
 		opacity: 0;
 		transform: translateY(100%);
 		transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+		will-change: transform, opacity;
 	}
 
-	/* Active image slides in */
 	.preview-image.active.slide-up {
 		opacity: 1;
 		transform: translateY(0);
@@ -300,7 +326,6 @@
 		transform: translateY(0);
 	}
 
-	/* Previous image slides out */
 	.preview-image.prev.slide-up {
 		opacity: 0;
 		transform: translateY(-100%);
@@ -311,7 +336,6 @@
 		transform: translateY(100%);
 	}
 
-	/* Initial state for inactive images */
 	.preview-image:not(.active):not(.prev).slide-up {
 		transform: translateY(100%);
 	}

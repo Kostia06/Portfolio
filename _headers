@@ -1,0 +1,24 @@
+# Immutable assets (hashed filenames from build)
+/_app/immutable/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images
+/screenshots/*
+  Cache-Control: public, max-age=2592000
+
+/*.webp
+  Cache-Control: public, max-age=2592000
+
+/*.jpg
+  Cache-Control: public, max-age=2592000
+
+/*.png
+  Cache-Control: public, max-age=2592000
+
+# Fonts
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages - short cache for updates
+/*
+  Cache-Control: public, max-age=0, must-revalidate

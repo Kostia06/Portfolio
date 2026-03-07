@@ -6,17 +6,15 @@
 	import { isMobile } from '$stores/app';
 	import MagneticButton from '$ui/MagneticButton.svelte';
 
-	let sectionEl: HTMLElement;
 	let titleEl: HTMLElement;
 	let emailEl: HTMLElement;
-	let linksEl: HTMLElement;
 	let orbitsEl: HTMLElement;
 
 	const email = 'Ilnkostia@gmail.com';
 
 	const socialLinks = [
 		{ href: 'https://github.com/Kostia06', label: 'GitHub', icon: 'GH' },
-		{ href: 'https://linkedin.com/in/kostiantyn-ilnytskyi', label: 'LinkedIn', icon: 'LI' }
+		{ href: 'https://linkedin.com/in/kostiantyn-ilnytskyi-899a53247', label: 'LinkedIn', icon: 'LI' }
 	];
 
 	let copiedEmail = $state(false);
@@ -72,8 +70,6 @@
 			});
 		}
 
-		// Social links - no entrance animation, just CSS hover
-
 		// Orbiting elements animation
 		if (orbitsEl && !$isMobile) {
 			const orbits = orbitsEl.querySelectorAll('.orbit');
@@ -107,7 +103,6 @@
 </script>
 
 <section
-	bind:this={sectionEl}
 	id="contact"
 	class="section-lg relative overflow-hidden"
 	style="background: var(--color-bg);"
@@ -221,7 +216,7 @@
 			</div>
 
 			<!-- Social Links -->
-			<div bind:this={linksEl} class="flex justify-center gap-4 md:gap-6 mb-12 md:mb-16">
+			<div class="flex justify-center gap-4 md:gap-6 mb-12 md:mb-16">
 				{#each socialLinks as link}
 					<a
 						href={link.href}

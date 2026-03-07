@@ -15,6 +15,19 @@ export interface Project {
 export const projects: Project[] = [
 	{
 		id: 1,
+		title: 'Mr Blu',
+		subtitle: 'Voice-to-Document SaaS',
+		description:
+			'Voice-to-invoice SaaS converting contractor voice memos into professional invoices using Gemini and Deepgram. Engineered Gemini-powered parser to extract clients, line items, and scheduling data. Shipped mobile-first app with React Native (Expo), real-time transcription, automated PDF generation and email delivery.',
+		color: '#3b82f6',
+		tags: ['React Native', 'Gemini AI', 'Expo'],
+		liveUrl: 'https://mrblu.com',
+		screenshot: '/screenshots/mrblu.webp',
+		size: 'large',
+		achievement: '100% Cost Reduction'
+	},
+	{
+		id: 2,
 		title: 'Respect The Technique',
 		subtitle: 'Full Stack E-Commerce',
 		description:
@@ -22,12 +35,12 @@ export const projects: Project[] = [
 		color: '#ef4444',
 		tags: ['Next.js', 'Supabase', 'Stripe'],
 		liveUrl: 'https://respect-the-technique.ilnkostia-dev.workers.dev/',
-		screenshot: '/screenshots/rtt.png',
+		screenshot: '/screenshots/rtt.webp',
 		size: 'large',
 		achievement: '1,200+ Visitors/mo'
 	},
 	{
-		id: 2,
+		id: 3,
 		title: 'MockMind AI',
 		subtitle: 'Voice-Powered Interviews',
 		description:
@@ -35,12 +48,12 @@ export const projects: Project[] = [
 		color: '#6366f1',
 		tags: ['Next.js', 'OpenAI', 'Whisper'],
 		liveUrl: 'https://mock-mind.vercel.app/',
-		screenshot: '/screenshots/mockmind.png',
+		screenshot: '/screenshots/mockmind.webp',
 		size: 'medium',
 		achievement: 'AI-Powered'
 	},
 	{
-		id: 3,
+		id: 4,
 		title: 'Lingozo',
 		subtitle: 'AI Language Learning',
 		description:
@@ -48,12 +61,12 @@ export const projects: Project[] = [
 		color: '#10b981',
 		tags: ['React', 'Gemini 2.0', 'PostgreSQL'],
 		liveUrl: 'https://lingozo.vercel.app/',
-		screenshot: '/screenshots/lingozo.png',
+		screenshot: '/screenshots/lingozo.webp',
 		size: 'medium',
 		achievement: '15+ Languages'
 	},
 	{
-		id: 4,
+		id: 5,
 		title: 'ShopLocal',
 		subtitle: '1st Place Hackathon',
 		description:
@@ -64,7 +77,7 @@ export const projects: Project[] = [
 		achievement: '1st Place'
 	},
 	{
-		id: 5,
+		id: 6,
 		title: 'OMG Platform',
 		subtitle: 'Multiplayer Gaming',
 		description:
@@ -75,7 +88,7 @@ export const projects: Project[] = [
 		achievement: 'UI Lead'
 	},
 	{
-		id: 6,
+		id: 7,
 		title: 'Motion Capture',
 		subtitle: '6th Place RBC Pitch',
 		description:
@@ -86,7 +99,7 @@ export const projects: Project[] = [
 		achievement: '<50ms'
 	},
 	{
-		id: 7,
+		id: 8,
 		title: 'Rustsol E-Commerce',
 		subtitle: 'Lemmer Ltd.',
 		description:
@@ -97,7 +110,7 @@ export const projects: Project[] = [
 		achievement: '+30% Efficiency'
 	},
 	{
-		id: 8,
+		id: 9,
 		title: "Rye's Collection",
 		subtitle: 'Animated Showcase',
 		description:
@@ -105,12 +118,12 @@ export const projects: Project[] = [
 		color: '#f472b6',
 		tags: ['Next.js', 'Supabase', 'Framer'],
 		liveUrl: 'https://rye-boxes.com/',
-		screenshot: '/screenshots/rye.png',
+		screenshot: '/screenshots/rye.webp',
 		size: 'small',
 		achievement: 'Full CRUD'
 	},
 	{
-		id: 9,
+		id: 10,
 		title: 'Git Fight',
 		subtitle: '80s Retro Battle Game',
 		description:
@@ -118,49 +131,21 @@ export const projects: Project[] = [
 		color: '#a855f7',
 		tags: ['Vanilla JS', 'PostgreSQL', 'CSS'],
 		liveUrl: 'https://www.git-fight.app/',
-		screenshot: '/screenshots/gitfight.png',
+		screenshot: '/screenshots/gitfight.webp',
 		size: 'small',
 		achievement: 'Zero Frameworks'
 	},
 	{
-		id: 10,
+		id: 11,
 		title: 'Help Ukraine Forms',
 		subtitle: 'Advocacy Platform',
 		description:
-			'Platform enabling Canadians to contact Members of Parliament about permanent residence pathways for Ukrainian CUAET arrivals. Privacy-first architecture with zero tracking or database. Automated MP lookup by postal code with pre-filled letter templates. Supporting United Ukrainians of Canada Foundation.',
+			'Full website for community organization supporting 1.2+ million Ukrainian-Canadians. Responsive mobile-first site using React and Cloudflare, collaborating directly with foundation leadership. Privacy-first architecture with zero tracking.',
 		color: '#fbbf24',
-		tags: ['Next.js', 'TypeScript', 'Tailwind'],
-		liveUrl: 'https://help-ukraine-forms.com/',
-		screenshot: '/screenshots/helpukraine.png',
+		tags: ['React', 'Cloudflare', 'TypeScript'],
+		liveUrl: 'https://help-ukraine-forms.com/en',
+		screenshot: '/screenshots/helpukraine.webp',
 		size: 'small',
 		achievement: 'Privacy-First'
 	}
-];
-
-// Grid positions for bento layout - [col, row, colSpan, rowSpan]
-export const gridLayout: Record<number, [number, number, number, number]> = {
-	1: [1, 1, 2, 2], // RTT - large top left
-	2: [3, 1, 1, 2], // MockMind - tall
-	3: [4, 2, 1, 2], // Lingozo - tall (moved down 1 row)
-	4: [1, 3, 1, 1], // ShopLocal
-	5: [2, 3, 1, 1], // OMG
-	6: [3, 3, 1, 1], // Motion
-	7: [4, 1, 1, 1], // Rustsol - moved to top
-	8: [1, 4, 1, 1], // Rye
-	9: [2, 4, 2, 1], // Git Fight - wide
-	10: [4, 4, 1, 1] // HelpUkraine
-};
-
-// Animation directions for each card
-export const directions = [
-	{ x: -100, y: -50 },
-	{ x: 0, y: -80 },
-	{ x: 100, y: -50 },
-	{ x: -80, y: 0 },
-	{ x: 80, y: 0 },
-	{ x: -100, y: 50 },
-	{ x: 0, y: 80 },
-	{ x: 100, y: 50 },
-	{ x: -60, y: -60 },
-	{ x: 60, y: 60 }
 ];

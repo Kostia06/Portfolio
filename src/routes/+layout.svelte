@@ -2,12 +2,9 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import Lenis from 'lenis';
-	import gsap from 'gsap';
 	import '../app.css';
-	import PageLoader from '$ui/PageLoader.svelte';
 	import CustomCursor from '$ui/CustomCursor.svelte';
-	import PageTransition from '$ui/PageTransition.svelte';
-	import { isMobile, isLoading } from '$stores/app';
+	import { isMobile } from '$stores/app';
 
 	let { children } = $props();
 	let lenis: Lenis | null = null;
@@ -45,14 +42,7 @@
 	<title>Kos | Full Stack Developer</title>
 	<meta name="description" content="Kostiantyn Ilnytskyi - Full Stack Developer based in Calgary, AB. Building performant web applications with React, Next.js, SvelteKit, and modern technologies." />
 
-	<!-- Viewport with proper mobile settings -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
-
-	<!-- Theme and appearance -->
-	<meta name="theme-color" content="#000000" />
 	<meta name="color-scheme" content="dark" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
 	<!-- SEO -->
 	<meta name="author" content="Kostiantyn Ilnytskyi" />
@@ -71,14 +61,8 @@
 	<meta name="twitter:description" content="Full Stack Developer based in Calgary, AB." />
 </svelte:head>
 
-<!-- Page Loader -->
-<PageLoader />
-
 <!-- Custom Cursor (desktop only) -->
 <CustomCursor />
-
-<!-- Page Transition -->
-<PageTransition />
 
 <!-- Noise overlay for texture -->
 <div class="noise-overlay"></div>

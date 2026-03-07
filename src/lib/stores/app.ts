@@ -1,4 +1,4 @@
-import { writable, derived } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 
 // Mobile detection store
@@ -47,12 +47,6 @@ function createIsTouchDeviceStore() {
 export const isMobile = createIsMobileStore();
 export const prefersReducedMotion = createPrefersReducedMotionStore();
 export const isTouchDevice = createIsTouchDeviceStore();
-
-// Derived store for animation decisions
-export const shouldAnimate = derived(
-	[prefersReducedMotion],
-	([$prefersReducedMotion]) => !$prefersReducedMotion
-);
 
 // Page loading state
 export const isLoading = writable(true);

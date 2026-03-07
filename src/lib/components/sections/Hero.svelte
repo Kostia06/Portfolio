@@ -2,170 +2,50 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import gsap from 'gsap';
-	import { isMobile, animationComplete, isLoading } from '$stores/app';
+	import { isMobile, animationComplete } from '$stores/app';
 
-	let sectionEl: HTMLElement;
-	let headingLines: HTMLElement[] = [];
-	let subtitleEl: HTMLElement;
 	let scrollIndicatorEl: HTMLElement;
 	let floatingShapesEl: HTMLElement;
-	let contentEl: HTMLElement;
-	let hasAnimated = false;
 
-	const headingText = ['Creative', 'Developer'];
+	const headingText = ['Full Stack', 'Builder'];
 	const subtitle = 'Based in Calgary, AB';
 
 	onMount(() => {
 		if (!browser) return;
 
-		// Hide content initially
-		if (contentEl) {
-			gsap.set(contentEl, { opacity: 0 });
-		}
-		if (scrollIndicatorEl) {
-			gsap.set(scrollIndicatorEl, { opacity: 0, y: 20 });
-		}
-		if (floatingShapesEl) {
-			gsap.set(floatingShapesEl, { opacity: 0 });
-		}
-
-		const unsubscribe = isLoading.subscribe((loading) => {
-			if (!loading && !hasAnimated) {
-				hasAnimated = true;
-				// Small delay to ensure loader is fully gone
-				setTimeout(animateEntrance, 100);
-			}
+		// Animate decorative elements after initial paint
+		requestAnimationFrame(() => {
+			animateEntrance();
 		});
-
-		return () => {
-			unsubscribe();
-		};
 	});
 
 	function animateEntrance() {
 		if (!browser) {
-			if (contentEl) gsap.set(contentEl, { opacity: 1 });
-			if (scrollIndicatorEl) gsap.set(scrollIndicatorEl, { opacity: 1, y: 0 });
-			if (floatingShapesEl) gsap.set(floatingShapesEl, { opacity: 1 });
 			animationComplete.set(true);
 			return;
 		}
 
-		// Simpler, lighter animation for mobile
-		if ($isMobile) {
-			const tl = gsap.timeline({
-				onComplete: () => {
-					animationComplete.set(true);
-				}
-			});
-
-			// Fade in and slide up content
-			tl.fromTo(contentEl,
-				{ opacity: 0, y: 40 },
-				{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
-			);
-
-			// Fade in floating shapes
-			if (floatingShapesEl) {
-				tl.to(floatingShapesEl, {
-					opacity: 1,
-					duration: 0.6,
-					ease: 'power2.out'
-				}, '-=0.5');
-			}
-
-			// Fade in scroll indicator
-			if (scrollIndicatorEl) {
-				tl.to(scrollIndicatorEl, {
-					y: 0,
-					opacity: 1,
-					duration: 0.5,
-					ease: 'power2.out'
-				}, '-=0.3');
-			}
-
-			return;
-		}
-
-		// Full animation for desktop
+		// Simpler animation - content is already visible for LCP
 		const tl = gsap.timeline({
 			onComplete: () => {
 				animationComplete.set(true);
 			}
 		});
 
-		// Fade in content container first
-		tl.to(contentEl, {
-			opacity: 1,
-			duration: 0.3,
-			ease: 'power2.out'
-		});
-
-		// Animate each heading line
-		headingLines.forEach((line, i) => {
-			if (!line) return;
-			const chars = line.querySelectorAll('.char');
-			tl.from(
-				chars,
-				{
-					y: 120,
-					opacity: 0,
-					duration: 1,
-					ease: 'power4.out',
-					stagger: 0.03
-				},
-				i * 0.2 + 0.2
-			);
-		});
-
-		// Animate subtitle
-		if (subtitleEl) {
-			tl.from(
-				subtitleEl,
-				{
-					y: 30,
-					opacity: 0,
-					duration: 0.8,
-					ease: 'power3.out'
-				},
-				'-=0.6'
-			);
-		}
-
-		// Animate floating shapes
+		// Fade in floating shapes
 		if (floatingShapesEl) {
-			// First fade in the container
-			tl.to(floatingShapesEl, {
-				opacity: 1,
-				duration: 0.5,
-				ease: 'power2.out'
-			}, '-=0.6');
-
-			// Then animate individual shapes
-			const shapes = floatingShapesEl.querySelectorAll('.floating-shape');
-			tl.from(
-				shapes,
-				{
-					scale: 0,
-					duration: 1,
-					stagger: 0.1,
-					ease: 'elastic.out(1, 0.5)'
-				},
-				'-=0.3'
+			tl.fromTo(floatingShapesEl,
+				{ opacity: 0 },
+				{ opacity: 1, duration: 0.8, ease: 'power2.out' }
 			);
 		}
 
-		// Animate scroll indicator
+		// Fade in scroll indicator
 		if (scrollIndicatorEl) {
-			tl.to(
-				scrollIndicatorEl,
-				{
-					y: 0,
-					opacity: 1,
-					duration: 0.6,
-					ease: 'power2.out'
-				},
-				'-=0.3'
+			tl.fromTo(scrollIndicatorEl,
+				{ opacity: 0, y: 20 },
+				{ y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
+				'-=0.5'
 			);
 		}
 	}
@@ -176,7 +56,6 @@
 </script>
 
 <section
-	bind:this={sectionEl}
 	id="hero"
 	class="relative min-h-screen flex flex-col justify-center overflow-hidden px-4 md:px-0"
 	style="background: var(--color-bg);"
@@ -212,7 +91,7 @@
 	</div>
 
 	<!-- Main Content -->
-	<div bind:this={contentEl} class="container relative z-10">
+	<div class="container relative z-10">
 		<div class="max-w-6xl">
 			<!-- Small intro -->
 			<div class="mb-6 md:mb-8 flex items-center gap-3">
@@ -222,17 +101,14 @@
 				</span>
 			</div>
 
-			<!-- Heading with staggered character animation -->
+			<!-- Heading - visible immediately for LCP -->
 			<h1 class="mb-6 md:mb-8">
 				{#each headingText as line, lineIndex}
-					<div
-						bind:this={headingLines[lineIndex]}
-						class="overflow-hidden"
-					>
+					<div class="overflow-hidden">
 						<span class="inline-block font-display text-[15vw] md:text-[12vw] lg:text-[10vw] font-bold leading-[0.9] tracking-tighter">
 							{#each splitChars(line) as char, i}
 								<span
-									class="char inline-block hover:text-[var(--color-accent)] transition-colors duration-200"
+									class="inline-block hover:text-[var(--color-accent)] transition-colors duration-200"
 									style={lineIndex === 1 && i === 0 ? 'color: var(--color-accent);' : ''}
 								>{char}</span>
 							{/each}
@@ -242,10 +118,7 @@
 			</h1>
 
 			<!-- Subtitle with line -->
-			<div
-				bind:this={subtitleEl}
-				class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8"
-			>
+			<div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
 				<div class="flex items-center gap-4">
 					<span class="w-8 md:w-16 h-[1px] bg-[var(--color-accent)]"></span>
 					<p class="text-sm md:text-base uppercase tracking-[0.15em] text-[var(--color-text)]">
@@ -280,21 +153,6 @@
 				</a>
 			</div>
 
-			<!-- Quick stats -->
-			<div class="flex flex-wrap gap-8 md:gap-12 mt-14 md:mt-20 pt-8 border-t border-[var(--color-border)]">
-				<div>
-					<span class="block font-display text-3xl md:text-4xl font-bold text-[var(--color-text)]">5+</span>
-					<span class="text-xs uppercase tracking-wider text-[var(--color-muted)]">Projects</span>
-				</div>
-				<div>
-					<span class="block font-display text-3xl md:text-4xl font-bold text-[var(--color-text)]">35+</span>
-					<span class="text-xs uppercase tracking-wider text-[var(--color-muted)]">Students Mentored</span>
-				</div>
-				<div>
-					<span class="block font-display text-3xl md:text-4xl font-bold text-[var(--color-accent)]">1st</span>
-					<span class="text-xs uppercase tracking-wider text-[var(--color-muted)]">Hackathon Wins</span>
-				</div>
-			</div>
 		</div>
 	</div>
 
@@ -354,6 +212,7 @@
 
 	.floating-shape {
 		animation: float 6s ease-in-out infinite;
+		will-change: transform;
 	}
 
 	.floating-shape:nth-child(2) {

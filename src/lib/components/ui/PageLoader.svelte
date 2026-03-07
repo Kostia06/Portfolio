@@ -16,12 +16,12 @@
 		const centerX = window.innerWidth / 2;
 		const centerY = window.innerHeight / 2;
 
-		// Animate greetings one by one
+		// Animate greetings one by one - faster timing
 		if (greetingEl) {
 			const greetingSpans = greetingEl.querySelectorAll('.greeting');
-			const fadeIn = 0.18;
-			const hold = 0.12;
-			const fadeOut = 0.15;
+			const fadeIn = 0.12;
+			const hold = 0.08;
+			const fadeOut = 0.1;
 			const totalPerGreeting = fadeIn + hold + fadeOut;
 
 			greetingSpans.forEach((span, i) => {
@@ -112,7 +112,7 @@
 			});
 		}
 
-		// Exit animation
+		// Exit animation - reduced from 2800ms to 1200ms for faster LCP
 		const exitTimer = setTimeout(() => {
 			const exitTl = gsap.timeline({
 				onComplete: () => {
@@ -169,7 +169,7 @@
 				}, 0.2);
 			}
 
-		}, 2800);
+		}, 1200);
 
 		return () => {
 			clearTimeout(exitTimer);

@@ -6,7 +6,7 @@
   --color-bg-alt: #0a0a0a;
   --color-text: #f5f5f5;
   --color-text-secondary: #a0a0a0;
-  --color-muted: #666666;
+  --color-muted: #8a8a8a;
   --color-accent: #ff4d00;
   --color-border: #222222;
   --color-border-dark: #333333;
@@ -609,18 +609,3 @@ html {
   aspect-ratio: 16/9;
 }
 
-/* Scroll indicator */
-@keyframes scroll-indicator {
-  0%, 100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(8px);
-    opacity: 0.5;
-  }
-}
-
-.scroll-indicator {
-  animation: scroll-indicator 2s ease-in-out infinite;
-}

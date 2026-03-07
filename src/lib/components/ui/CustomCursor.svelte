@@ -75,7 +75,7 @@
 	<!-- Main cursor -->
 	<div
 		class="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
-		style="transform: translate({$cursorX}px, {$cursorY}px) translate(-50%, -50%);"
+		style="transform: translate3d({$cursorX}px, {$cursorY}px, 0) translate(-50%, -50%); will-change: transform;"
 	>
 		<div
 			class="relative flex items-center justify-center transition-all duration-200 ease-out"
@@ -96,6 +96,6 @@
 	<!-- Cursor trail dot -->
 	<div
 		class="fixed top-0 left-0 w-1 h-1 rounded-full bg-[var(--color-accent)] pointer-events-none z-[9998]"
-		style="transform: translate({rawX}px, {rawY}px) translate(-50%, -50%);"
+		style="transform: translate3d({rawX}px, {rawY}px, 0) translate(-50%, -50%); will-change: transform;"
 	></div>
 {/if}

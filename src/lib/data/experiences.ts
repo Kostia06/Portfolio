@@ -2,88 +2,82 @@ export interface Experience {
 	year: string;
 	title: string;
 	company: string;
-	location: string;
 	period: string;
-	description: string[];
-	technologies: string[];
-	icon: string;
-	color: string;
+	type: 'work' | 'education' | 'achievement';
+	details?: string;
 }
 
 export const experiences: Experience[] = [
 	{
 		year: '2026',
-		title: 'Full Stack Developer (MVP)',
+		title: 'Web Developer',
+		company: 'United Ukrainians for Canadians Foundation',
+		period: 'Feb 2026 – Present',
+		type: 'work',
+		details: 'Building responsive, mobile-first site for community organization supporting 1.2+ million Ukrainian-Canadians using React and Cloudflare.'
+	},
+	{
+		year: '2026',
+		title: 'Full Stack Developer',
 		company: 'Mr Blu',
-		location: 'Calgary, AB',
 		period: 'Jan 2026 – Present',
-		description: [
-			'Built voice-to-document SaaS converting contractor voice memos into professional invoices',
-			'Engineered rule-based command parser extracting data from voice input',
-			'Developed mobile-first PWA with Svelte 5 and real-time transcription'
-		],
-		technologies: ['Svelte 5', 'TypeScript', 'Speech Recognition', 'NLP'],
-		icon: '🎙️',
-		color: '#ff4d00'
+		type: 'work',
+		details: 'Voice-to-invoice SaaS using Gemini and Deepgram. Shipped mobile-first app with React Native (Expo), real-time transcription, and automated PDF delivery.'
 	},
 	{
 		year: '2025',
 		title: 'Full Stack Developer Intern',
 		company: 'Respect The Technique',
-		location: 'Calgary, AB',
 		period: 'Jul 2025 – Jan 2026',
-		description: [
-			'Architected production e-commerce platform with employee operations system',
-			'Drove platform to 1,200+ monthly visitors, 5,000+ page views',
-			'Slashed manual workload by ~40% through automation'
-		],
-		technologies: ['Next.js', 'TypeScript', 'Supabase', 'Stripe'],
-		icon: '🚀',
-		color: '#ef4444'
+		type: 'work',
+		details: 'Production e-commerce platform with employee management. Scaled to 1,200+ monthly users and 5,000+ page views. Reduced manual workload by 40%.'
 	},
 	{
 		year: '2025',
 		title: 'Full Stack Developer',
 		company: 'Lemmer Ltd.',
-		location: 'Calgary, AB',
 		period: 'May – Jun 2025',
-		description: [
-			'Architected complete e-commerce platform (Rustsol.com) from ground up',
-			'Engineered secure authentication and payment systems',
-			'Delivered production-ready product in 6 weeks, boosting efficiency by 30%'
-		],
-		technologies: ['Next.js', 'Express.js', 'Supabase'],
-		icon: '💼',
-		color: '#10b981'
+		type: 'work',
+		details: 'Built full-stack e-commerce platform (Rustsol.com) with Next.js and Supabase. Delivered in 6 weeks, improving client efficiency by 30%.'
+	},
+	{
+		year: '2025',
+		title: '1st Place — Cultivator Hackathon',
+		company: 'ShopLocal MVP',
+		period: 'Jan 2025',
+		type: 'achievement',
+		details: 'Led team of 6 to build multi-vendor marketplace MVP in 24 hours using PHP, MySQL, and responsive front-end design.'
 	},
 	{
 		year: '2024',
 		title: 'CS Tutor',
 		company: 'University of Calgary',
-		location: 'Calgary, AB',
 		period: 'Sep 2024 – Present',
-		description: [
-			'Mentored 10+ students in Python and Java',
-			'Taught data structures, algorithms, and core principles',
-			'Crafted personalized study materials driving grade improvements'
-		],
-		technologies: ['Python', 'Java', 'DSA'],
-		icon: '🎓',
-		color: '#6366f1'
+		type: 'work',
+		details: 'Mentoring 10+ students in Python and Java — data structures, algorithms, and object-oriented design principles.'
+	},
+	{
+		year: '2024',
+		title: '6th Place — RBC Fast Pitch (60 Teams)',
+		company: 'Motion Capture System',
+		period: 'Dec 2024',
+		type: 'achievement',
+		details: 'Real-time body tracking system using Python and OpenCV achieving sub-50ms latency for live streaming applications.'
+	},
+	{
+		year: '2023',
+		title: 'B.Sc. Computer Science, Software Engineering',
+		company: 'University of Calgary — Expected Apr 2027',
+		period: '2023 – 2027',
+		type: 'education',
+		details: 'Coursework: Data Structures, Database Systems, Computer Networks, OS, AI & Machine Learning, Security & Privacy.'
 	},
 	{
 		year: '2022',
 		title: 'Software Developer Intern',
 		company: 'CommerceMate.co',
-		location: 'Remote (LA, USA)',
 		period: 'Apr 2022 – Aug 2023',
-		description: [
-			'Accelerated performance for 5,000+ users, 40% faster loads',
-			'Integrated Stripe & PayPal, boosted transactions 25%',
-			'Collaborated with cross-functional team of 8 developers'
-		],
-		technologies: ['React', 'Node.js', 'Stripe', 'PayPal'],
-		icon: '⚡',
-		color: '#f59e0b'
+		type: 'work',
+		details: 'Optimized performance for 5,000+ users (40% faster loads). Integrated Stripe & PayPal, boosting transactions 25%. Team of 8 engineers.'
 	}
 ];
