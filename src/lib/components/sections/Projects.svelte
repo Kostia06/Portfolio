@@ -270,12 +270,12 @@
 		<div class="mt-20 md:mt-28 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6" onmouseenter={handleSectionLeave}>
 			<a
 				href="/about"
-				class="group inline-flex items-center gap-3 px-7 py-4 bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-full hover:border-[var(--color-accent)] hover:bg-[var(--glass-bg-hover)] transition-all duration-300"
+				class="btn-outline"
 				data-cursor="pointer"
 			>
-				<span class="text-sm md:text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors uppercase tracking-wider">View Full Journey</span>
+				<span>View Full Journey</span>
 				<svg
-					class="w-4 h-4 text-[var(--color-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all"
+					class="w-4 h-4 transition-transform group-hover:translate-x-1"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -288,12 +288,12 @@
 				href="https://github.com/Kostia06"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="group inline-flex items-center gap-3 px-7 py-4 bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-full hover:border-[var(--color-accent)] hover:bg-[var(--glass-bg-hover)] transition-all duration-300"
+				class="btn-outline"
 				data-cursor="pointer"
 			>
-				<span class="text-sm md:text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors uppercase tracking-wider">View GitHub</span>
+				<span>View GitHub</span>
 				<svg
-					class="w-4 h-4 text-[var(--color-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+					class="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"

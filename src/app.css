@@ -301,66 +301,78 @@ html {
 }
 
 /* Button styles */
-.btn-primary {
+.btn-primary,
+.btn-outline {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 1.5rem;
-  background: var(--color-text);
-  color: var(--color-bg);
   font-family: var(--font-body);
   font-weight: 500;
   font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   border-radius: 9999px;
-  transition: all 0.4s var(--ease-out-expo);
   min-height: 48px;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.4s ease, border-color 0.4s ease;
 }
 
-@media (min-width: 768px) {
-  .btn-primary {
-    padding: 1rem 2rem;
-  }
+.btn-primary::before,
+.btn-outline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0%;
+  z-index: -1;
+  transition: height 0.5s var(--ease-out-expo);
+}
+
+.btn-primary:hover::before,
+.btn-outline:hover::before {
+  height: 100%;
+}
+
+.btn-primary {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.btn-primary::before {
+  background: var(--color-accent);
 }
 
 .btn-primary:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  color: #fff;
 }
 
 .btn-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.5rem;
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: var(--color-text);
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
   border: 1px solid var(--glass-border);
-  border-radius: 9999px;
-  transition: all 0.4s var(--ease-out-expo);
-  min-height: 48px;
 }
 
-@media (min-width: 768px) {
-  .btn-outline {
-    padding: 1rem 2rem;
-  }
+.btn-outline::before {
+  background: var(--color-accent);
 }
 
 .btn-outline:hover {
-  background: var(--color-text);
-  color: var(--color-bg);
-  border-color: var(--color-text);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+@media (min-width: 768px) {
+  .btn-primary,
+  .btn-outline {
+    padding: 1rem 2rem;
+  }
 }
 
 /* Glass effect */

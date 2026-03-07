@@ -129,6 +129,7 @@
 					class="btn-primary"
 					data-cursor="pointer"
 					data-cursor-text="View"
+					onclick={(e) => { e.preventDefault(); document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' }); }}
 				>
 					<span>View Work</span>
 					<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -140,6 +141,7 @@
 					class="btn-outline"
 					data-cursor="pointer"
 					data-cursor-text="Contact"
+					onclick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
 				>
 					Get in Touch
 				</a>
