@@ -38,21 +38,9 @@
 			<h2 class="font-display text-3xl md:text-5xl font-bold text-[var(--color-text)] mt-2 mb-4">
 				My Journey
 			</h2>
-			<p class="text-[var(--color-text-secondary)] text-lg mb-8">
+			<p class="text-[var(--color-text-secondary)] text-lg">
 				Explore my career path, skills, and the projects I've worked on.
 			</p>
-
-			<!-- CTA Button -->
-			<a
-				href="/about"
-				class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent)]/80 text-[var(--color-bg)] font-semibold rounded-full shadow-lg shadow-[var(--color-accent)]/30 hover:shadow-xl hover:shadow-[var(--color-accent)]/40 hover:scale-105 transition-all duration-300 group"
-				data-cursor="pointer"
-			>
-				<span>View Full Journey</span>
-				<svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-				</svg>
-			</a>
 		</div>
 	</div>
 </section>

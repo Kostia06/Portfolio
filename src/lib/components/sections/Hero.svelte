@@ -69,7 +69,7 @@
 		<div class="floating-shape absolute bottom-[20%] left-[5%] md:left-[8%] w-4 h-4 md:w-6 md:h-6 rounded-full bg-[var(--color-accent)]"></div>
 
 		<!-- Grid pattern -->
-		<div class="floating-shape absolute top-[30%] left-[10%] md:left-[15%] grid grid-cols-3 gap-2 opacity-30">
+		<div class="floating-shape absolute top-[15%] left-[10%] md:left-[15%] grid grid-cols-3 gap-2 opacity-30">
 			{#each Array(9) as _}
 				<div class="w-2 h-2 rounded-full bg-[var(--color-text)]"></div>
 			{/each}
@@ -93,14 +93,6 @@
 	<!-- Main Content -->
 	<div class="container relative z-10">
 		<div class="max-w-6xl">
-			<!-- Small intro -->
-			<div class="mb-6 md:mb-8 flex items-center gap-3">
-				<span class="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse"></span>
-				<span class="text-xs md:text-sm uppercase tracking-[0.2em] text-[var(--color-muted)]">
-					Available for work
-				</span>
-			</div>
-
 			<!-- Heading - visible immediately for LCP -->
 			<h1 class="mb-6 md:mb-8">
 				{#each headingText as line, lineIndex}
@@ -173,8 +165,6 @@
 	<div class="hidden md:block absolute top-8 right-8 w-20 h-20 border-t-2 border-r-2 border-[var(--color-border)] opacity-50"></div>
 	<div class="hidden md:block absolute bottom-8 left-8 w-20 h-20 border-b-2 border-l-2 border-[var(--color-border)] opacity-50"></div>
 
-	<!-- Bottom line -->
-	<div class="absolute bottom-0 left-0 right-0 h-[1px] bg-[var(--color-border)]"></div>
 </section>
 
 <style>

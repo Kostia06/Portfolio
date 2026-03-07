@@ -139,7 +139,7 @@
 <section
 	bind:this={sectionEl}
 	id="work"
-	class="section-lg relative overflow-hidden"
+	class="relative overflow-hidden pb-[var(--space-2xl)]"
 	style="background: var(--color-bg);"
 	onmouseleave={handleSectionLeave}
 	role="region"
@@ -193,7 +193,7 @@
 							href={project.liveUrl}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="block py-8 md:py-12 border-t border-[var(--color-border)] transition-colors hover:bg-[var(--color-bg-alt)]"
+							class="block py-8 md:py-12 border-t border-[var(--color-border)] transition-all hover:bg-[var(--glass-bg-hover)]"
 							data-cursor="pointer"
 							data-cursor-text="View"
 						>
@@ -214,7 +214,7 @@
 
 									<div class="flex flex-wrap gap-2">
 										{#each project.tags.slice(0, 2) as tag}
-											<span class="px-3 py-1 text-xs uppercase tracking-wider text-[var(--color-muted)] border border-[var(--color-border)] rounded-full group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)] transition-colors">
+											<span class="px-3 py-1 text-xs uppercase tracking-wider text-[var(--color-muted)] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)] transition-colors">
 												{tag}
 											</span>
 										{/each}
@@ -253,7 +253,7 @@
 
 									<div class="flex flex-wrap gap-2">
 										{#each project.tags.slice(0, 2) as tag}
-											<span class="px-3 py-1 text-xs uppercase tracking-wider text-[var(--color-muted)] border border-[var(--color-border)] rounded-full">
+											<span class="px-3 py-1 text-xs uppercase tracking-wider text-[var(--color-muted)] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full">
 												{tag}
 											</span>
 										{/each}
@@ -267,20 +267,33 @@
 			<div class="border-t border-[var(--color-border)]"></div>
 		</div>
 
-		<div class="mt-12 md:mt-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-			<p class="text-[var(--color-muted)] text-sm">
-				Want to see more? Check out my GitHub.
-			</p>
+		<div class="mt-20 md:mt-28 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6" onmouseenter={handleSectionLeave}>
+			<a
+				href="/about"
+				class="group inline-flex items-center gap-3 px-7 py-4 bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-full hover:border-[var(--color-accent)] hover:bg-[var(--glass-bg-hover)] transition-all duration-300"
+				data-cursor="pointer"
+			>
+				<span class="text-sm md:text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors uppercase tracking-wider">View Full Journey</span>
+				<svg
+					class="w-4 h-4 text-[var(--color-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-1 transition-all"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+				</svg>
+			</a>
 			<a
 				href="https://github.com/Kostia06"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="inline-flex items-center gap-3 text-base md:text-lg font-medium text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors group"
+				class="group inline-flex items-center gap-3 px-7 py-4 bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-full hover:border-[var(--color-accent)] hover:bg-[var(--glass-bg-hover)] transition-all duration-300"
 				data-cursor="pointer"
 			>
-				<span class="fancy-link">View GitHub</span>
+				<span class="text-sm md:text-base font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors uppercase tracking-wider">View GitHub</span>
 				<svg
-					class="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+					class="w-4 h-4 text-[var(--color-muted)] group-hover:text-[var(--color-accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -292,7 +305,6 @@
 		</div>
 	</div>
 
-	<div class="absolute bottom-0 left-0 w-1/3 h-[1px] bg-gradient-to-r from-[var(--color-accent)] to-transparent"></div>
 </section>
 
 <style>
@@ -300,7 +312,8 @@
 		opacity: 0;
 		transform: translate(-50%, -50%) scale(0.9);
 		transition: opacity 0.4s ease, transform 0.4s ease;
-		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+		box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.1);
 		will-change: transform, opacity;
 	}
 

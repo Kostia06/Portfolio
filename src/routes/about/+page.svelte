@@ -120,7 +120,7 @@
 					<!-- Skills as tags -->
 					<div class="flex flex-wrap gap-2 mb-8">
 						{#each skills as skill}
-							<span class="px-3 py-1.5 text-xs uppercase tracking-wider text-[var(--color-muted)] border border-[var(--color-border)] rounded-full hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors">
+							<span class="px-3 py-1.5 text-xs uppercase tracking-wider text-[var(--color-muted)] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors">
 								{skill}
 							</span>
 						{/each}
@@ -149,7 +149,7 @@
 					<div class="timeline-item group relative pl-10 md:pl-14 pb-10 md:pb-14 last:pb-0">
 						<div class="absolute left-0 top-0 w-4 h-4 md:w-5 md:h-5 rounded-full bg-[var(--color-bg-alt)] border-2 border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] transition-all z-10"></div>
 
-						<div class="timeline-card rounded-xl border border-transparent p-4 -ml-4 group-hover:border-[var(--color-border)] group-hover:bg-[var(--color-bg)] transition-all duration-300">
+						<div class="timeline-card rounded-xl border border-transparent p-4 -ml-4 group-hover:border-[var(--glass-border)] group-hover:bg-[var(--glass-bg)] group-hover:backdrop-blur-md transition-all duration-300">
 							<div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 md:gap-4">
 								<div>
 									<div class="flex items-center gap-2 mb-1">

@@ -198,7 +198,7 @@
 				<!-- Copy button -->
 				<button
 					onclick={copyEmail}
-					class="mt-4 md:mt-6 inline-flex items-center gap-2 text-xs md:text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-all px-4 py-2 border border-[var(--color-border)] rounded-full hover:border-[var(--color-accent)] hover:scale-105"
+					class="mt-4 md:mt-6 inline-flex items-center gap-2 text-xs md:text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-all px-4 py-2 bg-[var(--glass-bg)] backdrop-blur-sm border border-[var(--glass-border)] rounded-full hover:border-[var(--color-accent)] hover:scale-105"
 					data-cursor="pointer"
 				>
 					{#if copiedEmail}
@@ -222,7 +222,7 @@
 						href={link.href}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="social-link group relative flex items-center gap-3 px-6 py-4 border border-[var(--color-border)] rounded-xl hover:border-[var(--color-accent)] transition-all overflow-hidden"
+						class="social-link group relative flex items-center gap-3 px-6 py-4 border border-[var(--glass-border)] rounded-xl hover:border-[var(--color-accent)] transition-all overflow-hidden backdrop-blur-sm bg-[var(--glass-bg)]"
 						data-cursor="pointer"
 					>
 						<!-- Hover background -->
@@ -247,7 +247,7 @@
 
 			<!-- Availability Status -->
 			<div class="text-center">
-				<div class="inline-flex items-center gap-3 px-6 py-3 bg-[var(--color-bg-alt)] rounded-full border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-colors">
+				<div class="inline-flex items-center gap-3 px-6 py-3 bg-[var(--glass-bg)] backdrop-blur-md rounded-full border border-[var(--glass-border)] hover:border-[var(--color-accent)] transition-colors">
 					<span class="relative flex h-3 w-3">
 						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
 						<span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>

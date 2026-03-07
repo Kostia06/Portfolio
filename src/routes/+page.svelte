@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Hero from '$sections/Hero.svelte';
 	import Projects from '$sections/Projects.svelte';
-	import Experience from '$sections/Experience.svelte';
+
 	import Contact from '$sections/Contact.svelte';
 </script>
 
@@ -11,9 +11,6 @@
 
 	<!-- Projects Section -->
 	<Projects />
-
-	<!-- Experience Section -->
-	<Experience />
 
 	<!-- Contact Section -->
 	<Contact />
