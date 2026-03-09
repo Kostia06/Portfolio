@@ -137,6 +137,19 @@ export const projects: Project[] = [
 	},
 	{
 		id: 11,
+		title: 'AI Ghost Hunter',
+		subtitle: 'AI Accountability Research',
+		description:
+			'Automated testing tool for the AiEO Visibility Challenge by TECHNATION Canada. Detects hallucinated "ghost organizations" invented by AI platforms. Queries ChatGPT, Gemini, Claude, and Perplexity, extracts org data via LLM, and auto-verifies against Google. Found 40 ghost orgs across 506 tests on 4 platforms.',
+		color: '#ef4444',
+		tags: ['Python', 'OpenAI', 'Flask'],
+		liveUrl: 'https://aieo-ai-ghost.vercel.app/',
+		screenshot: '/screenshots/aighost.webp',
+		size: 'medium',
+		achievement: '40 Ghosts Found'
+	},
+	{
+		id: 12,
 		title: 'Help Ukraine Forms',
 		subtitle: 'Advocacy Platform',
 		description:
