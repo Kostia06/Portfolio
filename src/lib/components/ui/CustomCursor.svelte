@@ -16,11 +16,9 @@
 	let rawX = $state(-100);
 	let rawY = $state(-100);
 
-	onMount(() => {
-		mounted = true;
+	let cleanup: (() => void) | null = null;
 
-		if ($isTouchDevice) return;
-
+	function setupListeners() {
 		const moveCursor = (e: MouseEvent) => {
 			rawX = e.clientX;
 			rawY = e.clientY;
@@ -63,6 +61,35 @@
 			window.removeEventListener('mouseup', handleMouseUp);
 			document.removeEventListener('mouseover', handleMouseOver);
 			document.removeEventListener('mouseout', handleMouseOut);
+		};
+	}
+
+	function teardownListeners() {
+		if (cleanup) {
+			cleanup();
+			cleanup = null;
+		}
+		cursorX.set(-100, { hard: true });
+		cursorY.set(-100, { hard: true });
+		rawX = -100;
+		rawY = -100;
+	}
+
+	onMount(() => {
+		mounted = true;
+
+		// React to isTouchDevice changes
+		const unsubscribe = isTouchDevice.subscribe((isTouch) => {
+			if (!isTouch && !cleanup) {
+				cleanup = setupListeners();
+			} else if (isTouch && cleanup) {
+				teardownListeners();
+			}
+		});
+
+		return () => {
+			unsubscribe();
+			teardownListeners();
 		};
 	});
 

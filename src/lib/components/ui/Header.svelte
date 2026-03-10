@@ -134,7 +134,7 @@
 					GitHub
 				</a>
 				<a
-					href="https://linkedin.com/in/kostiantyn-ilnytskyi"
+					href="https://www.linkedin.com/in/kostia-ilnytskyi"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="text-sm uppercase tracking-widest text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors"

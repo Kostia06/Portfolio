@@ -14,7 +14,7 @@
 
 	const socialLinks = [
 		{ href: 'https://github.com/Kostia06', label: 'GitHub', icon: 'GH' },
-		{ href: 'https://linkedin.com/in/kostiantyn-ilnytskyi-899a53247', label: 'LinkedIn', icon: 'LI' }
+		{ href: 'https://www.linkedin.com/in/kostia-ilnytskyi', label: 'LinkedIn', icon: 'LI' }
 	];
 
 	let copiedEmail = $state(false);
