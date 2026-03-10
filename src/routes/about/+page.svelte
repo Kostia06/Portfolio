@@ -6,16 +6,10 @@
 	import { isMobile } from '$stores/app';
 	import { experiences } from '$data/experiences';
 
-	let imageEl: HTMLElement;
 	let bioEl: HTMLElement;
 	let timelineEl: HTMLElement;
 	let backBtnEl: HTMLElement;
-
-	const skills = [
-		'JavaScript', 'TypeScript', 'Python', 'React', 'React Native',
-		'Next.js', 'SvelteKit', 'Node.js', 'PostgreSQL', 'Supabase',
-		'Firebase', 'Docker', 'GraphQL', 'Stripe'
-	];
+	let timelineSectionEl: HTMLElement;
 
 	onMount(() => {
 		if (!browser) return;
@@ -28,14 +22,14 @@
 		if (backBtnEl) {
 			gsap.set(backBtnEl, { x: -50, opacity: 0 });
 			tl.to(backBtnEl, { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.2);
-		}
 
-		if (imageEl && !$isMobile) {
-			gsap.set(imageEl, { clipPath: 'inset(100% 0 0 0)' });
-			tl.to(imageEl, { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power4.inOut' }, 0.3);
-		} else if (imageEl) {
-			gsap.set(imageEl, { opacity: 0, y: 30 });
-			tl.to(imageEl, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.3);
+			ScrollTrigger.create({
+				trigger: 'main',
+				start: 'top top',
+				end: '+=200',
+				onLeave: () => { gsap.to(backBtnEl, { opacity: 0, x: -30, duration: 0.3 }); backBtnEl.style.pointerEvents = 'none'; },
+				onEnterBack: () => { gsap.to(backBtnEl, { opacity: 1, x: 0, duration: 0.3 }); backBtnEl.style.pointerEvents = 'auto'; }
+			});
 		}
 
 		if (bioEl) {
@@ -45,18 +39,35 @@
 
 		if (timelineEl) {
 			const items = timelineEl.querySelectorAll('.timeline-item');
-			const line = timelineEl.querySelector('.timeline-line');
+			const line = timelineEl.querySelector('.timeline-line') as HTMLElement;
+			const dots = timelineEl.querySelectorAll('.timeline-dot');
 
-			if (line && !$isMobile) {
-				gsap.set(line, { scaleY: 0, transformOrigin: 'top' });
-				gsap.to(line, {
-					scaleY: 1, duration: 1.5, ease: 'power3.out',
-					scrollTrigger: { trigger: timelineEl, start: 'top 80%', toggleActions: 'play none none reverse' }
+			if (line) {
+				ScrollTrigger.create({
+					trigger: timelineEl,
+					start: 'top 80%',
+					end: 'bottom 65%',
+					scrub: 0.3,
+					onUpdate: (self) => {
+						const progress = self.progress;
+						line.style.height = `${progress * 100}%`;
+
+						const lineBottom = timelineEl.getBoundingClientRect().top + timelineEl.offsetHeight * progress;
+
+						dots.forEach((dot) => {
+							const dotCenter = dot.getBoundingClientRect().top + dot.clientHeight / 2;
+							if (dotCenter <= lineBottom) {
+								dot.classList.add('active');
+							} else {
+								dot.classList.remove('active');
+							}
+						});
+					}
 				});
 			}
 
 			gsap.from(items, {
-				x: -50, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.2,
+				y: 30, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.15,
 				scrollTrigger: { trigger: timelineEl, start: 'top 80%', toggleActions: 'play none none reverse' }
 			});
 		}
@@ -91,40 +102,16 @@
 	<!-- Hero -->
 	<section class="relative pt-32 md:pt-40 pb-16 md:pb-24 px-4 md:px-0">
 		<div class="container">
-			<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-				<!-- Image -->
-				<div bind:this={imageEl} class="relative aspect-[4/5] max-w-sm mx-auto lg:mx-0 rounded-2xl overflow-hidden">
-					<img
-						src="/profile.webp"
-						alt="Kostiantyn Ilnytskyi"
-						width="400"
-						height="500"
-						loading="eager"
-						decoding="async"
-						fetchpriority="high"
-						class="w-full h-full object-cover"
-					/>
-				</div>
-
-				<!-- Bio -->
+			<div class="max-w-2xl">
 				<div bind:this={bioEl}>
 					<span class="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] mb-4 block">/ About</span>
 					<h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-[0.95] tracking-tight mb-6">
-						Kostiantyn<br />
+						Kostia<br />
 						<span class="text-[var(--color-muted)]">Ilnytskyi</span>
 					</h1>
 					<p class="text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed max-w-md mb-8">
 						CS student at the University of Calgary. I build performant web apps — from hackathon MVPs to production platforms serving thousands of users.
 					</p>
-
-					<!-- Skills as tags -->
-					<div class="flex flex-wrap gap-2 mb-8">
-						{#each skills as skill}
-							<span class="px-3 py-1.5 text-xs uppercase tracking-wider text-[var(--color-muted)] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors">
-								{skill}
-							</span>
-						{/each}
-					</div>
 
 					<a href="/#contact" class="btn-primary" data-cursor="pointer">
 						<span>Get in Touch</span>
@@ -138,16 +125,19 @@
 	</section>
 
 	<!-- Experience Timeline -->
-	<section class="py-16 md:py-24 px-4 md:px-0" style="background: var(--color-bg-alt);">
+	<section bind:this={timelineSectionEl} class="py-16 md:py-24 px-4 md:px-0" style="background: var(--color-bg-alt);">
 		<div class="container max-w-3xl">
 			<h2 class="text-xs uppercase tracking-[0.2em] text-[var(--color-muted)] mb-10 md:mb-14">/ Experience</h2>
 
 			<div bind:this={timelineEl} class="relative">
-				<div class="timeline-line absolute left-[7px] md:left-[9px] top-0 bottom-0 w-[2px] bg-[var(--color-accent)]"></div>
+				<!-- Background line (gray) -->
+				<div class="timeline-bg-line absolute top-0 bottom-0"></div>
+				<!-- Progress line (orange, fills on scroll) -->
+				<div class="timeline-line timeline-progress-line absolute top-0" style="height: 0%;"></div>
 
 				{#each experiences as exp}
-					<div class="timeline-item group relative pl-10 md:pl-14 pb-10 md:pb-14 last:pb-0">
-						<div class="absolute left-0 top-0 w-4 h-4 md:w-5 md:h-5 rounded-full bg-[var(--color-bg-alt)] border-2 border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] transition-all z-10"></div>
+					<div class="timeline-item group relative pl-10 md:pl-12 pb-10 md:pb-14 last:pb-0">
+						<div class="timeline-dot absolute top-[18px] z-10"></div>
 
 						<div class="timeline-card rounded-xl border border-transparent p-4 -ml-4 group-hover:border-[var(--glass-border)] group-hover:bg-[var(--glass-bg)] group-hover:backdrop-blur-md transition-all duration-300">
 							<div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 md:gap-4">
@@ -180,10 +170,83 @@
 			</div>
 		</div>
 	</section>
+
+	<!-- Back to Home -->
+	<section class="py-20 md:py-28 px-4 md:px-0" style="background: var(--color-bg);">
+		<div class="container max-w-3xl flex flex-col items-center text-center">
+			<p class="text-sm text-[var(--color-muted)] mb-6">That's the journey so far.</p>
+			<a href="/" class="btn-outline" data-cursor="pointer">
+				<span>Back to Home</span>
+			</a>
+		</div>
+	</section>
 </main>
 
 <style>
 	.timeline-line {
-		will-change: transform;
+		will-change: height;
+	}
+
+	/* Shared center point for line and dots */
+	.timeline-bg-line,
+	.timeline-progress-line {
+		left: 5px;
+		width: 1px;
+	}
+
+	.timeline-bg-line {
+		background: var(--color-border);
+	}
+
+	.timeline-progress-line {
+		width: 2px;
+		left: 4.5px;
+		background: var(--color-accent);
+	}
+
+	/* Dots: small by default, centered on the line */
+	.timeline-dot {
+		width: 10px;
+		height: 10px;
+		left: 0px;
+		border-radius: 50%;
+		background-color: var(--color-bg-alt);
+		border: 2px solid var(--color-border);
+		transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+		box-shadow: 0 0 0 4px var(--color-bg-alt);
+	}
+
+	/* Active dots: grow and turn orange */
+	:global(.timeline-dot.active) {
+		width: 14px;
+		height: 14px;
+		left: -2px;
+		border-color: var(--color-accent);
+		background-color: var(--color-accent);
+		box-shadow: 0 0 0 4px var(--color-bg-alt);
+	}
+
+	@media (min-width: 768px) {
+		.timeline-bg-line {
+			left: 7px;
+		}
+
+		.timeline-progress-line {
+			left: 6.5px;
+		}
+
+		.timeline-dot {
+			width: 12px;
+			height: 12px;
+			left: 1px;
+			box-shadow: 0 0 0 5px var(--color-bg-alt);
+		}
+
+		:global(.timeline-dot.active) {
+			width: 16px;
+			height: 16px;
+			left: -1px;
+			box-shadow: 0 0 0 5px var(--color-bg-alt);
+		}
 	}
 </style>
