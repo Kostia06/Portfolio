@@ -143,7 +143,7 @@
 							<div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 md:gap-4">
 								<div>
 									<div class="flex items-center gap-2 mb-1">
-										<span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border {exp.type === 'work' ? 'text-[var(--color-accent)] border-[var(--color-accent)]/30' : exp.type === 'education' ? 'text-blue-400 border-blue-400/30' : 'text-yellow-400 border-yellow-400/30'}">
+										<span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border {exp.type === 'work' ? 'text-[var(--color-accent)] border-[var(--color-accent)]/30' : exp.type === 'education' ? 'text-[var(--color-text-secondary)] border-[var(--color-border-dark)]' : 'text-[var(--color-accent)] border-[var(--color-accent)]/30'}">
 											{exp.type === 'work' ? 'Work' : exp.type === 'education' ? 'Education' : 'Award'}
 										</span>
 									</div>
@@ -212,7 +212,7 @@
 		border-radius: 50%;
 		background-color: var(--color-bg-alt);
 		border: 2px solid var(--color-border);
-		transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+		transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 		box-shadow: 0 0 0 4px var(--color-bg-alt);
 	}
 

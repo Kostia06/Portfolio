@@ -10,7 +10,7 @@
 
 	const navLinks = [
 		{ href: '#work', label: 'Work' },
-		{ href: '#about', label: 'About' },
+		{ href: '/about', label: 'About' },
 		{ href: '#contact', label: 'Contact' }
 	];
 
@@ -149,8 +149,9 @@
 
 <style>
 	.scrolled {
-		background: rgba(0, 0, 0, 0.95);
-		backdrop-filter: blur(10px);
+		background: rgba(5, 5, 7, 0.92);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
 		border-bottom: 1px solid var(--color-border);
 	}
 

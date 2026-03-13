@@ -68,22 +68,22 @@
 				projectEls.forEach((el, i) => {
 					if (!el) return;
 					if (i === closestIndex) {
-						gsap.to(el, { scale: 1.08, opacity: 1, duration: 0.5, ease: 'power2.out', force3D: true });
+						gsap.to(el, { opacity: 1, duration: 0.5, ease: 'power2.out', force3D: true });
 					} else {
-						gsap.to(el, { scale: 0.9, opacity: 0.3, duration: 0.5, ease: 'power2.out', force3D: true });
+						gsap.to(el, { opacity: 0.4, duration: 0.5, ease: 'power2.out', force3D: true });
 					}
 				});
 			},
 			onLeave: () => {
 				currentFocused = -1;
 				projectEls.forEach((el) => {
-					if (el) gsap.to(el, { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out', force3D: true });
+					if (el) gsap.to(el, { opacity: 1, duration: 0.4, ease: 'power2.out', force3D: true });
 				});
 			},
 			onLeaveBack: () => {
 				currentFocused = -1;
 				projectEls.forEach((el) => {
-					if (el) gsap.to(el, { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out', force3D: true });
+					if (el) gsap.to(el, { opacity: 1, duration: 0.4, ease: 'power2.out', force3D: true });
 				});
 			}
 		});
@@ -170,13 +170,6 @@
 		{/each}
 		<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
 		<div class="absolute inset-0 rounded-xl border border-white/10"></div>
-	</div>
-
-	<!-- Background decoration -->
-	<div class="absolute top-0 right-0 w-1/2 h-full pointer-events-none opacity-[0.03]">
-		<div class="absolute top-1/4 right-[10%] font-display text-[40vw] font-bold leading-none text-[var(--color-text)]">
-			W
-		</div>
 	</div>
 
 	<div class="container relative z-10">

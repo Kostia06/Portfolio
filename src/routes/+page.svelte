@@ -16,13 +16,10 @@
 	<Contact />
 
 	<!-- Footer -->
-	<footer class="py-6 px-4 md:px-0" style="background: var(--color-bg-alt);">
-		<div class="container flex flex-col md:flex-row items-center justify-between gap-4">
-			<p class="text-xs text-[var(--color-muted)] text-center md:text-left">
-				&copy; {new Date().getFullYear()} Kostiantyn Ilnytskyi. All rights reserved.
-			</p>
+	<footer class="py-8 px-4 md:px-0 border-t border-[var(--color-border)]" style="background: var(--color-bg);">
+		<div class="container">
 			<p class="text-xs text-[var(--color-muted)]">
-				Built with <span class="text-[var(--color-accent)]">SvelteKit</span> + <span class="text-[var(--color-accent)]">GSAP</span>
+				&copy; {new Date().getFullYear()} Kostia Ilnytskyi
 			</p>
 		</div>
 	</footer>
