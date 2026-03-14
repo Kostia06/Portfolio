@@ -64,8 +64,5 @@
 <!-- Custom Cursor (desktop only) -->
 <CustomCursor />
 
-<!-- Noise overlay for texture -->
-<div class="noise-overlay"></div>
-
 <!-- Main Content -->
 {@render children()}
