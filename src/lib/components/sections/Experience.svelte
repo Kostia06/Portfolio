@@ -1,46 +1,106 @@
-<section
-	id="experience"
-	class="relative py-24 md:py-32 bg-[var(--color-bg-alt)]"
->
-	<!-- Background decorative elements -->
-	<div class="absolute inset-0 pointer-events-none overflow-hidden">
-		<!-- Gradient orbs -->
-		<div class="absolute top-[10%] left-[5%] w-72 h-72 bg-[var(--color-accent)]/5 rounded-full blur-[100px]"></div>
-		<div class="absolute bottom-[10%] right-[10%] w-96 h-96 bg-[var(--color-accent)]/3 rounded-full blur-[120px]"></div>
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+	import gsap from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+	import { experiences } from '$data/experiences';
 
-		<!-- Grid pattern -->
-		<div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(var(--color-text) 1px, transparent 1px), linear-gradient(90deg, var(--color-text) 1px, transparent 1px); background-size: 60px 60px;"></div>
+	let expandedIndex = $state<number | null>(null);
+	let sectionEl: HTMLElement;
 
-		<!-- Diagonal lines -->
-		<div class="absolute top-0 right-[20%] w-[1px] h-full bg-gradient-to-b from-transparent via-[var(--color-accent)]/10 to-transparent"></div>
-		<div class="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-transparent via-[var(--color-border)]/20 to-transparent"></div>
+	const typeBadgeColors: Record<string, string> = {
+		work: 'var(--color-accent)',
+		education: '#3b82f6',
+		achievement: '#22c55e'
+	};
 
-		<!-- Corner accents -->
-		<div class="hidden md:block absolute top-12 right-12 w-20 h-20 border-t border-r border-[var(--color-accent)]/20"></div>
-		<div class="hidden md:block absolute bottom-12 left-12 w-20 h-20 border-b border-l border-[var(--color-accent)]/20"></div>
+	function toggleExpand(index: number) {
+		expandedIndex = expandedIndex === index ? null : index;
+	}
 
-		<!-- Floating dots -->
-		<div class="absolute top-[25%] right-[8%] w-2 h-2 rounded-full bg-[var(--color-accent)]/40"></div>
-		<div class="absolute bottom-[30%] left-[12%] w-3 h-3 rounded-full bg-[var(--color-accent)]/20"></div>
-		<div class="absolute top-[60%] right-[25%] w-1.5 h-1.5 rounded-full bg-[var(--color-text)]/10"></div>
-	</div>
+	onMount(() => {
+		if (!browser) return;
+		gsap.registerPlugin(ScrollTrigger);
 
-	<!-- Top & bottom border lines -->
-	<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent"></div>
-	<div class="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent"></div>
+		const rows = sectionEl.querySelectorAll('.timeline-row');
+		gsap.fromTo(
+			rows,
+			{ opacity: 0, y: 30 },
+			{
+				opacity: 1,
+				y: 0,
+				duration: 0.6,
+				stagger: 0.1,
+				ease: 'power3.out',
+				scrollTrigger: {
+					trigger: sectionEl,
+					start: 'top 75%'
+				}
+			}
+		);
+	});
+</script>
 
-	<div class="container relative z-10">
-		<div class="max-w-2xl mx-auto text-center">
-			<!-- Title -->
-			<span class="text-[10px] uppercase tracking-[0.3em] text-[var(--color-accent)] font-mono">
-				Experience
-			</span>
-			<h2 class="font-display text-3xl md:text-5xl font-bold text-[var(--color-text)] mt-2 mb-4">
-				My Journey
-			</h2>
-			<p class="text-[var(--color-text-secondary)] text-lg">
-				Explore my career path, skills, and the projects I've worked on.
-			</p>
+<section id="experience" class="section-lg" style="background: var(--color-bg);" bind:this={sectionEl}>
+	<div class="container">
+		<div class="mb-6">
+			<span class="section-number">04 / Experience</span>
+		</div>
+		<h2 class="section-heading mb-4">My Journey</h2>
+		<div class="divider mb-12 md:mb-16"></div>
+
+		<div class="flex flex-col">
+			{#each experiences as exp, index (index)}
+				<button
+					class="timeline-row group text-left w-full border-b border-[var(--color-border)] py-5 md:py-6 transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)]"
+					data-cursor="pointer"
+					onclick={() => toggleExpand(index)}
+				>
+					<div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-0">
+						<div class="md:w-24 shrink-0">
+							<span class="text-lg md:text-xl" style="font-family: var(--font-serif); color: var(--color-text-secondary);">
+								{exp.year}
+							</span>
+						</div>
+
+						<div class="flex-1 min-w-0">
+							<div class="flex items-center gap-3 flex-wrap">
+								<h3 class="text-base md:text-lg font-medium" style="color: var(--color-text);">
+									{exp.title}
+								</h3>
+								<span
+									class="text-[10px] uppercase tracking-widest px-2 py-0.5 border"
+									style="color: {typeBadgeColors[exp.type]}; border-color: {typeBadgeColors[exp.type]}; opacity: 0.7;"
+								>
+									{exp.type}
+								</span>
+							</div>
+							<p class="text-sm mt-1" style="color: var(--color-muted);">
+								{exp.company}
+							</p>
+						</div>
+
+						<div class="md:w-48 shrink-0 md:text-right">
+							<span class="text-xs tracking-wider" style="color: var(--color-muted); font-family: var(--font-sans);">
+								{exp.period}
+							</span>
+						</div>
+					</div>
+
+					{#if exp.details}
+						<div
+							class="grid transition-all duration-500 ease-out"
+							style="grid-template-rows: {expandedIndex === index ? '1fr' : '0fr'};"
+						>
+							<div class="overflow-hidden">
+								<p class="text-sm leading-relaxed pt-4 md:pl-24" style="color: var(--color-text-secondary);">
+									{exp.details}
+								</p>
+							</div>
+						</div>
+					{/if}
+				</button>
+			{/each}
 		</div>
 	</div>
 </section>

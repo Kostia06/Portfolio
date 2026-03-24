@@ -4,6 +4,7 @@
 	import Lenis from 'lenis';
 	import '../app.css';
 	import CustomCursor from '$ui/CustomCursor.svelte';
+	import Header from '$ui/Header.svelte';
 	import { isMobile } from '$stores/app';
 
 	let { children } = $props();
@@ -63,6 +64,9 @@
 
 <!-- Custom Cursor (desktop only) -->
 <CustomCursor />
+
+<!-- Navigation -->
+<Header />
 
 <!-- Main Content -->
 {@render children()}

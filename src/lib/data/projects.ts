@@ -10,6 +10,7 @@ export interface Project {
 	previewVideo?: string;
 	size: 'large' | 'medium' | 'small';
 	achievement: string;
+	category: 'saas' | 'ai' | 'ecommerce' | 'other';
 }
 
 export const projects: Project[] = [
@@ -24,7 +25,8 @@ export const projects: Project[] = [
 		liveUrl: 'https://mrblu.com',
 		screenshot: '/screenshots/mrblu.webp',
 		size: 'large',
-		achievement: '100% Cost Reduction'
+		achievement: '100% Cost Reduction',
+		category: 'saas'
 	},
 	{
 		id: 2,
@@ -37,7 +39,8 @@ export const projects: Project[] = [
 		liveUrl: 'https://ghost-hunter.dev',
 		screenshot: '/screenshots/aighost.webp',
 		size: 'medium',
-		achievement: '4 AI Platforms'
+		achievement: '4 AI Platforms',
+		category: 'ai'
 	},
 	{
 		id: 3,
@@ -50,7 +53,8 @@ export const projects: Project[] = [
 		liveUrl: 'https://respect-the-technique.ilnkostia-dev.workers.dev/',
 		screenshot: '/screenshots/rtt.webp',
 		size: 'large',
-		achievement: '1,200+ Visitors/mo'
+		achievement: '1,200+ Visitors/mo',
+		category: 'ecommerce'
 	},
 	{
 		id: 4,
@@ -63,7 +67,8 @@ export const projects: Project[] = [
 		liveUrl: 'https://help-ukraine-forms.com/en',
 		screenshot: '/screenshots/helpukraine.webp',
 		size: 'small',
-		achievement: 'Privacy-First'
+		achievement: 'Privacy-First',
+		category: 'other'
 	},
 	{
 		id: 5,
@@ -76,7 +81,8 @@ export const projects: Project[] = [
 		liveUrl: 'https://mock-mind.vercel.app/',
 		screenshot: '/screenshots/mockmind.webp',
 		size: 'medium',
-		achievement: 'AI-Powered'
+		achievement: 'AI-Powered',
+		category: 'ai'
 	},
 	{
 		id: 6,
@@ -89,7 +95,8 @@ export const projects: Project[] = [
 		liveUrl: 'https://lingozo.vercel.app/',
 		screenshot: '/screenshots/lingozo.webp',
 		size: 'medium',
-		achievement: '15+ Languages'
+		achievement: '15+ Languages',
+		category: 'ai'
 	},
 	{
 		id: 7,
@@ -102,7 +109,8 @@ export const projects: Project[] = [
 		liveUrl: 'https://www.git-fight.app/',
 		screenshot: '/screenshots/gitfight.webp',
 		size: 'small',
-		achievement: 'Zero Frameworks'
+		achievement: 'Zero Frameworks',
+		category: 'other'
 	},
 	{
 		id: 8,
@@ -113,7 +121,8 @@ export const projects: Project[] = [
 		color: '#06b6d4',
 		tags: ['Next.js', 'Supabase', 'Stripe'],
 		size: 'small',
-		achievement: '+30% Efficiency'
+		achievement: '+30% Efficiency',
+		category: 'ecommerce'
 	},
 	{
 		id: 9,
@@ -126,7 +135,8 @@ export const projects: Project[] = [
 		liveUrl: 'https://rye-boxes.com/',
 		screenshot: '/screenshots/rye.webp',
 		size: 'small',
-		achievement: 'Full CRUD'
+		achievement: 'Full CRUD',
+		category: 'other'
 	},
 	{
 		id: 10,
@@ -137,7 +147,8 @@ export const projects: Project[] = [
 		color: '#f59e0b',
 		tags: ['PHP', 'MySQL', 'Leadership'],
 		size: 'small',
-		achievement: '1st Place'
+		achievement: '1st Place',
+		category: 'other'
 	},
 	{
 		id: 11,
@@ -148,7 +159,8 @@ export const projects: Project[] = [
 		color: '#ec4899',
 		tags: ['Python', 'OpenCV', 'MediaPipe'],
 		size: 'small',
-		achievement: '<50ms'
+		achievement: '<50ms',
+		category: 'ai'
 	},
 	{
 		id: 12,
@@ -159,6 +171,7 @@ export const projects: Project[] = [
 		color: '#8b5cf6',
 		tags: ['Java', 'JavaFX', 'Team Lead'],
 		size: 'small',
-		achievement: 'UI Lead'
+		achievement: 'UI Lead',
+		category: 'other'
 	}
 ];

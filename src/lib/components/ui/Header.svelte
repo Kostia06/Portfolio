@@ -1,183 +1,334 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
-	import { isMobile } from '$stores/app';
-	import MagneticButton from './MagneticButton.svelte';
+	import { browser } from '$app/environment';
+	import { activeSection } from '$lib/stores/app';
+	import gsap from 'gsap';
 
-	let isMenuOpen = $state(false);
+	const NAV_LINKS = [
+		{ href: '#work', id: 'work', label: 'Work' },
+		{ href: '#expertise', id: 'expertise', label: 'Expertise' },
+		{ href: '#experience', id: 'experience', label: 'Experience' },
+		{ href: '#about', id: 'about', label: 'About' },
+		{ href: '#contact', id: 'contact', label: 'Contact' }
+	] as const;
+
+	const OBSERVED_SECTIONS = ['hero', 'work', 'expertise', 'experience', 'about', 'contact'];
+	const SCROLL_THRESHOLD = 100;
+
 	let isScrolled = $state(false);
-	let headerEl: HTMLElement;
+	let isMenuOpen = $state(false);
+	let mobileOverlay: HTMLElement | undefined = $state();
+	let mobileNavLinks: HTMLElement[] = $state([]);
 
-	const navLinks = [
-		{ href: '#work', label: 'Work' },
-		{ href: '/about', label: 'About' },
-		{ href: '#contact', label: 'Contact' }
-	];
+	let headerClasses = $derived(
+		isScrolled ? 'header header--scrolled' : 'header'
+	);
+
+	function scrollToSection(sectionId: string) {
+		const element = document.getElementById(sectionId);
+		if (!element) return;
+		element.scrollIntoView({ behavior: 'smooth' });
+	}
+
+	function handleDesktopLinkClick(event: MouseEvent, sectionId: string) {
+		event.preventDefault();
+		scrollToSection(sectionId);
+	}
+
+	function handleMobileLinkClick(event: MouseEvent, sectionId: string) {
+		event.preventDefault();
+		isMenuOpen = false;
+		document.body.style.overflow = '';
+		scrollToSection(sectionId);
+	}
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
-		if (isMenuOpen) {
-			document.body.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = '';
+		document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+	}
+
+	$effect(() => {
+		if (!browser) return;
+
+		function handleScroll() {
+			isScrolled = window.scrollY > SCROLL_THRESHOLD;
 		}
-	}
-
-	function closeMenu() {
-		isMenuOpen = false;
-		document.body.style.overflow = '';
-	}
-
-	onMount(() => {
-		const handleScroll = () => {
-			isScrolled = window.scrollY > 50;
-		};
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
-		return () => window.removeEventListener('scroll', handleScroll);
+		handleScroll();
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	});
+
+	$effect(() => {
+		if (!browser) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						activeSection.set(entry.target.id);
+					}
+				}
+			},
+			{ rootMargin: '-40% 0px -40% 0px', threshold: 0 }
+		);
+
+		for (const id of OBSERVED_SECTIONS) {
+			const element = document.getElementById(id);
+			if (element) {
+				observer.observe(element);
+			}
+		}
+
+		return () => {
+			observer.disconnect();
+		};
+	});
+
+	$effect(() => {
+		if (!browser) return;
+		if (!isMenuOpen) return;
+		if (!mobileOverlay) return;
+
+		const links = mobileOverlay.querySelectorAll('.mobile-nav__link');
+
+		gsap.fromTo(
+			links,
+			{ y: 60, opacity: 0 },
+			{
+				y: 0,
+				opacity: 1,
+				duration: 0.5,
+				stagger: 0.08,
+				ease: 'power3.out',
+				delay: 0.1
+			}
+		);
 	});
 </script>
 
-<header
-	bind:this={headerEl}
-	class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
-	class:scrolled={isScrolled}
->
-	<div class="container">
-		<nav class="flex items-center justify-between h-20 md:h-24">
-			<!-- Logo -->
-			<a
-				href="/"
-				class="relative z-50 font-display text-xl md:text-2xl font-bold tracking-tight"
-				data-cursor="pointer"
-				data-cursor-text="Home"
-			>
-				<span class="text-[var(--color-text)]">Kos</span>
-				<span class="text-[var(--color-accent)]">.</span>
-			</a>
-
-			<!-- Desktop Navigation -->
-			<div class="hidden md:flex items-center gap-12">
-				{#each navLinks as link}
-					<MagneticButton>
-						<a
-							href={link.href}
-							class="nav-link relative text-sm font-medium uppercase tracking-widest text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-300"
-							data-cursor="pointer"
-						>
-							{link.label}
-						</a>
-					</MagneticButton>
-				{/each}
-			</div>
-
-			<!-- Mobile Menu Button -->
-			<button
-				onclick={toggleMenu}
-				class="relative z-50 md:hidden w-12 h-12 flex items-center justify-center"
-				aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-				data-cursor="pointer"
-			>
-				<div class="relative w-6 h-4">
-					<span
-						class="absolute left-0 w-full h-[2px] bg-[var(--color-text)] transition-all duration-300 origin-center"
-						class:rotate-45={isMenuOpen}
-						class:translate-y-[7px]={isMenuOpen}
-						style="top: 0;"
-					></span>
-					<span
-						class="absolute left-0 w-full h-[2px] bg-[var(--color-text)] transition-all duration-300"
-						class:opacity-0={isMenuOpen}
-						style="top: 50%; transform: translateY(-50%);"
-					></span>
-					<span
-						class="absolute left-0 w-full h-[2px] bg-[var(--color-text)] transition-all duration-300 origin-center"
-						class:-rotate-45={isMenuOpen}
-						class:-translate-y-[7px]={isMenuOpen}
-						style="bottom: 0;"
-					></span>
-				</div>
-			</button>
-		</nav>
-	</div>
-
-	<!-- Mobile Menu Overlay -->
-	{#if isMenuOpen}
-		<div
-			class="fixed inset-0 bg-[var(--color-bg)] z-40 flex flex-col justify-center items-center"
-			role="dialog"
-			aria-modal="true"
+<header class={headerClasses}>
+	<div class="header__inner">
+		<a
+			href="/"
+			class="header__logo"
+			data-cursor="pointer"
 		>
-			<nav class="flex flex-col items-center gap-8">
-				{#each navLinks as link, i}
-					<a
-						href={link.href}
-						onclick={closeMenu}
-						class="text-4xl md:text-5xl font-display font-bold text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-300"
-						style="animation: slideIn 0.5s ease-out {i * 0.1}s both;"
-						data-cursor="pointer"
-					>
-						{link.label}
-					</a>
-				{/each}
-			</nav>
+			Kostia Ilnytskyi
+		</a>
 
-			<!-- Social Links in Mobile Menu -->
-			<div class="absolute bottom-12 flex items-center gap-8">
+		<nav class="desktop-nav">
+			{#each NAV_LINKS as link (link.id)}
 				<a
-					href="https://github.com/Kostia06"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-sm uppercase tracking-widest text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors"
+					href={link.href}
+					class="desktop-nav__link"
+					class:desktop-nav__link--active={$activeSection === link.id}
 					data-cursor="pointer"
+					onclick={(e) => handleDesktopLinkClick(e, link.id)}
 				>
-					GitHub
+					{link.label}
 				</a>
-				<a
-					href="https://www.linkedin.com/in/kostia-ilnytskyi"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-sm uppercase tracking-widest text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors"
-					data-cursor="pointer"
-				>
-					LinkedIn
-				</a>
-			</div>
-		</div>
-	{/if}
+			{/each}
+		</nav>
+
+		<button
+			class="hamburger"
+			onclick={toggleMenu}
+			aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+			data-cursor="pointer"
+		>
+			<span
+				class="hamburger__line"
+				class:hamburger__line--top-open={isMenuOpen}
+			></span>
+			<span
+				class="hamburger__line"
+				class:hamburger__line--mid-open={isMenuOpen}
+			></span>
+			<span
+				class="hamburger__line"
+				class:hamburger__line--bot-open={isMenuOpen}
+			></span>
+		</button>
+	</div>
 </header>
 
+{#if isMenuOpen}
+	<div
+		class="mobile-nav"
+		bind:this={mobileOverlay}
+		role="dialog"
+		aria-modal="true"
+	>
+		<nav class="mobile-nav__list">
+			{#each NAV_LINKS as link, i (link.id)}
+				<a
+					href={link.href}
+					class="mobile-nav__link"
+					class:mobile-nav__link--active={$activeSection === link.id}
+					data-cursor="pointer"
+					onclick={(e) => handleMobileLinkClick(e, link.id)}
+					bind:this={mobileNavLinks[i]}
+				>
+					{link.label}
+				</a>
+			{/each}
+		</nav>
+	</div>
+{/if}
+
 <style>
-	.scrolled {
-		background: rgba(5, 5, 7, 0.92);
-		backdrop-filter: blur(16px);
-		-webkit-backdrop-filter: blur(16px);
-		border-bottom: 1px solid var(--color-border);
-	}
-
-	.nav-link::after {
-		content: '';
-		position: absolute;
-		bottom: -4px;
+	.header {
+		position: fixed;
+		top: 0;
 		left: 0;
-		width: 0;
-		height: 1px;
-		background: var(--color-accent);
-		transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+		right: 0;
+		z-index: 50;
+		background: transparent;
+		border-bottom: 1px solid transparent;
+		transition: background 0.3s ease, border-color 0.3s ease;
 	}
 
-	.nav-link:hover::after {
-		width: 100%;
+	.header--scrolled {
+		background: var(--color-bg);
+		border-bottom-color: var(--color-border);
 	}
 
-	@keyframes slideIn {
-		from {
-			opacity: 0;
-			transform: translateY(30px);
+	.header__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 0 24px;
+		height: 72px;
+	}
+
+	.header__logo {
+		position: relative;
+		z-index: 51;
+		font-family: var(--font-serif);
+		font-size: 18px;
+		font-weight: 400;
+		color: var(--color-text);
+		text-decoration: none;
+		letter-spacing: -0.01em;
+	}
+
+	/* Desktop nav */
+
+	.desktop-nav {
+		display: none;
+		align-items: center;
+		gap: 32px;
+	}
+
+	@media (min-width: 768px) {
+		.desktop-nav {
+			display: flex;
 		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
+	}
+
+	.desktop-nav__link {
+		font-family: var(--font-sans);
+		font-size: var(--text-xs);
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-muted);
+		text-decoration: none;
+		transition: color 0.3s ease;
+	}
+
+	.desktop-nav__link:hover {
+		color: var(--color-text);
+	}
+
+	.desktop-nav__link--active {
+		color: var(--color-accent);
+	}
+
+	/* Hamburger */
+
+	.hamburger {
+		position: relative;
+		z-index: 51;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 5px;
+		width: 44px;
+		height: 44px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+	}
+
+	@media (min-width: 768px) {
+		.hamburger {
+			display: none;
 		}
+	}
+
+	.hamburger__line {
+		display: block;
+		width: 22px;
+		height: 2px;
+		background: var(--color-text);
+		transition: transform 0.3s ease, opacity 0.3s ease;
+		transform-origin: center;
+	}
+
+	.hamburger__line--top-open {
+		transform: translateY(7px) rotate(45deg);
+	}
+
+	.hamburger__line--mid-open {
+		opacity: 0;
+	}
+
+	.hamburger__line--bot-open {
+		transform: translateY(-7px) rotate(-45deg);
+	}
+
+	/* Mobile nav overlay */
+
+	.mobile-nav {
+		position: fixed;
+		inset: 0;
+		z-index: 50;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--color-bg);
+	}
+
+	.mobile-nav__list {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 32px;
+	}
+
+	.mobile-nav__link {
+		font-family: var(--font-serif);
+		font-size: 36px;
+		font-weight: 400;
+		color: var(--color-muted);
+		text-decoration: none;
+		opacity: 0;
+		transition: color 0.3s ease;
+	}
+
+	.mobile-nav__link:hover {
+		color: var(--color-text);
+	}
+
+	.mobile-nav__link--active {
+		color: var(--color-accent);
 	}
 </style>
