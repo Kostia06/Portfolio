@@ -125,7 +125,7 @@
 	</section>
 
 	<!-- Experience Timeline -->
-	<section bind:this={timelineSectionEl} class="py-16 md:py-24 px-4 md:px-0" style="background: var(--color-bg-alt);">
+	<section bind:this={timelineSectionEl} class="py-16 md:py-24 px-4 md:px-0" style="background: var(--color-bg);">
 		<div class="container max-w-3xl">
 			<h2 class="text-xs uppercase tracking-[0.2em] text-[var(--color-muted)] mb-10 md:mb-14">/ Experience</h2>
 
@@ -210,10 +210,10 @@
 		height: 10px;
 		left: 0px;
 		border-radius: 50%;
-		background-color: var(--color-bg-alt);
+		background-color: var(--color-bg);
 		border: 2px solid var(--color-border);
 		transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-		box-shadow: 0 0 0 4px var(--color-bg-alt);
+		box-shadow: 0 0 0 4px var(--color-bg);
 	}
 
 	/* Active dots: grow and turn orange */
@@ -223,7 +223,7 @@
 		left: -2px;
 		border-color: var(--color-accent);
 		background-color: var(--color-accent);
-		box-shadow: 0 0 0 4px var(--color-bg-alt);
+		box-shadow: 0 0 0 4px var(--color-bg);
 	}
 
 	@media (min-width: 768px) {
@@ -239,14 +239,14 @@
 			width: 12px;
 			height: 12px;
 			left: 1px;
-			box-shadow: 0 0 0 5px var(--color-bg-alt);
+			box-shadow: 0 0 0 5px var(--color-bg);
 		}
 
 		:global(.timeline-dot.active) {
 			width: 16px;
 			height: 16px;
 			left: -1px;
-			box-shadow: 0 0 0 5px var(--color-bg-alt);
+			box-shadow: 0 0 0 5px var(--color-bg);
 		}
 	}
 </style>

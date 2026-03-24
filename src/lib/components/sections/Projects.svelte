@@ -22,8 +22,6 @@
 
 		gsap.registerPlugin(ScrollTrigger);
 
-		let currentFocused = -1;
-
 		projectEls.forEach((el) => {
 			if (!el) return;
 
@@ -40,53 +38,6 @@
 			});
 		});
 
-		// Single scroll observer — find the item closest to viewport center
-		ScrollTrigger.create({
-			trigger: sectionEl,
-			start: 'top bottom',
-			end: 'bottom top',
-			onUpdate: () => {
-				const viewportCenter = window.innerHeight / 2;
-				let closestIndex = -1;
-				let closestDist = Infinity;
-
-				projectEls.forEach((el, i) => {
-					if (!el) return;
-					const rect = el.getBoundingClientRect();
-					const elCenter = rect.top + rect.height / 2;
-					const dist = Math.abs(elCenter - viewportCenter);
-
-					if (dist < closestDist && rect.top < window.innerHeight && rect.bottom > 0) {
-						closestDist = dist;
-						closestIndex = i;
-					}
-				});
-
-				if (closestIndex === currentFocused) return;
-				currentFocused = closestIndex;
-
-				projectEls.forEach((el, i) => {
-					if (!el) return;
-					if (i === closestIndex) {
-						gsap.to(el, { opacity: 1, duration: 0.5, ease: 'power2.out', force3D: true });
-					} else {
-						gsap.to(el, { opacity: 0.4, duration: 0.5, ease: 'power2.out', force3D: true });
-					}
-				});
-			},
-			onLeave: () => {
-				currentFocused = -1;
-				projectEls.forEach((el) => {
-					if (el) gsap.to(el, { opacity: 1, duration: 0.4, ease: 'power2.out', force3D: true });
-				});
-			},
-			onLeaveBack: () => {
-				currentFocused = -1;
-				projectEls.forEach((el) => {
-					if (el) gsap.to(el, { opacity: 1, duration: 0.4, ease: 'power2.out', force3D: true });
-				});
-			}
-		});
 
 		const handleMouseMove = (e: MouseEvent) => {
 			mouseX = e.clientX;
@@ -173,6 +124,10 @@
 	</div>
 
 	<div class="container relative z-10">
+		<h2 class="font-display font-black leading-[0.95] tracking-tight mb-16 md:mb-24" style="font-size: clamp(2.5rem, 8vw, 7rem);">
+			Selected<br/><span class="italic">Work</span>
+		</h2>
+
 		<div class="space-y-0">
 			{#each featuredProjects as project, index}
 				<div
@@ -186,78 +141,36 @@
 							href={project.liveUrl}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="block py-8 md:py-12 border-t border-[var(--color-border)] transition-all hover:bg-[var(--glass-bg-hover)]"
+							class="block py-8 md:py-12 transition-all hover:bg-[var(--glass-bg-hover)]"
 							data-cursor="pointer"
 							data-cursor-text="View"
 						>
 							<div class="flex items-center gap-4 md:gap-8">
-								<span class="font-display text-4xl md:text-6xl font-bold text-[var(--color-border)] group-hover:text-[var(--color-accent)] transition-colors leading-none w-16 md:w-24">
+								<span class="font-display text-4xl md:text-6xl font-bold text-[var(--color-border)] group-hover:text-[var(--color-text)] transition-colors leading-none w-16 md:w-24">
 									{(index + 1).toString().padStart(2, '0')}
 								</span>
 
-								<div class="flex-1 flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-8">
-									<div class="flex-1">
-										<h3 class="font-display text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">
-											{project.title}
-										</h3>
-										<p class="mt-1 md:mt-2 text-sm md:text-base text-[var(--color-muted)] max-w-xl line-clamp-1">
-											{project.subtitle}
-										</p>
-									</div>
+								<h3 class="flex-1 font-display text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] group-hover:text-white transition-colors">
+									{project.title}
+								</h3>
 
-									<div class="flex flex-wrap gap-2">
-										{#each project.tags.slice(0, 2) as tag}
-											<span class="px-3 py-1 text-xs uppercase tracking-wider text-[var(--color-muted)] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)] transition-colors">
-												{tag}
-											</span>
-										{/each}
-									</div>
-								</div>
-
-								<div class="hidden md:flex w-12 h-12 rounded-full border border-[var(--color-border)] items-center justify-center group-hover:bg-[var(--color-accent)] group-hover:border-[var(--color-accent)] transition-all">
-									<svg
-										class="w-5 h-5 text-[var(--color-text)] group-hover:text-[var(--color-bg)] transition-colors -rotate-45"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="2"
-									>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-									</svg>
-								</div>
 							</div>
 						</a>
 					{:else}
-						<div class="py-8 md:py-12 border-t border-[var(--color-border)]">
+						<div class="py-8 md:py-12">
 							<div class="flex items-center gap-4 md:gap-8">
 								<span class="font-display text-4xl md:text-6xl font-bold text-[var(--color-border)] leading-none w-16 md:w-24">
 									{(index + 1).toString().padStart(2, '0')}
 								</span>
 
-								<div class="flex-1 flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-8">
-									<div class="flex-1">
-										<h3 class="font-display text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)]">
-											{project.title}
-										</h3>
-										<p class="mt-1 md:mt-2 text-sm md:text-base text-[var(--color-muted)] max-w-xl line-clamp-1">
-											{project.subtitle}
-										</p>
-									</div>
-
-									<div class="flex flex-wrap gap-2">
-										{#each project.tags.slice(0, 2) as tag}
-											<span class="px-3 py-1 text-xs uppercase tracking-wider text-[var(--color-muted)] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full">
-												{tag}
-											</span>
-										{/each}
-									</div>
-								</div>
+								<h3 class="flex-1 font-display text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)]">
+									{project.title}
+								</h3>
 							</div>
 						</div>
 					{/if}
 				</div>
 			{/each}
-			<div class="border-t border-[var(--color-border)]"></div>
 		</div>
 
 		<div class="mt-20 md:mt-28 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6" onmouseenter={handleSectionLeave}>
@@ -304,7 +217,7 @@
 	.preview-container {
 		opacity: 0;
 		transform: translate(-50%, -50%) scale(0.9);
-		transition: opacity 0.4s ease, transform 0.4s ease;
+		transition: opacity 0.3s ease, transform 0.3s ease;
 		box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		will-change: transform, opacity;
@@ -349,4 +262,5 @@
 	.preview-image:not(.active):not(.prev).slide-down {
 		transform: translateY(-100%);
 	}
+
 </style>

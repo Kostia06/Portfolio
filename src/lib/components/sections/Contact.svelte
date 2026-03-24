@@ -5,6 +5,7 @@
 	import { ScrollTrigger } from 'gsap/ScrollTrigger';
 	import { isMobile } from '$stores/app';
 
+	let sectionEl: HTMLElement;
 	let titleEl: HTMLElement;
 	let emailEl: HTMLElement;
 
@@ -32,6 +33,37 @@
 
 		gsap.registerPlugin(ScrollTrigger);
 
+		// Arc draw-in on scroll
+		if (arcEl) {
+			const path = arcEl.querySelector('.contact-arc') as SVGPathElement;
+			if (path) {
+				const length = path.getTotalLength();
+				gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+				gsap.to(path, {
+					strokeDashoffset: 0,
+					duration: 1.5,
+					ease: 'power2.inOut',
+					scrollTrigger: {
+						trigger: sectionEl,
+						start: 'top 70%',
+						toggleActions: 'play none none none'
+					}
+				});
+			}
+
+			gsap.fromTo(arcEl.querySelector('.contact-dot'),
+				{ scale: 0, opacity: 0 },
+				{
+					scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)',
+					scrollTrigger: {
+						trigger: sectionEl,
+						start: 'top 50%',
+						toggleActions: 'play none none none'
+					}
+				}
+			);
+		}
+
 		if (titleEl && !$isMobile) {
 			gsap.from(titleEl, {
 				y: 60,
@@ -41,7 +73,7 @@
 				scrollTrigger: {
 					trigger: titleEl,
 					start: 'top 85%',
-					toggleActions: 'play none none reverse'
+					toggleActions: 'play none none none'
 				}
 			});
 		}
@@ -55,7 +87,7 @@
 				scrollTrigger: {
 					trigger: emailEl,
 					start: 'top 85%',
-					toggleActions: 'play none none reverse'
+					toggleActions: 'play none none none'
 				}
 			});
 		}
@@ -67,20 +99,25 @@
 </script>
 
 <section
+	bind:this={sectionEl}
 	id="contact"
-	class="py-24 md:py-40 relative"
+	class="py-24 md:py-40 relative overflow-hidden"
 	style="background: var(--color-bg);"
 >
-	<div class="container">
+
+	<div class="container relative z-10">
 		<div class="max-w-3xl">
 			<!-- Header -->
 			<div bind:this={titleEl} class="mb-12 md:mb-16">
-				<p class="text-xs uppercase tracking-[0.2em] text-[var(--color-muted)] mb-4">Contact</p>
-				<h2 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight">
-					Say<br />
-					<span class="text-[var(--color-muted)]">hello.</span>
+				<p class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-[var(--color-muted)] mb-6">Get in Touch</p>
+				<h2 class="font-display text-[12vw] md:text-[8vw] lg:text-[6vw] font-bold leading-[0.9] tracking-tighter">
+					Let's create<br />
+					<span class="italic text-[var(--color-accent)]">something</span> together.
 				</h2>
 			</div>
+
+			<!-- Separator -->
+			<div class="w-16 h-[1px] bg-[var(--color-accent)] mb-10"></div>
 
 			<!-- Email -->
 			<div bind:this={emailEl} class="mb-16">
@@ -103,7 +140,7 @@
 
 				<button
 					onclick={copyEmail}
-					class="mt-3 inline-flex items-center gap-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors"
+					class="mt-3 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors"
 					data-cursor="pointer"
 				>
 					{#if copiedEmail}
@@ -115,13 +152,13 @@
 			</div>
 
 			<!-- Links -->
-			<div class="flex gap-6">
+			<div class="flex gap-8">
 				{#each socialLinks as link (link.label)}
 					<a
 						href={link.href}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors"
+						class="text-sm uppercase tracking-widest text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors link-underline"
 						data-cursor="pointer"
 					>
 						{link.label}

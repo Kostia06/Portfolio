@@ -15,7 +15,7 @@ export interface Project {
 export const projects: Project[] = [
 	{
 		id: 1,
-		title: 'Mr Blu',
+		title: 'mrblu',
 		subtitle: 'Voice-to-Document SaaS',
 		description:
 			'Voice-to-invoice SaaS converting contractor voice memos into professional invoices using Gemini and Deepgram. Engineered Gemini-powered parser to extract clients, line items, and scheduling data. Shipped mobile-first app with React Native (Expo), real-time transcription, automated PDF generation and email delivery.',
@@ -65,32 +65,32 @@ export const projects: Project[] = [
 		size: 'small',
 		achievement: 'Privacy-First'
 	},
-	{
-		id: 5,
-		title: 'MockMind AI',
-		subtitle: 'Voice-Powered Interviews',
-		description:
-			'AI interview platform with real-time voice interaction using OpenAI Whisper for speech transcription. Features dynamic question generation, response analysis, and personalized feedback. Helps users practice technical and behavioral interviews with AI-powered coaching.',
-		color: '#6366f1',
-		tags: ['Next.js', 'OpenAI', 'Whisper'],
-		liveUrl: 'https://mock-mind.vercel.app/',
-		screenshot: '/screenshots/mockmind.webp',
-		size: 'medium',
-		achievement: 'AI-Powered'
-	},
-	{
-		id: 6,
-		title: 'Lingozo',
-		subtitle: 'AI Language Learning',
-		description:
-			'Language learning platform powered by Gemini 2.0 for AI conversations. Supports 15+ languages with vocabulary management, spaced repetition, and personalized learning paths. Real-time conversation practice with grammar correction and pronunciation tips.',
-		color: '#10b981',
-		tags: ['React', 'Gemini 2.0', 'PostgreSQL'],
-		liveUrl: 'https://lingozo.vercel.app/',
-		screenshot: '/screenshots/lingozo.webp',
-		size: 'medium',
-		achievement: '15+ Languages'
-	},
+	// {
+	// 	id: 5,
+	// 	title: 'MockMind AI',
+	// 	subtitle: 'Voice-Powered Interviews',
+	// 	description:
+	// 		'AI interview platform with real-time voice interaction using OpenAI Whisper for speech transcription. Features dynamic question generation, response analysis, and personalized feedback. Helps users practice technical and behavioral interviews with AI-powered coaching.',
+	// 	color: '#6366f1',
+	// 	tags: ['Next.js', 'OpenAI', 'Whisper'],
+	// 	liveUrl: 'https://mock-mind.vercel.app/',
+	// 	screenshot: '/screenshots/mockmind.webp',
+	// 	size: 'medium',
+	// 	achievement: 'AI-Powered'
+	// },
+	// {
+	// 	id: 6,
+	// 	title: 'Lingozo',
+	// 	subtitle: 'AI Language Learning',
+	// 	description:
+	// 		'Language learning platform powered by Gemini 2.0 for AI conversations. Supports 15+ languages with vocabulary management, spaced repetition, and personalized learning paths. Real-time conversation practice with grammar correction and pronunciation tips.',
+	// 	color: '#10b981',
+	// 	tags: ['React', 'Gemini 2.0', 'PostgreSQL'],
+	// 	liveUrl: 'https://lingozo.vercel.app/',
+	// 	screenshot: '/screenshots/lingozo.webp',
+	// 	size: 'medium',
+	// 	achievement: '15+ Languages'
+	// },
 	{
 		id: 7,
 		title: 'Git Fight',

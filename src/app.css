@@ -7,7 +7,7 @@
   --color-text: rgba(245, 245, 245, 0.9);
   --color-text-secondary: rgba(255, 255, 255, 0.55);
   --color-muted: rgba(255, 255, 255, 0.4);
-  --color-accent: #ff4d00;
+  --color-accent: rgba(245, 245, 245, 0.9);
   --color-border: rgba(255, 255, 255, 0.08);
   --color-border-dark: rgba(255, 255, 255, 0.12);
 
@@ -22,7 +22,7 @@
   --background: var(--color-bg);
   --foreground: var(--color-text);
   --accent: var(--color-accent);
-  --accent-secondary: #ff6b2c;
+  --accent-secondary: rgba(245, 245, 245, 0.7);
   --muted: var(--color-bg-alt);
   --muted-foreground: var(--color-muted);
   --card: var(--color-bg);
@@ -37,9 +37,9 @@
   --section-skills: var(--color-bg-alt);
   --section-contact: var(--color-bg);
 
-  /* Typography - Display + Body pairing */
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  /* Typography - Editorial serif + clean sans */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
 
   /* Fluid Typography Scale - Large display headings */
   --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
@@ -337,28 +337,27 @@ html {
 }
 
 .btn-primary::before {
-  background: var(--color-accent);
+  background: var(--color-bg);
 }
 
 .btn-primary:hover {
-  color: #fff;
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
 }
 
 .btn-outline {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent;
   color: var(--color-text);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-outline::before {
-  background: var(--color-accent);
+  background: var(--color-text);
 }
 
 .btn-outline:hover {
-  color: #fff;
-  border-color: var(--color-accent);
+  color: var(--color-bg);
+  border-color: var(--color-text);
 }
 
 @media (min-width: 768px) {

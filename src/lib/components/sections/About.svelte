@@ -199,7 +199,7 @@
 	bind:this={sectionEl}
 	id="about"
 	class="section-lg relative overflow-hidden"
-	style="background: var(--color-bg-alt);"
+	style="background: var(--color-bg);"
 >
 	<!-- Animated background shapes -->
 	<div bind:this={decorEl} class="absolute inset-0 pointer-events-none">
@@ -332,7 +332,7 @@
 				{#each experiences.slice(0, 3) as exp, i}
 					<div class="timeline-item group relative pl-8 md:pl-12 pb-8 md:pb-12 border-l-2 border-[var(--color-border)] last:pb-0 hover:border-l-[var(--color-accent)] transition-colors">
 						<!-- Timeline dot -->
-						<div class="timeline-dot absolute left-0 top-0 w-3 h-3 md:w-4 md:h-4 -translate-x-1/2 rounded-full bg-[var(--color-bg-alt)] border-2 border-[var(--color-border)] group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] transition-all group-hover:scale-125"></div>
+						<div class="timeline-dot absolute left-0 top-0 w-3 h-3 md:w-4 md:h-4 -translate-x-1/2 rounded-full bg-[var(--color-bg)] border-2 border-[var(--color-border)] group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] transition-all group-hover:scale-125"></div>
 
 						<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-8">
 							<div class="flex-1">
