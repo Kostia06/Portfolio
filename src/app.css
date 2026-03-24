@@ -100,12 +100,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hide cursor on desktop for custom cursor */
-@media (min-width: 768px) and (pointer: fine) {
-  a, button, [role="button"], [data-cursor] {
-    cursor: none !important;
-  }
-}
 
 /* Smooth scroll container */
 html.lenis,
