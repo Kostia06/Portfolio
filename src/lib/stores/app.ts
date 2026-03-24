@@ -53,6 +53,3 @@ export const isLoading = writable(true);
 
 // Animation complete state (for hero entrance)
 export const animationComplete = writable(false);
-
-// Active section for nav highlighting
-export const activeSection = writable('hero');
