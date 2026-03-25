@@ -33,37 +33,6 @@
 
 		gsap.registerPlugin(ScrollTrigger);
 
-		// Arc draw-in on scroll
-		if (arcEl) {
-			const path = arcEl.querySelector('.contact-arc') as SVGPathElement;
-			if (path) {
-				const length = path.getTotalLength();
-				gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-				gsap.to(path, {
-					strokeDashoffset: 0,
-					duration: 1.5,
-					ease: 'power2.inOut',
-					scrollTrigger: {
-						trigger: sectionEl,
-						start: 'top 70%',
-						toggleActions: 'play none none none'
-					}
-				});
-			}
-
-			gsap.fromTo(arcEl.querySelector('.contact-dot'),
-				{ scale: 0, opacity: 0 },
-				{
-					scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)',
-					scrollTrigger: {
-						trigger: sectionEl,
-						start: 'top 50%',
-						toggleActions: 'play none none none'
-					}
-				}
-			);
-		}
-
 		if (titleEl && !$isMobile) {
 			gsap.from(titleEl, {
 				y: 60,

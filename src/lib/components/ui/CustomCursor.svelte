@@ -112,11 +112,6 @@
 				class="absolute inset-0 bg-[var(--color-text)] transition-all duration-200 ease-out"
 				style="border-radius: {borderRadius}; transform: scale({isClicking ? 0.5 : 1});"
 			></div>
-			{#if cursorText && isHovering}
-				<span class="text-[var(--color-bg)] text-xs font-medium z-10 whitespace-nowrap uppercase tracking-wider">
-					{cursorText}
-				</span>
-			{/if}
 		</div>
 	</div>
 

@@ -134,6 +134,7 @@
 					bind:this={projectEls[index]}
 					class="project-item group"
 					onmouseenter={() => handleProjectEnter(index)}
+					onmouseleave={handleSectionLeave}
 					role="listitem"
 				>
 					{#if project.liveUrl}
