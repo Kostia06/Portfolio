@@ -593,6 +593,18 @@ html {
   mix-blend-mode: difference;
 }
 
+/* Hide native cursor on desktop so only CustomCursor is visible.
+   Matches CustomCursor.svelte's isTouchDevice gating: devices with
+   a fine pointer + hover get the custom cursor and no system cursor. */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  html *,
+  body * {
+    cursor: none !important;
+  }
+}
+
 
 /* Line clamp */
 .line-clamp-2 {
