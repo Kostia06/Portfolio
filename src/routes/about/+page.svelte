@@ -137,12 +137,10 @@
 							My sweet spot is the full stack — React / Next.js / SvelteKit on the front, Node / Python / Supabase / Postgres on the back, deployed on Cloudflare's edge. I care about performance budgets, small JS payloads, and interfaces that feel <em>physical</em>. GSAP, Lenis, and 60&nbsp;fps are love languages.
 						</p>
 						<p>
-							<!-- TODO: personal origin — where you're from, when/how you started coding, what first hooked you. 2–3 sentences. -->
-							<span class="opacity-50 italic">[TODO: 2–3 sentences on your origin — Ukraine → Calgary, when you first started coding, what hooked you.]</span>
+							I was born in Ukraine, started coding in 4th grade in New York, and moved to Calgary in 2023 to start at the University of Calgary. My first real build was a working LEGO car programmed in Java — and that was the moment. I realized I could tell the computer something and it would go make a real thing in the real world do it. I spent the next few years riding that feeling into mods for games I loved (Minecraft especially), and I've been chasing the same hit ever since — just with harder problems and fewer LEGO bricks.
 						</p>
 						<p>
-							<!-- TODO: what drives you / what kind of team you want to join / what you're looking for. 2–3 sentences. -->
-							<span class="opacity-50 italic">[TODO: 2–3 sentences on what kind of problems excite you, what you want to work on next, what kind of team you'd thrive in.]</span>
+							I'm most alive when the problem is real, the deadline is close, and the users are actual people I end up talking to. My favourite moments so far have been watching a contractor speak into <strong class="text-[var(--color-text)] font-medium">Mr Blu</strong> and walk away with a finished invoice a minute later, and helping the <strong class="text-[var(--color-text)] font-medium">United Ukrainians of Canada Foundation</strong> ship a PR-pathway advocacy tool in weeks instead of months. Next, I want to work on problems where shipping quality matters more than shipping volume — ideally on a small, opinionated team that cares about craft and doesn't confuse motion for progress.
 						</p>
 						<p>
 							Currently open to <strong class="text-[var(--color-text)] font-medium">Summer 2026 internships</strong>. I also tutor CS students at UofC on the side — mostly Python, Java, data structures.
