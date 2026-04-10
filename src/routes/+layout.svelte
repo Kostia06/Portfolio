@@ -55,7 +55,7 @@
 </script>
 
 <svelte:head>
-	<title>Kos | Full Stack Developer</title>
+	<title>Kos</title>
 	<meta name="description" content="Kostiantyn Ilnytskyi - Full Stack Developer based in Calgary, AB. Building performant web applications with React, Next.js, SvelteKit, and modern technologies." />
 
 	<meta name="color-scheme" content="dark" />
@@ -67,13 +67,13 @@
 
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Kos | Full Stack Developer" />
+	<meta property="og:title" content="Kos" />
 	<meta property="og:description" content="Full Stack Developer based in Calgary, AB. Building performant web applications." />
 	<meta property="og:locale" content="en_US" />
 
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Kos | Full Stack Developer" />
+	<meta name="twitter:title" content="Kos" />
 	<meta name="twitter:description" content="Full Stack Developer based in Calgary, AB." />
 </svelte:head>
 

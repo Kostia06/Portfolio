@@ -105,17 +105,17 @@ export const projects: Project[] = [
 	// 	achievement: 'Dual-Model AI'
 	// },
 	{
-		id: 7,
-		title: 'Git Fight',
-		subtitle: '80s Retro Battle Game',
+		id: 9,
+		title: "Rye's Collection",
+		subtitle: 'Animated Collectibles Showcase',
 		description:
-			'Compare GitHub developers in retro-styled battles. Built with 1,700+ lines of vanilla JavaScript - zero frameworks. Features global PostgreSQL leaderboard, achievement system, and authentic 80s arcade aesthetics. Demonstrates deep JavaScript fundamentals and CSS mastery.',
-		color: '#a855f7',
-		tags: ['Vanilla JS', 'PostgreSQL', 'CSS'],
-		liveUrl: 'https://www.git-fight.app/',
-		screenshot: '/screenshots/gitfight.webp',
+			'Personal collectibles showcase ("My Precious Collection") with a motion-first feel — GSAP + Framer Motion + Lenis smooth scroll. Admin can drag-and-drop upload new items; public visitors browse. Next.js 16, React 19, Supabase Storage + Postgres, single-admin auth. Small project, but a nice demonstration of layered animation discipline.',
+		color: '#f472b6',
+		tags: ['Next.js', 'Supabase', 'GSAP'],
+		liveUrl: 'https://rye-boxes.com/',
+		screenshot: '/screenshots/rye.webp',
 		size: 'small',
-		achievement: 'Zero Frameworks'
+		achievement: 'Motion-First CMS'
 	},
 	{
 		id: 8,
@@ -129,17 +129,17 @@ export const projects: Project[] = [
 		achievement: '+30% Efficiency'
 	},
 	{
-		id: 9,
-		title: "Rye's Collection",
-		subtitle: 'Animated Collectibles Showcase',
+		id: 7,
+		title: 'Git Fight',
+		subtitle: '80s Retro Battle Game',
 		description:
-			'Personal collectibles showcase ("My Precious Collection") with a motion-first feel — GSAP + Framer Motion + Lenis smooth scroll. Admin can drag-and-drop upload new items; public visitors browse. Next.js 16, React 19, Supabase Storage + Postgres, single-admin auth. Small project, but a nice demonstration of layered animation discipline.',
-		color: '#f472b6',
-		tags: ['Next.js', 'Supabase', 'GSAP'],
-		liveUrl: 'https://rye-boxes.com/',
-		screenshot: '/screenshots/rye.webp',
+			'Compare GitHub developers in retro-styled battles. Built with 1,700+ lines of vanilla JavaScript - zero frameworks. Features global PostgreSQL leaderboard, achievement system, and authentic 80s arcade aesthetics. Demonstrates deep JavaScript fundamentals and CSS mastery.',
+		color: '#a855f7',
+		tags: ['Vanilla JS', 'PostgreSQL', 'CSS'],
+		liveUrl: 'https://www.git-fight.app/',
+		screenshot: '/screenshots/gitfight.webp',
 		size: 'small',
-		achievement: 'Motion-First CMS'
+		achievement: 'Zero Frameworks'
 	},
 	{
 		id: 10,
