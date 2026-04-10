@@ -53,11 +53,22 @@
 	style="background: var(--color-bg); perspective: 800px;"
 >
 	<div class="container relative z-10 px-4 md:px-0">
-		<!-- Label -->
-		<p class="hero-label text-[10px] md:text-xs uppercase tracking-[0.3em] text-[var(--color-muted)] mb-10 md:mb-14 flex items-center gap-4">
-			<span class="inline-block w-8 h-[1px] bg-[var(--color-muted)]"></span>
-			Full Stack Developer
-		</p>
+		<!-- Label + availability -->
+		<div class="hero-label mb-10 md:mb-14 flex flex-wrap items-center gap-4 md:gap-5">
+			<p class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-[var(--color-muted)] flex items-center gap-4">
+				<span class="inline-block w-8 h-[1px] bg-[var(--color-muted)]"></span>
+				Full Stack Developer
+			</p>
+			<a
+				href="/#contact"
+				class="hero-availability"
+				data-cursor="pointer"
+				aria-label="Open to Summer 2026 internships — get in touch"
+			>
+				<span class="avail-dot" aria-hidden="true"></span>
+				Open to Summer 2026 internships
+			</a>
+		</div>
 
 		<!-- Name - each character individually animated -->
 		<h1 class="mb-6 md:mb-10" style="font-size: clamp(4rem, 18vw, 14rem); line-height: 0.85; letter-spacing: -0.04em;">
@@ -116,5 +127,37 @@
 	:global(#hero .hero-bottom),
 	:global(#hero .hero-label) {
 		opacity: 0;
+	}
+
+	/* Availability pill */
+	.hero-availability {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.4rem 0.85rem;
+		border-radius: 9999px;
+		border: 1px solid var(--color-border);
+		font-size: 0.68rem;
+		font-weight: 500;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-text-secondary);
+		transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+	}
+	.hero-availability:hover {
+		border-color: var(--color-accent);
+		color: var(--color-text);
+	}
+	.avail-dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: #22c55e;
+		box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+		animation: avail-pulse 2s ease-in-out infinite;
+	}
+	@keyframes avail-pulse {
+		0%, 100% { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18); }
+		50% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.08); }
 	}
 </style>

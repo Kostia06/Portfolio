@@ -11,7 +11,8 @@
 	const navLinks = [
 		{ href: '#work', label: 'Work' },
 		{ href: '/about', label: 'About' },
-		{ href: '#contact', label: 'Contact' }
+		{ href: '#contact', label: 'Contact' },
+		{ href: '/resume.pdf', label: 'Résumé', external: true }
 	];
 
 	function toggleMenu() {
@@ -62,6 +63,8 @@
 					<MagneticButton>
 						<a
 							href={link.href}
+							target={link.external ? '_blank' : undefined}
+							rel={link.external ? 'noopener noreferrer' : undefined}
 							class="nav-link relative text-sm font-medium uppercase tracking-widest text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-300"
 							data-cursor="pointer"
 						>
@@ -112,6 +115,8 @@
 				{#each navLinks as link, i}
 					<a
 						href={link.href}
+						target={link.external ? '_blank' : undefined}
+						rel={link.external ? 'noopener noreferrer' : undefined}
 						onclick={closeMenu}
 						class="text-4xl md:text-5xl font-display font-bold text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-300"
 						style="animation: slideIn 0.5s ease-out {i * 0.1}s both;"

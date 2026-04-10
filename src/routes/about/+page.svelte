@@ -66,10 +66,26 @@
 				});
 			}
 
-			gsap.from(items, {
-				y: 30, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.15,
-				scrollTrigger: { trigger: timelineEl, start: 'top 80%', toggleActions: 'play none none reverse' }
-			});
+			/* Use fromTo with explicit final state and toggleActions 'play none none none'
+			   so items stay visible after the first entry. The previous 'play none none reverse'
+			   left them at opacity 0 if the trigger never evaluated (e.g. during programmatic
+			   scrolls or certain browser automation contexts). */
+			gsap.fromTo(
+				items,
+				{ y: 30, opacity: 0 },
+				{
+					y: 0,
+					opacity: 1,
+					duration: 0.6,
+					ease: 'power3.out',
+					stagger: 0.15,
+					scrollTrigger: {
+						trigger: timelineEl,
+						start: 'top 85%',
+						toggleActions: 'play none none none'
+					}
+				}
+			);
 		}
 
 		return () => {
@@ -105,20 +121,54 @@
 			<div class="max-w-2xl">
 				<div bind:this={bioEl}>
 					<span class="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] mb-4 block">/ About</span>
-					<h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-[0.95] tracking-tight mb-6">
+					<h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-[0.95] tracking-tight mb-8">
 						Kostia<br />
 						<span class="text-[var(--color-muted)]">Ilnytskyi</span>
 					</h1>
-					<p class="text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed max-w-md mb-8">
-						CS student at the University of Calgary. I build performant web apps — from hackathon MVPs to production platforms serving thousands of users.
-					</p>
 
-					<a href="/#contact" class="btn-primary" data-cursor="pointer">
-						<span>Get in Touch</span>
-						<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-						</svg>
-					</a>
+					<div class="bio-prose max-w-xl space-y-5 mb-10 text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+						<p>
+							I'm a Computer Science student at the <strong class="text-[var(--color-text)] font-medium">University of Calgary</strong> (BSc Software Engineering, expected 2027) who gets bored writing code that nobody uses. So I don't.
+						</p>
+						<p>
+							Over the last two years I've shipped real products to real people: a voice-to-invoice SaaS for contractors (<strong class="text-[var(--color-text)] font-medium">Mr Blu</strong>), a production e-commerce platform doing <strong class="text-[var(--color-text)] font-medium">1,200+ monthly visitors</strong> (Respect The Technique), a privacy-first site for a foundation supporting <strong class="text-[var(--color-text)] font-medium">1.2M Ukrainian-Canadians</strong>, and a handful of hackathon wins along the way.
+						</p>
+						<p>
+							My sweet spot is the full stack — React / Next.js / SvelteKit on the front, Node / Python / Supabase / Postgres on the back, deployed on Cloudflare's edge. I care about performance budgets, small JS payloads, and interfaces that feel <em>physical</em>. GSAP, Lenis, and 60&nbsp;fps are love languages.
+						</p>
+						<p>
+							<!-- TODO: personal origin — where you're from, when/how you started coding, what first hooked you. 2–3 sentences. -->
+							<span class="opacity-50 italic">[TODO: 2–3 sentences on your origin — Ukraine → Calgary, when you first started coding, what hooked you.]</span>
+						</p>
+						<p>
+							<!-- TODO: what drives you / what kind of team you want to join / what you're looking for. 2–3 sentences. -->
+							<span class="opacity-50 italic">[TODO: 2–3 sentences on what kind of problems excite you, what you want to work on next, what kind of team you'd thrive in.]</span>
+						</p>
+						<p>
+							Currently open to <strong class="text-[var(--color-text)] font-medium">Summer 2026 internships</strong>. I also tutor CS students at UofC on the side — mostly Python, Java, data structures.
+						</p>
+					</div>
+
+					<div class="flex flex-wrap gap-3">
+						<a href="/#contact" class="btn-primary" data-cursor="pointer">
+							<span>Get in Touch</span>
+							<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+							</svg>
+						</a>
+						<a
+							href="/resume.pdf"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn-outline"
+							data-cursor="pointer"
+						>
+							<span>Download Résumé</span>
+							<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+							</svg>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>

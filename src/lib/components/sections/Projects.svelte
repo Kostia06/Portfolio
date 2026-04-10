@@ -142,31 +142,51 @@
 							href={project.liveUrl}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="block py-8 md:py-12 transition-all hover:bg-[var(--glass-bg-hover)]"
+							class="block py-8 md:py-10 transition-all hover:bg-[var(--glass-bg-hover)]"
 							data-cursor="pointer"
 							data-cursor-text="View"
 						>
-							<div class="flex items-center gap-4 md:gap-8">
-								<span class="font-display text-4xl md:text-6xl font-bold text-[var(--color-border)] group-hover:text-[var(--color-text)] transition-colors leading-none w-16 md:w-24">
+							<div class="flex items-start gap-4 md:gap-8">
+								<span class="font-display text-4xl md:text-6xl font-bold text-[var(--color-border)] group-hover:text-[var(--color-text)] transition-colors leading-none w-16 md:w-24 pt-1 md:pt-2">
 									{(index + 1).toString().padStart(2, '0')}
 								</span>
 
-								<h3 class="flex-1 font-display text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] group-hover:text-white transition-colors">
-									{project.title}
-								</h3>
-
+								<div class="flex-1 min-w-0">
+									<h3 class="font-display text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] group-hover:text-white transition-colors mb-2 md:mb-3">
+										{project.title}
+									</h3>
+									<p class="text-sm md:text-base text-[var(--color-muted)] group-hover:text-[var(--color-text-secondary)] transition-colors max-w-xl">
+										{project.subtitle}
+									</p>
+									<div class="mt-3 md:mt-4 flex flex-wrap items-center gap-2 md:gap-3">
+										<span class="text-[10px] md:text-xs uppercase tracking-[0.15em] text-[var(--color-accent)] font-mono">
+											{project.achievement}
+										</span>
+										<span class="text-[var(--color-border)]">·</span>
+										{#each project.tags as tag, ti}
+											<span class="text-[10px] md:text-xs uppercase tracking-[0.12em] text-[var(--color-muted)]">
+												{tag}{ti < project.tags.length - 1 ? ',' : ''}
+											</span>
+										{/each}
+									</div>
+								</div>
 							</div>
 						</a>
 					{:else}
-						<div class="py-8 md:py-12">
-							<div class="flex items-center gap-4 md:gap-8">
-								<span class="font-display text-4xl md:text-6xl font-bold text-[var(--color-border)] leading-none w-16 md:w-24">
+						<div class="py-8 md:py-10">
+							<div class="flex items-start gap-4 md:gap-8">
+								<span class="font-display text-4xl md:text-6xl font-bold text-[var(--color-border)] leading-none w-16 md:w-24 pt-1 md:pt-2">
 									{(index + 1).toString().padStart(2, '0')}
 								</span>
 
-								<h3 class="flex-1 font-display text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)]">
-									{project.title}
-								</h3>
+								<div class="flex-1 min-w-0">
+									<h3 class="font-display text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-2 md:mb-3">
+										{project.title}
+									</h3>
+									<p class="text-sm md:text-base text-[var(--color-muted)] max-w-xl">
+										{project.subtitle}
+									</p>
+								</div>
 							</div>
 						</div>
 					{/if}
