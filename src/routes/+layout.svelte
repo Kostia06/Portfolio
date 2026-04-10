@@ -18,7 +18,23 @@
 				infinite: false
 			});
 
-			lenis.scrollTo(0, { immediate: true });
+			// Respect hash navigation: if the URL has a hash (e.g. /#contact),
+			// scroll to that element instead of snapping to the top. This lets
+			// cross-page links like "Back to Home" land at a specific section.
+			const hash = window.location.hash;
+			if (hash) {
+				const target = document.querySelector(hash);
+				if (target) {
+					// Wait a frame so the target is laid out, then jump immediately.
+					requestAnimationFrame(() => {
+						lenis?.scrollTo(target as HTMLElement, { immediate: true, offset: 0 });
+					});
+				} else {
+					lenis.scrollTo(0, { immediate: true });
+				}
+			} else {
+				lenis.scrollTo(0, { immediate: true });
+			}
 
 			// Use requestAnimationFrame for smooth scrolling
 			function raf(time: number) {

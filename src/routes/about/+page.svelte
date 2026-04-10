@@ -128,22 +128,19 @@
 
 					<div class="bio-prose max-w-xl space-y-5 mb-10 text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
 						<p>
-							I'm a Computer Science student at the <strong class="text-[var(--color-text)] font-medium">University of Calgary</strong> (BSc Software Engineering, expected 2027) who gets bored writing code that nobody uses. So I don't.
+							CS at the University of Calgary, graduating 2027.
 						</p>
 						<p>
-							Over the last two years I've shipped real products to real people: a voice-to-invoice SaaS for contractors (<strong class="text-[var(--color-text)] font-medium">Mr Blu</strong>), a production e-commerce platform doing <strong class="text-[var(--color-text)] font-medium">1,200+ monthly visitors</strong> (Respect The Technique), a privacy-first site for a foundation supporting <strong class="text-[var(--color-text)] font-medium">1.2M Ukrainian-Canadians</strong>, and a handful of hackathon wins along the way.
+							Born in Ukraine. Started coding in 4th grade in New York when I built a working LEGO car in Java. Then years of Minecraft mods. Moved to Calgary in 2023 for university.
 						</p>
 						<p>
-							My sweet spot is the full stack — React / Next.js / SvelteKit on the front, Node / Python / Supabase / Postgres on the back, deployed on Cloudflare's edge. I care about performance budgets, small JS payloads, and interfaces that feel <em>physical</em>. GSAP, Lenis, and 60&nbsp;fps are love languages.
+							I like building things people use. Mr Blu (voice-first invoicing for contractors), Respect the Technique (ramen e-commerce, 1,200+ monthly visitors), and a PR-pathway advocacy tool with the United Ukrainians of Canada Foundation.
 						</p>
 						<p>
-							I was born in Ukraine, started coding in 4th grade in New York, and moved to Calgary in 2023 to start at the University of Calgary. My first real build was a working LEGO car programmed in Java — and that was the moment. I realized I could tell the computer something and it would go make a real thing in the real world do it. I spent the next few years riding that feeling into mods for games I loved (Minecraft especially), and I've been chasing the same hit ever since — just with harder problems and fewer LEGO bricks.
+							Stack: React, SvelteKit, Python, Supabase, Cloudflare. I care about interfaces that feel good and code that doesn't break.
 						</p>
 						<p>
-							I'm most alive when the problem is real, the deadline is close, and the users are actual people I end up talking to. My favourite moments so far have been watching a contractor speak into <strong class="text-[var(--color-text)] font-medium">Mr Blu</strong> and walk away with a finished invoice a minute later, and helping the <strong class="text-[var(--color-text)] font-medium">United Ukrainians of Canada Foundation</strong> ship a PR-pathway advocacy tool in weeks instead of months. Next, I want to work on problems where shipping quality matters more than shipping volume — ideally on a small, opinionated team that cares about craft and doesn't confuse motion for progress.
-						</p>
-						<p>
-							Currently open to <strong class="text-[var(--color-text)] font-medium">Summer 2026 internships</strong>. I also tutor CS students at UofC on the side — mostly Python, Java, data structures.
+							Open to Summer 2026 internships. I tutor CS students at UofC on the side.
 						</p>
 					</div>
 
@@ -223,7 +220,7 @@
 	<section class="py-20 md:py-28 px-4 md:px-0" style="background: var(--color-bg);">
 		<div class="container max-w-3xl flex flex-col items-center text-center">
 			<p class="text-sm text-[var(--color-muted)] mb-6">That's the journey so far.</p>
-			<a href="/" class="btn-outline" data-cursor="pointer">
+			<a href="/#contact" class="btn-outline" data-cursor="pointer">
 				<span>Back to Home</span>
 			</a>
 		</div>

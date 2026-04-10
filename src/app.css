@@ -605,6 +605,19 @@ html {
   }
 }
 
+/* Text selection highlight — warm amber against the editorial b&w theme
+   so selected text actually reads as intentional, not a browser default. */
+::selection {
+  background: #fbbf24;
+  color: #050507;
+  text-shadow: none;
+}
+::-moz-selection {
+  background: #fbbf24;
+  color: #050507;
+  text-shadow: none;
+}
+
 
 /* Line clamp */
 .line-clamp-2 {
