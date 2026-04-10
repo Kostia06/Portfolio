@@ -29,22 +29,22 @@ export const projects: Project[] = [
 	{
 		id: 2,
 		title: 'AI Ghost Hunter',
-		subtitle: 'AI Accountability Research',
+		subtitle: 'AI Reliability Testing',
 		description:
-			'Detects hallucinated "ghost organizations" invented by AI platforms for the AiEO Visibility Challenge by TECHNATION Canada. Tests ChatGPT, Gemini, Claude, and Perplexity with curated questions across Canadian services, extracts org data via LLM, and auto-verifies against Google. Supports multi-language queries and consistency checks.',
+			'Exposed "ghost organizations" — Canadian companies and services that AI chatbots invent with fabricated phone numbers, addresses, and staff. Built for the AiEO Visibility Challenge by TECHNATION Canada. Queried ChatGPT, Gemini, Claude, and Perplexity across hundreds of real-world questions, extracted the claimed org data via LLM, and auto-verified each against Google. Result: 49% of AI answers about Canadian orgs were unreliable.',
 		color: '#ef4444',
 		tags: ['Python', 'Multi-LLM', 'Anthropic'],
 		liveUrl: 'https://ghost-hunter.dev',
 		screenshot: '/screenshots/aighost.webp',
 		size: 'medium',
-		achievement: '4 AI Platforms'
+		achievement: '49% AI Unreliable'
 	},
 	{
 		id: 3,
 		title: 'Respect The Technique',
-		subtitle: 'Full Stack E-Commerce',
+		subtitle: 'Hakata Ramen E-Commerce',
 		description:
-			'Production e-commerce platform with integrated employee operations system. Built complete inventory management, order processing, and staff scheduling. Architected scalable backend serving 1,200+ monthly visitors and 5,000+ page views. Implemented Stripe payments and real-time notifications.',
+			'Production e-commerce for an authentic Hakata-style ramen brand — shop ramen kits, book classes, and learn the craft of 18-hour broth. Built the full storefront, checkout with Stripe, order processing, inventory management, and an internal staff operations dashboard. Architected a scalable Cloudflare Workers backend serving 1,200+ monthly visitors and 5,000+ page views, with real-time order notifications.',
 		color: '#ef4444',
 		tags: ['Next.js', 'Supabase', 'Stripe'],
 		liveUrl: 'https://respect-the-technique.ilnkostia-dev.workers.dev/',
@@ -54,29 +54,29 @@ export const projects: Project[] = [
 	},
 	{
 		id: 4,
-		title: 'Help Ukraine Forms',
-		subtitle: 'Advocacy Platform',
+		title: 'PR Pathway for Ukrainians',
+		subtitle: 'Civic Advocacy Platform',
 		description:
-			'Full website for community organization supporting 1.2+ million Ukrainian-Canadians. Responsive mobile-first site using React and Cloudflare, collaborating directly with foundation leadership. Privacy-first architecture with zero tracking.',
+			'Official campaign site for the United Ukrainians of Canada Foundation helping 300,000 Ukrainian CUAET arrivals get a Permanent Residence pathway. Built a tool that lets any Canadian contact their Member of Parliament in seconds — riding lookup, pre-filled letters, multi-language support (EN/UK). Collaborated directly with foundation leadership. Privacy-first architecture with zero tracking, mobile-first, deployed on Cloudflare edge.',
 		color: '#fbbf24',
 		tags: ['React', 'Cloudflare', 'TypeScript'],
 		liveUrl: 'https://help-ukraine-forms.com/en',
 		screenshot: '/screenshots/helpukraine.webp',
 		size: 'small',
-		achievement: 'Privacy-First'
+		achievement: '300K Ukrainians'
 	},
 	{
 		id: 13,
 		title: 'Hive Roomies',
-		subtitle: 'Roommate Coordination App',
+		subtitle: 'Roommate Coordination Platform',
 		description:
-			'Cross-platform roommate coordination app for chores, shopping lists, shared calendars, and subletter handoffs. Built with Next.js and Capacitor for iOS and Android, with transactional email flows and real-time sync. Ships as a PWA with offline support and push-style invite notifications.',
+			'Cross-platform app for everything that breaks a household: chores rotations, shared shopping lists, split expenses, group calendar, in-app chat, and subletter handoffs with auto-generated PDF agreements. Built on Next.js 16 + React 19, Supabase auth/SSR, Gemini AI for smart suggestions, Resend for transactional email, and Capacitor 8 to ship native iOS + Android alongside the web PWA. Shadcn/Radix UI, Tailwind v4, jsPDF for agreements, Recharts for expense analytics.',
 		color: '#fbbf24',
-		tags: ['Next.js', 'Capacitor', 'PWA'],
+		tags: ['Next.js', 'Supabase', 'Capacitor'],
 		liveUrl: 'https://hive-roomies.com',
 		screenshot: '/screenshots/hiveroomies.webp',
 		size: 'medium',
-		achievement: 'iOS + Android'
+		achievement: 'iOS + Android + Web'
 	},
 	// {
 	// 	id: 5,
