@@ -16,20 +16,20 @@ export const projects: Project[] = [
 	{
 		id: 1,
 		title: 'mrblu',
-		subtitle: 'Voice-to-Document SaaS',
+		subtitle: 'Voice-First Invoicing for Contractors',
 		description:
-			'Voice-to-invoice SaaS converting contractor voice memos into professional invoices using Gemini and Deepgram. Engineered Gemini-powered parser to extract clients, line items, and scheduling data. Shipped mobile-first app with React Native (Expo), real-time transcription, automated PDF generation and email delivery.',
+			'Contractors press a button, describe the work in English or Spanish, and get a ready-to-send invoice in under a minute. Real-time WebSocket transcription via Deepgram Nova-2, natural-speech parsing by Gemini 2.5 Flash into structured line items, a learning price book with fuzzy + phonetic client search, client-side jsPDF generation, and email delivery via Resend with view-tracked share links. Shipped as web, iOS and Android from a single Preact + Capacitor codebase running on Cloudflare Pages Functions with Supabase (PostgreSQL + RLS + PKCE/OTP auth) — plus biometric lock, haptics, and push notifications on mobile.',
 		color: '#3b82f6',
-		tags: ['React Native', 'Gemini AI', 'Expo'],
+		tags: ['Preact', 'Cloudflare', 'Capacitor'],
 		liveUrl: 'https://mrblu.com',
 		screenshot: '/screenshots/mrblu.webp',
 		size: 'large',
-		achievement: '100% Cost Reduction'
+		achievement: 'Under 60s per invoice'
 	},
 	{
 		id: 2,
 		title: 'AI Ghost Hunter',
-		subtitle: 'AI Reliability Testing',
+		subtitle: 'AI Reliability Testing for Canadian Organizations',
 		description:
 			'Exposed "ghost organizations" — Canadian companies and services that AI chatbots invent with fabricated phone numbers, addresses, and staff. Built for the AiEO Visibility Challenge by TECHNATION Canada. Queried ChatGPT, Gemini, Claude, and Perplexity across hundreds of real-world questions, extracted the claimed org data via LLM, and auto-verified each against Google. Result: 49% of AI answers about Canadian orgs were unreliable.',
 		color: '#ef4444',
@@ -94,15 +94,15 @@ export const projects: Project[] = [
 	// {
 	// 	id: 6,
 	// 	title: 'Lingozo',
-	// 	subtitle: 'AI Language Learning',
+	// 	subtitle: 'AI Conversational Language Tutor',
 	// 	description:
-	// 		'Language learning platform powered by Gemini 2.0 for AI conversations. Supports 15+ languages with vocabulary management, spaced repetition, and personalized learning paths. Real-time conversation practice with grammar correction and pronunciation tips.',
+	// 		'Language-learning companion built around the idea that conversation beats flashcards. Chat with an AI tutor in any language, get instant grammar + vocabulary feedback inline, and practice in a judgment-free space that remembers your progress. Dual-model AI backbone — Anthropic Claude and Google Gemini — with text-to-speech for every message, grammar highlighting, and adaptive difficulty. Next.js + React + Radix UI + Tailwind v4.',
 	// 	color: '#10b981',
-	// 	tags: ['React', 'Gemini 2.0', 'PostgreSQL'],
+	// 	tags: ['Next.js', 'Anthropic', 'Gemini'],
 	// 	liveUrl: 'https://lingozo.vercel.app/',
 	// 	screenshot: '/screenshots/lingozo.webp',
 	// 	size: 'medium',
-	// 	achievement: '15+ Languages'
+	// 	achievement: 'Dual-Model AI'
 	// },
 	{
 		id: 7,
@@ -131,15 +131,15 @@ export const projects: Project[] = [
 	{
 		id: 9,
 		title: "Rye's Collection",
-		subtitle: 'Animated Showcase',
+		subtitle: 'Animated Collectibles Showcase',
 		description:
-			'Beautifully animated collection showcase with admin management system. Features real-time Supabase database sync, drag-and-drop image uploads, and smooth Framer Motion animations. Single admin authentication with public viewing access for displaying collectibles.',
+			'Personal collectibles showcase ("My Precious Collection") with a motion-first feel — GSAP + Framer Motion + Lenis smooth scroll. Admin can drag-and-drop upload new items; public visitors browse. Next.js 16, React 19, Supabase Storage + Postgres, single-admin auth. Small project, but a nice demonstration of layered animation discipline.',
 		color: '#f472b6',
-		tags: ['Next.js', 'Supabase', 'Framer'],
+		tags: ['Next.js', 'Supabase', 'GSAP'],
 		liveUrl: 'https://rye-boxes.com/',
 		screenshot: '/screenshots/rye.webp',
 		size: 'small',
-		achievement: 'Full CRUD'
+		achievement: 'Motion-First CMS'
 	},
 	{
 		id: 10,
