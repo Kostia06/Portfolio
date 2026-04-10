@@ -65,6 +65,19 @@ export const projects: Project[] = [
 		size: 'small',
 		achievement: 'Privacy-First'
 	},
+	{
+		id: 13,
+		title: 'Hive Roomies',
+		subtitle: 'Roommate Coordination App',
+		description:
+			'Cross-platform roommate coordination app for chores, shopping lists, shared calendars, and subletter handoffs. Built with Next.js and Capacitor for iOS and Android, with transactional email flows and real-time sync. Ships as a PWA with offline support and push-style invite notifications.',
+		color: '#fbbf24',
+		tags: ['Next.js', 'Capacitor', 'PWA'],
+		liveUrl: 'https://hive-roomies.com',
+		screenshot: '/screenshots/hiveroomies.webp',
+		size: 'medium',
+		achievement: 'iOS + Android'
+	},
 	// {
 	// 	id: 5,
 	// 	title: 'MockMind AI',

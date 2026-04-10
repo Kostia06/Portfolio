@@ -105,3 +105,16 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	/* Prevent flash of content before GSAP initializes.
+	   GSAP's fromTo runs in onMount, so without hiding upfront
+	   the elements render fully visible for one frame, then
+	   snap to opacity 0 and animate back in. */
+	:global(#hero .name-char),
+	:global(#hero .sub-word),
+	:global(#hero .hero-bottom),
+	:global(#hero .hero-label) {
+		opacity: 0;
+	}
+</style>
