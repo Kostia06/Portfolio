@@ -4,6 +4,7 @@ import { Cursor } from './components/primitives/Cursor'
 import { ScrollCounter } from './components/primitives/ScrollCounter'
 import { SectionLabel } from './components/primitives/SectionLabel'
 import { Rule } from './components/primitives/Rule'
+import { Masthead } from './components/sections/Masthead'
 
 export function App() {
   useEffect(() => {
@@ -16,22 +17,7 @@ export function App() {
       <ScrollCounter />
       <SectionLabel />
       <main>
-        <section
-          data-section="01"
-          data-section-name="MASTHEAD"
-          class="container min-h-screen grid place-items-center"
-        >
-          <h1
-            class="font-black uppercase"
-            style={{
-              fontSize: 'var(--text-display-1)',
-              letterSpacing: 'var(--tracking-display-tight)',
-              lineHeight: 'var(--leading-display)',
-            }}
-          >
-            KOSTIA
-          </h1>
-        </section>
+        <Masthead />
         <Rule />
         <section
           data-section="02"
