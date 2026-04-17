@@ -6,6 +6,7 @@ import { SectionLabel } from './components/primitives/SectionLabel'
 import { Rule } from './components/primitives/Rule'
 import { Masthead } from './components/sections/Masthead'
 import { IndexSection } from './components/sections/Index'
+import { About } from './components/sections/About'
 
 export function App() {
   useEffect(() => {
@@ -21,6 +22,8 @@ export function App() {
         <Masthead />
         <Rule />
         <IndexSection />
+        <Rule />
+        <About />
         <Rule />
       </main>
     </>
