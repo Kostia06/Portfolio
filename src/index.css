@@ -43,3 +43,13 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 640px) {
   .container { padding-inline: var(--edge-pad-mobile); }
 }
+
+.cursor-dot.is-bar {
+  width: 32px !important;
+  height: 2px !important;
+  border-radius: 0 !important;
+}
+
+@media (pointer: coarse) {
+  .cursor-dot { display: none; }
+}
