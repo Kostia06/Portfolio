@@ -8,6 +8,7 @@ import { Masthead } from './components/sections/Masthead'
 import { IndexSection } from './components/sections/Index'
 import { About } from './components/sections/About'
 import { Work } from './components/sections/Work'
+import { Capabilities } from './components/sections/Capabilities'
 
 export function App() {
   useEffect(() => {
@@ -27,6 +28,8 @@ export function App() {
         <About />
         <Rule />
         <Work />
+        <Rule />
+        <Capabilities />
         <Rule />
       </main>
     </>
