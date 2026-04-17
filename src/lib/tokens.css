@@ -1,0 +1,25 @@
+@theme {
+  --color-paper: #f4f1ea;
+  --color-ink: #0b0b0b;
+  --color-red: #e3342f;
+  --color-rule: #0b0b0b;
+  --color-mute: #8a867c;
+
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-display-1: clamp(96px, 14vw, 240px);
+  --text-display-2: clamp(56px, 8vw, 120px);
+  --text-body-lg: 24px;
+  --text-body: 18px;
+  --text-meta: 12px;
+
+  --tracking-display-tight: -0.04em;
+  --tracking-display-mid: -0.02em;
+  --leading-display: 0.9;
+
+  --content-max: 1440px;
+  --edge-pad-desktop: 32px;
+  --edge-pad-mobile: 16px;
+  --grid-gutter: 24px;
+}
