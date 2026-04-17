@@ -14,6 +14,7 @@ export function Work() {
         data-section-name="SELECTED WORK"
         class="container py-24 md:py-40"
       >
+        <h2 class="sr-only">Selected Work</h2>
         <div
           class="mb-12 flex items-baseline justify-between"
           style={{

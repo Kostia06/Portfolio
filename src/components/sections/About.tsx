@@ -54,6 +54,7 @@ export function About() {
       data-section-name="ABOUT"
       class="container py-24 md:py-40"
     >
+      <h2 class="sr-only">About</h2>
       <div
         class="mb-12"
         style={{

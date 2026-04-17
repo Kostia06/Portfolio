@@ -24,6 +24,7 @@ export function ScrollCounter() {
       aria-hidden
       style={{
         position: 'fixed',
+        pointerEvents: 'none',
         top: 16,
         right: 'var(--edge-pad-desktop)',
         fontFamily: 'var(--font-mono)',

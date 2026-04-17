@@ -32,6 +32,7 @@ export function SectionLabel() {
       aria-hidden
       style={{
         position: 'fixed',
+        pointerEvents: 'none',
         top: 16,
         left: 'var(--edge-pad-desktop)',
         fontFamily: 'var(--font-mono)',

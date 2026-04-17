@@ -58,6 +58,7 @@ export function Colophon() {
       data-section-name="COLOPHON"
       class="container py-24 md:py-40"
     >
+      <h2 class="sr-only">Contact</h2>
       <div
         class="mb-12"
         style={{

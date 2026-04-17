@@ -5,9 +5,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 let lenis: Lenis | null = null
+const prefersReducedMotion =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-export function initScroll(): Lenis {
+export function initScroll(): Lenis | null {
   if (lenis) return lenis
+  if (prefersReducedMotion) {
+    // Native scroll, no smoothing. ScrollTrigger still works against window.
+    return null
+  }
 
   lenis = new Lenis({
     lerp: 0.1,

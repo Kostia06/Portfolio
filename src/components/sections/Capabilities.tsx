@@ -41,6 +41,7 @@ export function Capabilities() {
       data-section-name="CAPABILITIES"
       class="relative py-24 md:py-40 overflow-hidden"
     >
+      <h2 class="sr-only">Capabilities</h2>
       <div
         class="absolute inset-0 pointer-events-none hidden md:block"
         style={{ opacity: 0.08 }}

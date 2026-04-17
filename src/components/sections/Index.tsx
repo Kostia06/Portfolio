@@ -51,6 +51,7 @@ export function IndexSection() {
       data-section-name="INDEX"
       class="container py-24 md:py-40"
     >
+      <h2 class="sr-only">Index</h2>
       <div
         class="mb-12"
         style={{
