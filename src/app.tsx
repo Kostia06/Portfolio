@@ -9,6 +9,7 @@ import { IndexSection } from './components/sections/Index'
 import { About } from './components/sections/About'
 import { Work } from './components/sections/Work'
 import { Capabilities } from './components/sections/Capabilities'
+import { Colophon } from './components/sections/Colophon'
 
 export function App() {
   useEffect(() => {
@@ -31,6 +32,7 @@ export function App() {
         <Rule />
         <Capabilities />
         <Rule />
+        <Colophon />
       </main>
     </>
   )
